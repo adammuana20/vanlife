@@ -6,6 +6,8 @@ import About from "./pages/About"
 import Vans from "./pages/Vans"
 import './index.css'
 
+import './server'
+
 function App() {
   return (
     <BrowserRouter>
