@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <header>
-        <Link className="site-logo" to="/">#VanLife</Link>
+        <Link className="site-logo" to="/">#VanLifesadsa</Link>
         <nav>
           <Link to="/about">About</Link>
         </nav>
