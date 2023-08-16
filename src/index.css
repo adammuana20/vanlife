@@ -738,3 +738,9 @@ img.graph {
   color: #ff8c38;
   margin-right: 5px;
 }
+
+a.active-link {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #161616;
+}
