@@ -76,7 +76,11 @@ export default function Vans() {
                     className="van-type luxury"
                 >Luxury</button>
                 <button 
+<<<<<<< HEAD
                     onClick={() => handleFilterChange("type", null)}
+=======
+                    onClick={() => handleFilterChange("type", "null")}
+>>>>>>> f93d28d2228ae5ff3f3b1d53c0f1ce20752c7eef
                     className="van-type clear-filters"
                 >Clear Filter</button>
             </div>
