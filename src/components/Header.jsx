@@ -7,19 +7,19 @@ export default function Header() {
             <Link className="site-logo" to="/">#VanLife</Link>
             <nav>
                 <NavLink 
-                    to="/host" 
+                    to="host" 
                     className={({isActive}) => isActive ? 'active-link' : null}
                 >
                     Host
                 </NavLink>
                 <NavLink 
-                    to="/about" 
+                    to="about" 
                     className={({isActive}) => isActive ? 'active-link' : null}
                 >
                     About
                 </NavLink>
                 <NavLink 
-                    to="/vans" 
+                    to="vans" 
                     className={({isActive}) => isActive ? 'active-link' : null}
                 >
                     Vans

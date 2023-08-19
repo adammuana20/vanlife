@@ -25,7 +25,7 @@ export default function HastVans() {
             </div>
         </Link>
     ))
-    console.log(hostVans)
+    
     return (
         <section>
             <h1 className="host-vans-title">Your listed vans</h1>
