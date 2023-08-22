@@ -17,7 +17,7 @@ createServer({
 
     routes() {
         this.namespace = "api"
-        // this.logging = false
+        this.logging = false
         // this.timing = 2000
         
         this.get("/vans", (schema, request) => {
@@ -31,7 +31,7 @@ createServer({
         })
 
         this.get("/host/vans", (schema, request) => {
-            return schema.vans.where({hostId: "123"})
+            return schema.vans.where({ hostId: "123" })
         })
 
         this.get("/host/vans/:id", (schema, request) => {

@@ -1,22 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link, useLoaderData, redirect } from "react-router-dom"
+import { getHostVans } from "../../api"
+import { requireAuth } from "../../utils"
 
-export default function HastVans() {
-    const [hostVans, setHostVans] = React.useState([])
+export async function loader() {
+    const isLoggedIn = false
 
-    React.useEffect(() => {
-        fetch('/api/host/vans')
-            .then(res => res.json())
-            .then(data => setHostVans(data.vans))
-    }, [])
+    if(!isLoggedIn) {
+        const res = redirect("/login")
+        res.body = true
+        return res
+    } else {
+        return getHostVans()
+    }
+}
 
-    const hostVansElements = hostVans.map(van => (
-        <Link 
-            to={van.id} 
+export default function HostVans() {
+    const vans = useLoaderData()
+
+    const hostVansEls = vans.map(van => (
+        <Link
+            to={van.id}
             key={van.id}
             className="host-van-link-wrapper"
         >
-            <div key={van.id} className="host-van-single">
+            <div className="host-van-single" key={van.id}>
                 <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
                 <div className="host-van-info">
                     <h3>{van.name}</h3>
@@ -25,20 +33,14 @@ export default function HastVans() {
             </div>
         </Link>
     ))
-    
+
     return (
         <section>
             <h1 className="host-vans-title">Your listed vans</h1>
             <div className="host-vans-list">
-                {
-                    hostVans.length > 0 ? (
-                        <section>
-                            {hostVansElements}
-                        </section>
-                    ) : (
-                        <h2>Loading...</h2>
-                    )
-                }
+                <section>
+                    {hostVansEls}
+                </section>
             </div>
         </section>
     )
