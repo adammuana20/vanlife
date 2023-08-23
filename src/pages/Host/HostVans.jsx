@@ -3,11 +3,14 @@ import { Link, useLoaderData, redirect } from "react-router-dom"
 import { getHostVans } from "../../api"
 import { requireAuth } from "../../utils"
 
-export async function loader() {
-    const isLoggedIn = false
+export async function loader({request}) {
+    const pathname = new URL(request.url).pathname
+    const isLoggedIn = localStorage.getItem("loggedin");
 
     if(!isLoggedIn) {
-        const res = redirect("/login")
+        const res = redirect(
+            `/login?message=You must log in first.&redirectTo=${pathname}`
+        )
         res.body = true
         return res
     } else {

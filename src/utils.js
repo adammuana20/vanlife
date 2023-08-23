@@ -1,12 +1,14 @@
 import { redirect } from "react-router-dom"
 
-export async function requireAuth() {
-    const isLoggedIn = false
+export async function requireAuth(request) {
+    const pathname = new URL(request.url).pathname
+    const isLoggedIn = localStorage.getItem("loggedin");
 
     if(!isLoggedIn) {
-        const res = redirect("/login")
+        const res = redirect(
+            `/login?message=You must log in first.&redirectTo=${pathname}`
+        )
         res.body = true
-        console.log(res);
         return res
     }
     return null
