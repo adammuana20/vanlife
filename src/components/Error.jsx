@@ -6,7 +6,7 @@ export default function Error() {
 
     return (
         <>
-            <h1>Error: {error.message ? error.message : `Test`}</h1>
+            <h1>Error: {error.message}</h1>
             <pre>{error.status} - {error.statusText}</pre>
         </>
     )
