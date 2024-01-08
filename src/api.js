@@ -1,42 +1,95 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { 
+    signInWithPopup,
+    signInWithRedirect,
+    getAuth,
+    GoogleAuthProvider,
+} from "firebase/auth";
+
+import { 
     getFirestore, 
     collection, 
     doc, 
     getDocs, 
     getDoc,
     query,
-    where
-} from "@firebase/firestore/lite";
+    where,
+    writeBatch,
+    setDoc,
+} from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC-Ci5yRRGjscSGDlxQ4iG29CO05Vm9cdM",
-  authDomain: "vanlife-93a88.firebaseapp.com",
-  projectId: "vanlife-93a88",
-  storageBucket: "vanlife-93a88.appspot.com",
-  messagingSenderId: "340450959611",
-  appId: "1:340450959611:web:110207d8a8a535c57c505e"
+    apiKey: "AIzaSyCxGAYfm28IJUj01Djbz6WuBsCqJClkKH4",
+    authDomain: "vanlife-db.firebaseapp.com",
+    projectId: "vanlife-db",
+    storageBucket: "vanlife-db.appspot.com",
+    messagingSenderId: "464785505481",
+    appId: "1:464785505481:web:69b2025b743c2151e62118"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app)
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp)
+
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+    prompt: "select_account"
+});
+
+export const auth = getAuth()
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
 
 // Refactoring the fetching functions
 const vansCollectionRef = collection(db, "vans")
 
+// ADD JSON/JS DATA TO FIRESTORE
+// export const addCollectionAndDocuments = async(collectionKey, objectsToAdd) => {
+//     const collectionRef = collection(db, collectionKey)
+
+//     const batch = writeBatch(db)
+
+//     objectsToAdd.forEach((object) => {
+//         const docRef = doc(collectionRef, object.title.toLowerCase())
+//         batch.set(docRef, object)
+//     })
+
+//     await batch.commit()
+//     console.log('done');
+// }
+
+export const createUserDocumentFromAuth = async (userAuth) => {
+    const userDocRef = doc(db, 'users', userAuth.uid)
+    const userSnapshot = await getDoc(userDocRef);
+
+    if(!userSnapshot.exists()) {
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+        try{
+            await setDoc(userDocRef, {
+                displayName,
+                email,
+                createdAt,
+            })
+        } catch(error) {
+            console.error('Error creating user: ',error);
+        }
+    }
+
+    return userDocRef
+}
+
 export async function getVans() {
-    const querySnapshot = await getDocs(vansCollectionRef)
+    const querySnapshot = await getDocs(vansCollectionRef)  
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id
     }))
-    return dataArr
+    return null
 }
 
 export async function getVan(id) {
@@ -47,6 +100,7 @@ export async function getVan(id) {
         ...vanSnapshot.data(),
         id: vanSnapshot.id
     }
+    return null
 }
 
 // export async function getVans(id) {
@@ -71,7 +125,7 @@ export async function getHostVans() {
         ...doc.data(),
         id: doc.id
     }))
-    return dataArr
+    return null
 }
 
 // export async function getHostVans(id) {
@@ -101,5 +155,5 @@ export async function loginUser(creds) {
             status: res.status
         }
     }
-    return data
+    return null
 }
