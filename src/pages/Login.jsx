@@ -1,4 +1,3 @@
-import React from "react";
 import { 
     useLoaderData, 
     Form, 
@@ -6,7 +5,7 @@ import {
     useActionData,
     useNavigation
 } from "react-router-dom";
-import { loginUser } from "../api"
+import { loginUser, signInWithGooglePopup, createUserDocumentFromAuth } from "../api"
 
 export async function action({ request }) {
     const  formData = await request.formData()
@@ -35,6 +34,11 @@ export default function Login() {
     const message = useLoaderData()
     const errorMessage = useActionData();
     const navigation = useNavigation();
+
+    const signInWithGoogle = async () => {
+        const { user } = await signInWithGooglePopup();
+        const userDocRef = await createUserDocumentFromAuth(user);
+    }
     
     return (
         <div className="login-container">
@@ -56,10 +60,13 @@ export default function Login() {
                     name="password"
                     placeholder="Password"
                 />
-                <button disabled={navigation.state === "submitting"}>
+                <button disabled={navigation.state === "submitting"} type='submit'>
                     {navigation.state === "submitting" 
                     ? "Logging in..." 
                     : "Log in"}
+                </button>
+                <button type='button' onClick={signInWithGoogle}>
+                    Google Sign In
                 </button>
             </Form>
         </div>
