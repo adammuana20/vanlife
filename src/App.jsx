@@ -3,25 +3,26 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     Route
-  } from "react-router-dom"
-  import Home from "./pages/Home"
-  import About from "./pages/About"
-  import Vans, { loader as vansLoader } from "./pages/Vans/Vans"
-  import VanDetail, { loader as vanDetailLoader } from "./pages/Vans/VanDetail"
-  import Dashboard, { loader as dashboardLoader } from "./pages/Host/Dashboard"
-  import Income from "./pages/Host/Income"
-  import Reviews from "./pages/Host/Reviews"
-  import HostVans, { loader as hostVansLoader} from "./pages/Host/HostVans"
-  import HostVanDetail, { loader as hostVanDetailLoader } from "./pages/Host/HostVanDetail"
-  import HostVanInfo from "./pages/Host/HostVanInfo"
-  import HostVanPricing from "./pages/Host/HostVanPricing"
-  import HostVanPhotos from "./pages/Host/HostVanPhotos"
-  import NotFound from "./pages/404"
-  import Login, { loader as loginLoader, action as loginAction } from "./pages/Login"
-  import Layout from "./components/Layout"
-  import HostLayout from "./components/HostLayout"
-  import Error from "./components/Error"
-  import { requireAuth } from "./utils"
+} from "react-router-dom"
+import Home from "./components/Home"
+import About from "./components/About"
+import Vans, { loader as vansLoader } from "./components/Vans/Vans"
+import VanDetail, { loader as vanDetailLoader } from "./components/Vans/VanDetail"
+import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboard"
+import Income from "./components/Host/Income"
+import Reviews from "./components/Host/Reviews"
+import HostVans, { loader as hostVansLoader} from "./components/Host/HostVans"
+import HostVanDetail, { loader as hostVanDetailLoader } from "./components/Host/HostVanDetail"
+import HostVanInfo from "./components/Host/HostVanInfo"
+import HostVanPricing from "./components/Host/HostVanPricing"
+import HostVanPhotos from "./components/Host/HostVanPhotos"
+import NotFound from "./components/404"
+import Login, { loader as loginLoader, action as loginAction } from "./components/Authentication/Login"
+import Layout from "./routes/Layout"
+import HostLayout from "./routes/HostLayout"
+import SignUp from "./components/Authentication/SignUp"
+import Error from "./components/Error"
+import { requireAuth } from "./utils"
 
 const App = () => {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -33,6 +34,12 @@ const App = () => {
             element={<Login />}
             loader={loginLoader}
             action={loginAction}
+          />
+          <Route
+            path="sign-up"
+            element={<SignUp />}
+            // loader={loginLoader}
+            // action={loginAction}
           />
           <Route
             path="vans"

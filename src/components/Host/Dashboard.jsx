@@ -1,6 +1,6 @@
 import React from "react"
 import { Link, defer, Await, useLoaderData } from "react-router-dom"
-import { getHostVans } from "../../api"
+import { getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils"
 import { BsStarFill } from "react-icons/bs"
 

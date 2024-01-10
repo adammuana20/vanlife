@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { getRedirectResult } from "firebase/auth";
 import { 
     useLoaderData, 
     Form, 
@@ -5,7 +7,7 @@ import {
     useActionData,
     useNavigation
 } from "react-router-dom";
-import { loginUser, signInWithGooglePopup, createUserDocumentFromAuth } from "../api"
+import { loginUser, createUserDocumentFromAuth, signInWithGoogleRedirect, auth } from "../../utils/firebase"
 
 export async function action({ request }) {
     const  formData = await request.formData()
@@ -35,10 +37,18 @@ export default function Login() {
     const errorMessage = useActionData();
     const navigation = useNavigation();
 
-    const signInWithGoogle = async () => {
-        const { user } = await signInWithGooglePopup();
-        const userDocRef = await createUserDocumentFromAuth(user);
-    }
+    useEffect(() => {
+
+        const result = async () => {
+            const response = await getRedirectResult(auth)
+            if(response) {
+                const { user } = response
+                const userDocRef = await createUserDocumentFromAuth(user)
+            }
+        }
+
+        result()
+    }, [])
     
     return (
         <div className="login-container">
@@ -65,7 +75,7 @@ export default function Login() {
                     ? "Logging in..." 
                     : "Log in"}
                 </button>
-                <button type='button' onClick={signInWithGoogle}>
+                <button type='button' onClick={signInWithGoogleRedirect}>
                     Google Sign In
                 </button>
             </Form>

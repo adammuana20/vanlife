@@ -1,6 +1,6 @@
 import React from "react"
 import { Link, useLoaderData, redirect, defer, Await } from "react-router-dom"
-import { getHostVans } from "../../api"
+import { getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils"
 
 export async function loader({request}) {
