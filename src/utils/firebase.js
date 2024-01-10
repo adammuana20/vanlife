@@ -43,24 +43,10 @@ googleProvider.setCustomParameters({
 
 export const auth = getAuth()
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 // Refactoring the fetching functions
 const vansCollectionRef = collection(db, "vans")
-
-// ADD JSON/JS DATA TO FIRESTORE
-// export const addCollectionAndDocuments = async(collectionKey, objectsToAdd) => {
-//     const collectionRef = collection(db, collectionKey)
-
-//     const batch = writeBatch(db)
-
-//     objectsToAdd.forEach((object) => {
-//         const docRef = doc(collectionRef, object.title.toLowerCase())
-//         batch.set(docRef, object)
-//     })
-
-//     await batch.commit()
-//     console.log('done');
-// }
 
 export const createUserDocumentFromAuth = async (userAuth) => {
     const userDocRef = doc(db, 'users', userAuth.uid)
@@ -83,13 +69,13 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     return userDocRef
 }
 
-export async function getVans() {
+export const getVans = async () => {
     const querySnapshot = await getDocs(vansCollectionRef)  
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id
     }))
-    return null
+    return dataArr
 }
 
 export async function getVan(id) {
