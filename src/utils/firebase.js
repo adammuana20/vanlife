@@ -5,6 +5,7 @@ import {
     signInWithRedirect,
     getAuth,
     GoogleAuthProvider,
+    createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 import { 
@@ -48,7 +49,9 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 // Refactoring the fetching functions
 const vansCollectionRef = collection(db, "vans")
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
+    if(!userAuth) return
+
     const userDocRef = doc(db, 'users', userAuth.uid)
     const userSnapshot = await getDoc(userDocRef);
 
@@ -60,6 +63,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
                 displayName,
                 email,
                 createdAt,
+                ...additionalInformation,
             })
         } catch(error) {
             console.error('Error creating user: ',error);
@@ -67,6 +71,12 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     }
 
     return userDocRef
+}
+
+export const createAuthUserWithEmailAndPassword = async ( email, password ) => {
+    if(!email || !password) return
+    
+    return await createUserWithEmailAndPassword(auth, email, password);
 }
 
 export const getVans = async () => {
@@ -78,31 +88,15 @@ export const getVans = async () => {
     return dataArr
 }
 
-export async function getVan(id) {
+export const getVan = async (id) => {
     const docRef = doc(db, "vans", id)
     const vanSnapshot = await getDoc(docRef)
-
+    
     return {
         ...vanSnapshot.data(),
         id: vanSnapshot.id
     }
-    return null
 }
-
-// export async function getVans(id) {
-//     const url = id ? `/api/vans/${id}` : "/api/vans"
-//     const res = await fetch(url)
-//     if (!res.ok) {
-//         throw {
-//             message: "Failed to fetch vans",
-//             statusText: res.statusText,
-//             status: res.status
-//         }
-//     }
-//     const data = await res.json()
-//     return data.vans
-// }
-
 
 export async function getHostVans() {
     const q = query(vansCollectionRef, where("hostId", "==", "123"))
@@ -111,22 +105,9 @@ export async function getHostVans() {
         ...doc.data(),
         id: doc.id
     }))
-    return null
-}
 
-// export async function getHostVans(id) {
-//     const url = id ? `/api/host/vans/${id}` : "/api/host/vans"
-//     const res = await fetch(url)
-//     if (!res.ok) {
-//         throw {
-//             message: "Failed to fetch vans",
-//             statusText: res.statusText,
-//             status: res.status
-//         }
-//     }
-//     const data = await res.json()
-//     return data.vans
-// }
+    return dataArr
+}
 
 export async function loginUser(creds) {
     const res = await fetch("/api/login",

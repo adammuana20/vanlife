@@ -10,7 +10,7 @@ import {
 import { loginUser, createUserDocumentFromAuth, signInWithGoogleRedirect, auth } from "../../utils/firebase"
 
 export async function action({ request }) {
-    const  formData = await request.formData()
+    const formData = await request.formData()
     const email = formData.get("email")
     const password = formData.get("password")
     
@@ -52,7 +52,8 @@ export default function Login() {
     
     return (
         <div className="login-container">
-            <h1>Sign in to your account</h1>
+            <h2>Already have an account?</h2>
+            <span>Sign in to your account</span>
             { message && <h3 className="red">{message}</h3> }
             { errorMessage && <h3 className="red">{errorMessage}</h3> }
             <Form 
@@ -64,11 +65,13 @@ export default function Login() {
                     type="email"
                     name="email"
                     placeholder="Email Address"
+                    required
                 />
                 <input 
                     type="password" 
                     name="password"
                     placeholder="Password"
+                    required
                 />
                 <button disabled={navigation.state === "submitting"} type='submit'>
                     {navigation.state === "submitting" 
