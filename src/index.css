@@ -44,14 +44,17 @@ header .site-logo {
   font-size: 25px;
 }
 
-header a {
+header a,
+header span {
   text-decoration: none;
   color: #4D4D4D;
   font-weight: 600;
   padding: 5px 15px;
+  cursor: pointer;
 }
 
-header a:hover {
+header a:hover,
+header span:hover {
   color: #161616;
   text-decoration: underline;
 }

@@ -1,10 +1,20 @@
-import { NavLink, Link } from "react-router-dom";
+import { useContext } from 'react'
+import { NavLink, Link, useNavigate } from "react-router-dom";
+
+import { UserContext } from '../contexts/User.context';
+
+import { signOutUser } from '../utils/firebase';
+
 import imageUrl from "../assets/images/avatar-icon.png";
 
 const MainHeader = () => {
+    const { currentUser, setCurrentUser } = useContext(UserContext)
+    const navigate = useNavigate()
 
-    const fakeLogOut = () => {
-        localStorage.removeItem("loggedin")
+    const signOutHandler = async () => {
+        await signOutUser()
+        setCurrentUser(null)
+        navigate('login')
     }
 
     return (
@@ -29,20 +39,32 @@ const MainHeader = () => {
                 >
                     Vans
                 </NavLink>
-                <Link
-                    to="login"
-                >
-                    <img src={imageUrl} className="login-icon" />
-                </Link>
-                <Link
-                to="sign-up"
-                >
-                    Sign Up
-                </Link>
-                <button onClick={fakeLogOut}>X</button>
+                {currentUser ? (
+                        <span
+                            onClick={signOutHandler}
+                        >
+                            Logout
+                        </span>
+                    ) : (
+                        <>
+                            <Link
+                                to="login"
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                to="sign-up"
+                            >
+                                Sign Up
+                            </Link>
+                        </>
+                    )
+                }
             </nav>
         </header>
     )
 }
 
 export default MainHeader
+
+// <img src={imageUrl} className="login-icon" />
