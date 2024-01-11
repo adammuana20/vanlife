@@ -2,7 +2,7 @@ import { Form, useNavigation, useActionData } from "react-router-dom"
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase"
 
-export const action = async ({ request }) => {
+export const action = (setCurrentUser) => async ({ request }) => {
   const formData = await request.formData()
   const displayName = formData.get('displayName')
   const email = formData.get('email')
@@ -17,15 +17,18 @@ export const action = async ({ request }) => {
 
     const { user } = await createAuthUserWithEmailAndPassword(email, password)
     await createUserDocumentFromAuth(user, { displayName })
+    setCurrentUser(user)
     
     return "Account Created Successfully"
   } catch(err) {
-    if(err.code === 'auth/email-already-in-use') {
-      return "Email already exist!";
-    } else if(err.code === 'auth/weak-password') {
-      return "Password should be at least 6 characters!";
-    }
-    return err.message;
+      switch(err.code) {
+        case 'email-already-in-use':
+          return "Email already exist!";
+        case 'auth/weak-password':
+          return "Password should be at least 6 characters!";
+        default:
+          return err
+      }
   }
 }
 

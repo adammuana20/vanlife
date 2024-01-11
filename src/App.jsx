@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import {
     RouterProvider,
     createBrowserRouter,
@@ -24,7 +25,11 @@ import SignUp, { action as signupAction } from "./components/Authentication/Sign
 import Error from "./components/Error"
 import { requireAuth } from "./utils"
 
+import { UserContext } from "./contexts/User.context"
+
 const App = () => {
+  const { setCurrentUser } = useContext(UserContext)
+
     const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -33,13 +38,12 @@ const App = () => {
             path="login"
             element={<Login />}
             loader={loginLoader}
-            action={loginAction}
+            action={loginAction(setCurrentUser)}
           />
           <Route
             path="sign-up"
             element={<SignUp />}
-            // loader={signupAction}
-            action={signupAction}
+            action={signupAction(setCurrentUser)}
           />
           <Route
             path="vans"

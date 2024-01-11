@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { getRedirectResult } from "firebase/auth";
 import { 
     useLoaderData, 
@@ -7,9 +7,17 @@ import {
     useActionData,
     useNavigation
 } from "react-router-dom";
-import { loginUser, createUserDocumentFromAuth, signInWithGoogleRedirect, auth } from "../../utils/firebase"
 
-export async function action({ request }) {
+import { 
+    loginUser, 
+    createUserDocumentFromAuth, 
+    signInWithGoogleRedirect, 
+    auth,
+    signInAuthUserWithEmailAndPassword,
+} from "../../utils/firebase"
+
+
+export const action = (setCurrentUser) => async ({ request }) => {
     const formData = await request.formData()
     const email = formData.get("email")
     const password = formData.get("password")
@@ -17,14 +25,23 @@ export async function action({ request }) {
     const pathname = new URL(request.url).searchParams.get("redirectTo") || "/host"
 
     try {
-        const data = await loginUser({ email, password });
-        localStorage.setItem("loggedin", true)
+        const { user } = await signInAuthUserWithEmailAndPassword(email, password);
+        // localStorage.setItem("loggedin", true)
 
-        const res = redirect(pathname)
-        res.body = true
-        return res
+        // const res = redirect(pathname)
+        // res.body = true
+        // return res
+        setCurrentUser(user)
+        return redirect(pathname)
     } catch (err) {
-        return err.message
+        switch(err.code) {
+            case 'auth/invalid-credential': 
+                return 'Incorrect Email or Password!'
+            case 'auth/user-not-found':
+                return 'User not found!'
+            default:
+                return err
+        }
     }
 }
 
@@ -43,7 +60,7 @@ export default function Login() {
             const response = await getRedirectResult(auth)
             if(response) {
                 const { user } = response
-                const userDocRef = await createUserDocumentFromAuth(user)
+                await createUserDocumentFromAuth(user)
             }
         }
 
