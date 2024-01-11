@@ -20,7 +20,7 @@ import NotFound from "./components/404"
 import Login, { loader as loginLoader, action as loginAction } from "./components/Authentication/Login"
 import Layout from "./routes/Layout"
 import HostLayout from "./routes/HostLayout"
-import SignUp from "./components/Authentication/SignUp"
+import SignUp, { action as signupAction } from "./components/Authentication/SignUp"
 import Error from "./components/Error"
 import { requireAuth } from "./utils"
 
@@ -38,8 +38,8 @@ const App = () => {
           <Route
             path="sign-up"
             element={<SignUp />}
-            // loader={loginLoader}
-            // action={loginAction}
+            // loader={signupAction}
+            action={signupAction}
           />
           <Route
             path="vans"

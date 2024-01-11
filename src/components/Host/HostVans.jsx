@@ -4,18 +4,8 @@ import { getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils"
 
 export async function loader({request}) {
-    const pathname = new URL(request.url).pathname
-    const isLoggedIn = localStorage.getItem("loggedin");
-
-    if(!isLoggedIn) {
-        const res = redirect(
-            `/login?message=You must log in first.&redirectTo=${pathname}`
-        )
-        res.body = true
-        return res
-    } else {
-        return defer({ hostVans: getHostVans() })
-    }
+    await requireAuth(request)
+    return defer({ hostVans: getHostVans() })
 }
 
 export default function HostVans() {

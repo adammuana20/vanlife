@@ -34,7 +34,7 @@ export default function Vans() {
             const displayVans = typeFilter
                 ? vans.filter(van => van.type.toLowerCase() === typeFilter)
                 : vans
-        
+                
             const vanElements = displayVans.map(van => (
                 <div key={van.id} className="van-tile">
                     <Link 
