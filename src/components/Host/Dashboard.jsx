@@ -4,15 +4,15 @@ import { getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils"
 import { BsStarFill } from "react-icons/bs"
 
-export async function loader({ request }) {
-    // await requireAuth(request)
+export const loader = (currentUser) => async({ request }) => {
+    await requireAuth(request, currentUser)
     return defer({ vans: getHostVans() })
 }
 
-export default function Dashboard() {
+const Dashboard = () => {
     const loaderData = useLoaderData()
 
-    function renderVanElements(vans) {
+    const renderVanElements = (vans) => {
         const hostVansEls = vans.map((van) => (
             <div className="host-van-single" key={van.id}>
                 <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
@@ -61,3 +61,5 @@ export default function Dashboard() {
         </>
     )
 }
+
+export default Dashboard;

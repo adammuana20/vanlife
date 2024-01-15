@@ -1,38 +1,27 @@
-import { useEffect, useContext } from "react";
-import { getRedirectResult } from "firebase/auth";
 import { 
     useLoaderData, 
     Form, 
-    redirect, 
     useActionData,
-    useNavigation
+    useNavigation,
 } from "react-router-dom";
 
 import { 
-    loginUser, 
-    createUserDocumentFromAuth, 
-    signInWithGoogleRedirect, 
-    auth,
     signInAuthUserWithEmailAndPassword,
+    signInWithGooglePopup,
 } from "../../utils/firebase"
 
+import { noAuthRequire } from "../../utils";
 
-export const action = (setCurrentUser) => async ({ request }) => {
+
+export const action = async ({ request }) => {
     const formData = await request.formData()
     const email = formData.get("email")
     const password = formData.get("password")
     
-    const pathname = new URL(request.url).searchParams.get("redirectTo") || "/host"
-
     try {
-        const { user } = await signInAuthUserWithEmailAndPassword(email, password);
-        // localStorage.setItem("loggedin", true)
+        await signInAuthUserWithEmailAndPassword(email, password);
 
-        // const res = redirect(pathname)
-        // res.body = true
-        // return res
-        setCurrentUser(user)
-        return redirect(pathname)
+        return null
     } catch (err) {
         switch(err.code) {
             case 'auth/invalid-credential': 
@@ -45,27 +34,16 @@ export const action = (setCurrentUser) => async ({ request }) => {
     }
 }
 
-export function loader({ request }) {
+export const loader = (currentUser) => async ({ request }) => {
+    await noAuthRequire(request, currentUser)
     return new URL(request.url).searchParams.get("message")
 }
 
-export default function Login() {
+export const Login = () => {
     const message = useLoaderData()
     const errorMessage = useActionData();
     const navigation = useNavigation();
 
-    useEffect(() => {
-
-        const result = async () => {
-            const response = await getRedirectResult(auth)
-            if(response) {
-                const { user } = response
-                await createUserDocumentFromAuth(user)
-            }
-        }
-
-        result()
-    }, [])
     
     return (
         <div className="login-container">
@@ -95,10 +73,12 @@ export default function Login() {
                     ? "Logging in..." 
                     : "Log in"}
                 </button>
-                <button type='button' onClick={signInWithGoogleRedirect}>
+                <button type='button' onClick={signInWithGooglePopup}>
                     Google Sign In
                 </button>
             </Form>
         </div>
     )
 }
+
+export default Login
