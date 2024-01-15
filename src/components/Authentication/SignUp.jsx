@@ -2,7 +2,7 @@ import { Form, useNavigation, useActionData } from "react-router-dom"
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase"
 
-import { noAuthRequire } from "../../utils"
+import { noAuthRequire } from "../../utils/loaders"
 
 export const action = async ({ request }) => {
   const formData = await request.formData()

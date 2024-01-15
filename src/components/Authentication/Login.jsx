@@ -10,7 +10,7 @@ import {
     signInWithGooglePopup,
 } from "../../utils/firebase"
 
-import { noAuthRequire } from "../../utils";
+import { noAuthRequire } from "../../utils/loaders";
 
 
 export const action = async ({ request }) => {

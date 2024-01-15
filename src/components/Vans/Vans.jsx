@@ -7,6 +7,7 @@ import {
     Await
 } from "react-router-dom";
 import { getVans } from "../../utils/firebase"
+import { capitalizeEachWord } from "../../utils/helpers";
 
 export function loader() {
     return defer({ vans: getVans() })
@@ -53,23 +54,30 @@ export default function Vans() {
                     </Link>
                 </div>
             ))
-        
+
+
+            const vanType = vans.reduce((acc, currVal) => {
+                if(!acc.includes(currVal.type)) {
+                    acc.push(currVal.type.toLowerCase())
+                }
+                return acc
+            }, [])
+
+            const displayVanType = vanType.map((type, idx) => (
+                <button 
+                    key={idx}
+                    onClick={() => handleFilterChange("type", type)}
+                    className={`van-type ${type} ${typeFilter === type ? "selected" : ""}`}
+                >
+                    {capitalizeEachWord(type)}
+                </button>
+            ))
+            
+
         return (
             <>
                 <div className="van-list-filter-buttons">
-                    <button 
-                        onClick={() => handleFilterChange("type", "simple")}
-                        className={`van-type simple ${typeFilter === "simple" ? "selected" : ""}`}
-                    >Simple</button>
-                    <button 
-                        onClick={() => handleFilterChange("type", "rugged")}
-                        to="?type=rugged" 
-                        className={`van-type rugged ${typeFilter === "rugged" ? "selected" : ""}`}
-                    >Rugged</button>
-                    <button 
-                        onClick={() => handleFilterChange("type", "luxury")}
-                        className={`van-type luxury ${typeFilter === "luxury" ? "selected" : ""}`}
-                    >Luxury</button>
+                    {displayVanType}
                     { typeFilter ? (
                         <button 
                             onClick={() => handleFilterChange("type", null)}
@@ -91,7 +99,7 @@ export default function Vans() {
             <React.Suspense fallback={<h2>Loading vans...</h2>}>
                 <Await resolve={dataPromise.vans}>
                     {renderVanElements}
-            </Await>
+                </Await>
            </React.Suspense>
         </div>
     )

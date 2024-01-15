@@ -1,5 +1,5 @@
-import { useContext, useEffect } from 'react'
-import { NavLink, Link, useNavigate, Form } from "react-router-dom";
+import { useContext } from 'react'
+import { NavLink, Link, useNavigate, Form, useActionData } from "react-router-dom";
 
 import { UserContext } from '../contexts/User.context';
 
@@ -7,15 +7,20 @@ import { signOutUser } from '../utils/firebase';
 
 import imageUrl from "../assets/images/avatar-icon.png";
 
+export const action = async () => {
+    await signOutUser()
+    const pathname = '/login' 
+    return pathname
+}
+
 const MainHeader = () => {
     const { currentUser } = useContext(UserContext)
     const navigate = useNavigate()
+    const action = useActionData()
 
-    useEffect(() => {
-        if(!currentUser) {
-            navigate('login', { replace: true })
-        }
-    }, [currentUser]);
+    if(action) {
+        navigate(action, { replace: true })
+    }
 
     return (
         <header>

@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, defer, Await, useLoaderData } from "react-router-dom"
 import { getHostVans } from "../../utils/firebase"
-import { requireAuth } from "../../utils"
+import { requireAuth } from "../../utils/loaders"
 import { BsStarFill } from "react-icons/bs"
 
 export const loader = (currentUser) => async({ request }) => {
