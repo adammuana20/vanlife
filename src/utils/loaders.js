@@ -1,5 +1,4 @@
 import { redirect } from "react-router-dom"
-import { signOutUser } from "./utils/firebase";
 
 export const requireAuth = async(request, currentUser) => {
     const pathname = new URL(request.url).pathname
@@ -20,10 +19,5 @@ export const noAuthRequire = async(request, currentUser) => {
         throw redirect(pathname)
     }
 
-    return null
-}
-
-export const action = async () => {
-    await signOutUser()
     return null
 }
