@@ -49,7 +49,7 @@ header span {
   text-decoration: none;
   color: #4D4D4D;
   font-weight: 600;
-  padding: 5px 15px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 
@@ -212,6 +212,7 @@ footer {
 .van-list-filter-buttons {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .van-list-filter-buttons > a {
