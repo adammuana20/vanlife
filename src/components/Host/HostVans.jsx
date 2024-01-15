@@ -1,10 +1,10 @@
 import React from "react"
-import { Link, useLoaderData, redirect, defer, Await } from "react-router-dom"
+import { Link, useLoaderData, defer, Await } from "react-router-dom"
 import { getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils"
 
-export async function loader({request}) {
-    await requireAuth(request)
+export const loader = (currentUser) => async({ request }) => {
+    await requireAuth(request, currentUser)
     return defer({ hostVans: getHostVans() })
 }
 

@@ -2,7 +2,9 @@ import { Form, useNavigation, useActionData } from "react-router-dom"
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase"
 
-export const action = (setCurrentUser) => async ({ request }) => {
+import { noAuthRequire } from "../../utils"
+
+export const action = async ({ request }) => {
   const formData = await request.formData()
   const displayName = formData.get('displayName')
   const email = formData.get('email')
@@ -17,8 +19,7 @@ export const action = (setCurrentUser) => async ({ request }) => {
 
     const { user } = await createAuthUserWithEmailAndPassword(email, password)
     await createUserDocumentFromAuth(user, { displayName })
-    setCurrentUser(user)
-    
+        
     return "Account Created Successfully"
   } catch(err) {
       switch(err.code) {
@@ -30,6 +31,10 @@ export const action = (setCurrentUser) => async ({ request }) => {
           return err
       }
   }
+}
+
+export const loader = (currentUser) => async ({ request }) => {
+  return await noAuthRequire(request, currentUser)
 }
 
 const SignUp = () => {

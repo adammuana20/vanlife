@@ -1,5 +1,5 @@
-import { useContext } from 'react'
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from 'react'
+import { NavLink, Link, useNavigate, Form } from "react-router-dom";
 
 import { UserContext } from '../contexts/User.context';
 
@@ -8,14 +8,14 @@ import { signOutUser } from '../utils/firebase';
 import imageUrl from "../assets/images/avatar-icon.png";
 
 const MainHeader = () => {
-    const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { currentUser } = useContext(UserContext)
     const navigate = useNavigate()
 
-    const signOutHandler = async () => {
-        await signOutUser()
-        setCurrentUser(null)
-        navigate('login')
-    }
+    useEffect(() => {
+        if(!currentUser) {
+            navigate('login', { replace: true })
+        }
+    }, [currentUser]);
 
     return (
         <header>
@@ -40,23 +40,30 @@ const MainHeader = () => {
                     Vans
                 </NavLink>
                 {currentUser ? (
-                        <span
-                            onClick={signOutHandler}
-                        >
-                            Logout
-                        </span>
+                    <>
+                        <img src={imageUrl} className="login-icon" />
+                        <Form method='post' action='logout'>
+                            <button
+                                type='submit'
+                            >
+                                Logout
+                            </button>
+                        </Form>
+                    </>
                     ) : (
                         <>
-                            <Link
+                            <NavLink
                                 to="login"
+                                className={({isActive}) => isActive ? 'active-link' : null}
                             >
                                 Login
-                            </Link>
-                            <Link
+                            </NavLink>
+                            <NavLink
                                 to="sign-up"
+                                className={({isActive}) => isActive ? 'active-link' : null}
                             >
                                 Sign Up
-                            </Link>
+                            </NavLink>
                         </>
                     )
                 }
@@ -66,5 +73,3 @@ const MainHeader = () => {
 }
 
 export default MainHeader
-
-// <img src={imageUrl} className="login-icon" />

@@ -21,14 +21,14 @@ import NotFound from "./components/404"
 import Login, { loader as loginLoader, action as loginAction } from "./components/Authentication/Login"
 import Layout from "./routes/Layout"
 import HostLayout from "./routes/HostLayout"
-import SignUp, { action as signupAction } from "./components/Authentication/SignUp"
+import SignUp, { action as signupAction, loader as signupLoader } from "./components/Authentication/SignUp"
 import Error from "./components/Error"
-import { requireAuth } from "./utils"
+import { requireAuth, action as logoutAction } from "./utils"
 
 import { UserContext } from "./contexts/User.context"
 
 const App = () => {
-  const { setCurrentUser } = useContext(UserContext)
+  const { currentUser } = useContext(UserContext)
 
     const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/" element={<Layout />}>
@@ -37,13 +37,14 @@ const App = () => {
           <Route
             path="login"
             element={<Login />}
-            loader={loginLoader}
-            action={loginAction(setCurrentUser)}
+            loader={loginLoader(currentUser)}
+            action={loginAction}
           />
           <Route
             path="sign-up"
             element={<SignUp />}
-            action={signupAction(setCurrentUser)}
+            loader={signupLoader(currentUser)}
+            action={signupAction}
           />
           <Route
             path="vans"
@@ -62,47 +63,48 @@ const App = () => {
             <Route
               index
               element={<Dashboard />}
-              loader={dashboardLoader}
+              loader={dashboardLoader(currentUser)}
             />
             <Route
               path="income"
               element={<Income />}
-              loader={async ({ request }) => await requireAuth(request)}
+              loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
             />
             <Route
               path="reviews"
               element={<Reviews />}
-              loader={async ({ request }) => await requireAuth(request)}
+              loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
             />
             <Route
               path="vans"
               element={<HostVans />}
               errorElement={<Error />}
-              loader={hostVansLoader}
+              loader={hostVansLoader(currentUser)}
             />
             <Route
               path="vans/:id"
               element={<HostVanDetail />}
               errorElement={<Error />}
-              loader={hostVanDetailLoader}
+              loader={hostVanDetailLoader(currentUser)}
             >
               <Route
                 index
                 element={<HostVanInfo />}
-                loader={async ({ request }) => await requireAuth(request)}
+                loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
               />
               <Route
                 path="pricing"
                 element={<HostVanPricing />}
-                loader={async ({ request }) => await requireAuth(request)}
+                loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
               />
               <Route
                 path="photos"
                 element={<HostVanPhotos />}
-                loader={async ({ request }) => await requireAuth(request)}
+                loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
               />
             </Route>
           </Route>
+          <Route path="logout" action={logoutAction} />
           <Route path="*" element={<NotFound />} />
         </Route>
       ))
