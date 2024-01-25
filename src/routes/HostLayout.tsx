@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 import HostHeader from "./HostHeader";
 
-export default function HostLayout() {
+const HostLayout = () => {
     return (
         <>
             <HostHeader />
@@ -10,3 +10,5 @@ export default function HostLayout() {
         </>
     )
 }
+
+export default HostLayout

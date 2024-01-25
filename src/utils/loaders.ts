@@ -1,8 +1,9 @@
+import { User } from "firebase/auth";
 import { redirect } from "react-router-dom"
 
-export const requireAuth = async(request, currentUser) => {
+export const requireAuth = async(request: Request, currentUser: User| null) => {
     const pathname = new URL(request.url).pathname
-
+    
     if(!currentUser) {
         const res = redirect(
             `/login?message=You must log in first.&redirectTo=${pathname}`
@@ -12,7 +13,7 @@ export const requireAuth = async(request, currentUser) => {
     return null
 }
 
-export const noAuthRequire = async(request, currentUser) => {
+export const noAuthRequire = async(request: Request, currentUser: User| null) => {
     const pathname = new URL(request.url).searchParams.get("redirectTo") || "/host"
 
     if(currentUser) {

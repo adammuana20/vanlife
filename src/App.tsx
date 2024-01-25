@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import {
     RouterProvider,
     createBrowserRouter,
@@ -7,8 +6,8 @@ import {
 } from "react-router-dom"
 import Home from "./components/Home"
 import About from "./components/About"
-import Vans, { loader as vansLoader } from "./components/Vans/Vans"
-import VanDetail, { loader as vanDetailLoader } from "./components/Vans/VanDetail"
+import Vans, { loader as vansLoader } from "./routes/Vans"
+import VanPreview, { loader as vanDetailLoader } from "./components/Vans/VanPreview"
 import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboard"
 import Income from "./components/Host/Income"
 import Reviews from "./components/Host/Reviews"
@@ -24,12 +23,13 @@ import HostLayout from "./routes/HostLayout"
 import SignUp, { action as signupAction, loader as signupLoader } from "./components/Authentication/SignUp"
 import Error from "./components/Error"
 import { requireAuth } from "./utils/loaders"
-import { action as logoutAction } from './routes/MainHeader'
+import { action as logoutAction } from "./components/Authentication/Logout"
 
-import { UserContext } from "./contexts/User.context"
+import { useUser } from "./contexts/User.context"
+import Logout from "./components/Authentication/Logout"
 
 const App = () => {
-  const { currentUser } = useContext(UserContext)
+  const { currentUser } = useUser()
 
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -55,7 +55,7 @@ const App = () => {
       />
       <Route 
         path="vans/:id" 
-        element={<VanDetail />} 
+        element={<VanPreview />} 
         errorElement={<Error />}
         loader={vanDetailLoader}
       />
@@ -69,12 +69,12 @@ const App = () => {
         <Route
           path="income"
           element={<Income />}
-          loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
+          loader={async ({ request }: { request: Request }) => await requireAuth(request, currentUser)}
         />
         <Route
           path="reviews"
           element={<Reviews />}
-          loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
+          loader={async ({ request }: { request: Request }) => await requireAuth(request, currentUser)}
         />
         <Route
           path="vans"
@@ -91,21 +91,21 @@ const App = () => {
           <Route
             index
             element={<HostVanInfo />}
-            loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
+            loader={async ({ request }: { request: Request }) => await requireAuth(request, currentUser)}
           />
           <Route
             path="pricing"
             element={<HostVanPricing />}
-            loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
+            loader={async ({ request }: { request: Request }) => await requireAuth(request, currentUser)}
           />
           <Route
             path="photos"
             element={<HostVanPhotos />}
-            loader={(currentUser) => async ({ request }) => await requireAuth(currentUser, request)}
+            loader={async ({ request }: { request: Request }) => await requireAuth(request, currentUser)}
           />
         </Route>
       </Route>
-      <Route path="logout" action={logoutAction} element={<NotFound />} />
+      <Route path="logout" action={logoutAction} element={<Logout />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   ))

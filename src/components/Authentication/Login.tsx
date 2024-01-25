@@ -11,19 +11,21 @@ import {
 } from "../../utils/firebase"
 
 import { noAuthRequire } from "../../utils/loaders";
+import { User } from "firebase/auth";
 
 
-export const action = async ({ request }) => {
+export const action = async ({ request }: { request: Request }) => {
     const formData = await request.formData()
-    const email = formData.get("email")
-    const password = formData.get("password")
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
     
     try {
         await signInAuthUserWithEmailAndPassword(email, password);
 
         return null
     } catch (err) {
-        switch(err.code) {
+        const firebaseError = err as { code: string }
+        switch(firebaseError.code) {
             case 'auth/invalid-credential': 
                 return 'Incorrect Email or Password!'
             case 'auth/user-not-found':
@@ -34,14 +36,17 @@ export const action = async ({ request }) => {
     }
 }
 
-export const loader = (currentUser) => async ({ request }) => {
+export const loader = (currentUser: User | null) => async ({ request }: { request: Request }) => {
     await noAuthRequire(request, currentUser)
     return new URL(request.url).searchParams.get("message")
 }
 
 export const Login = () => {
-    const message = useLoaderData()
-    const errorMessage = useActionData();
+    const loaderMessage = useLoaderData();
+    const message: React.ReactNode = typeof loaderMessage === 'string' ? loaderMessage : null;
+    const actionMessage = useActionData();
+    const errorMessage: React.ReactNode = typeof actionMessage === 'string' ? actionMessage : null;
+    
     const navigation = useNavigation();
 
     

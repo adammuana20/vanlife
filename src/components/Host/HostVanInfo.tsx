@@ -1,8 +1,9 @@
-import React from "react";
 import { useOutletContext } from "react-router-dom";
+import { Van } from "../../utils/firebase";
 
 export default function HostVanInfo() {
-    const { currentVan } = useOutletContext();
+    const { currentVan }: { currentVan: Van } = useOutletContext();
+    
 
     return (
         <section className="host-van-detail-info">

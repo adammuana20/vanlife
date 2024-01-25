@@ -3,24 +3,12 @@ import { NavLink, Link, useNavigate, Form, useActionData } from "react-router-do
 
 import { UserContext } from '../contexts/User.context';
 
-import { signOutUser } from '../utils/firebase';
-
 import imageUrl from "../assets/images/avatar-icon.png";
 
-export const action = async () => {
-    await signOutUser()
-    const pathname = '/login' 
-    return pathname
-}
+
 
 const MainHeader = () => {
-    const { currentUser } = useContext(UserContext)
-    const navigate = useNavigate()
-    const action = useActionData()
-
-    if(action) {
-        navigate(action, { replace: true })
-    }
+    const { currentUser } = useContext(UserContext)    
 
     return (
         <header>
@@ -28,19 +16,19 @@ const MainHeader = () => {
             <nav>
                 <NavLink 
                     to="host" 
-                    className={({isActive}) => isActive ? 'active-link' : null}
+                    className={({isActive}) => isActive ? 'active-link' : undefined}
                 >
                     Host
                 </NavLink>
                 <NavLink 
                     to="about" 
-                    className={({isActive}) => isActive ? 'active-link' : null}
+                    className={({isActive}) => isActive ? 'active-link' : undefined}
                 >
                     About
                 </NavLink>
                 <NavLink 
                     to="vans" 
-                    className={({isActive}) => isActive ? 'active-link' : null}
+                    className={({isActive}) => isActive ? 'active-link' : undefined}
                 >
                     Vans
                 </NavLink>
@@ -59,13 +47,13 @@ const MainHeader = () => {
                         <>
                             <NavLink
                                 to="login"
-                                className={({isActive}) => isActive ? 'active-link' : null}
+                                className={({isActive}) => isActive ? 'active-link' : undefined}
                             >
                                 Login
                             </NavLink>
                             <NavLink
                                 to="sign-up"
-                                className={({isActive}) => isActive ? 'active-link' : null}
+                                className={({isActive}) => isActive ? 'active-link' : undefined}
                             >
                                 Sign Up
                             </NavLink>
