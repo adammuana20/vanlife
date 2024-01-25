@@ -1,9 +1,12 @@
 import React from "react"
-import { Link, useLoaderData, defer, Await } from "react-router-dom"
-import { getHostVans } from "../../utils/firebase"
+import { Link, useLoaderData, defer, Await, LoaderFunctionArgs } from "react-router-dom"
+import { User } from "firebase/auth"
+
+import { Van, getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils/loaders"
 
-export const loader = (currentUser) => async({ request }) => {
+
+export const loader = (currentUser: User | null) => async({ request }: LoaderFunctionArgs) => {
     await requireAuth(request, currentUser)
     return defer({ hostVans: getHostVans() })
 }
@@ -11,7 +14,7 @@ export const loader = (currentUser) => async({ request }) => {
 export default function HostVans() {
     const dataPromise = useLoaderData()
 
-    function renderVanElements(vans) {
+    function renderVanElements(vans: Van[]) {
         const hostVansEls = vans.map(van => (
             <Link
                 to={van.id}
@@ -41,7 +44,7 @@ export default function HostVans() {
         <section>
             <h1 className="host-vans-title">Your listed vans</h1>
                 <React.Suspense fallback={<h2>Loading vans...</h2>}>
-                    <Await resolve={dataPromise.hostVans}>
+                    <Await resolve={dataPromise?.hostVans}>
                         {renderVanElements}
                     </Await>
                 </React.Suspense>

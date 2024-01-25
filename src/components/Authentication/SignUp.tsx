@@ -3,13 +3,14 @@ import { Form, useNavigation, useActionData } from "react-router-dom"
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase"
 
 import { noAuthRequire } from "../../utils/loaders"
+import { User } from "firebase/auth"
 
-export const action = async ({ request }) => {
+export const action = async ({ request }: { request: Request }) => {
   const formData = await request.formData()
-  const displayName = formData.get('displayName')
-  const email = formData.get('email')
-  const password = formData.get('password')
-  const confirmPassword = formData.get('confirmPassword')
+  const displayName = formData.get('displayName') as string
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+  const confirmPassword = formData.get('confirmPassword') as string
 
   try {
 
@@ -17,12 +18,17 @@ export const action = async ({ request }) => {
       throw new Error('Password Did Not Match')
     }
 
-    const { user } = await createAuthUserWithEmailAndPassword(email, password)
-    await createUserDocumentFromAuth(user, { displayName })
+    const auth = await createAuthUserWithEmailAndPassword(email, password)
+
+    if(auth && auth.user) {
+      const { user } = auth
+      await createUserDocumentFromAuth(user, { displayName })
+    }
         
     return "Account Created Successfully"
   } catch(err) {
-      switch(err.code) {
+    const firebaseError = err as { code: string }
+      switch(firebaseError.code) {
         case 'email-already-in-use':
           return "Email already exist!";
         case 'auth/weak-password':
@@ -33,13 +39,14 @@ export const action = async ({ request }) => {
   }
 }
 
-export const loader = (currentUser) => async ({ request }) => {
+export const loader = (currentUser: User | null) => async ({ request }: { request: Request }) => {
   return await noAuthRequire(request, currentUser)
 }
 
 const SignUp = () => {
   const navigation = useNavigation();
-  const errorMessage = useActionData();
+  const actionMessage = useActionData();
+  const errorMessage: React.ReactNode = typeof actionMessage === 'string' ? actionMessage : null;
 
   return (
     <div className="login-container">

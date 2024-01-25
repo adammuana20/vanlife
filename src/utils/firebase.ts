@@ -9,6 +9,8 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    User,
+    NextOrObserver
 } from "firebase/auth";
 
 import { 
@@ -51,7 +53,21 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 // Refactoring the fetching functions
 const vansCollectionRef = collection(db, "vans")
 
-export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
+export type AdditionalInformation = {
+    displayName?: string;
+}
+
+export type Van = {
+    id: string;
+    name: string;
+    price: number;
+    type: string;
+    hostId: string;
+    description: string;
+    imageUrl: string;
+}
+
+export const createUserDocumentFromAuth = async (userAuth: User, additionalInformation?: AdditionalInformation) => {
     if(!userAuth) return
 
     const userDocRef = doc(db, 'users', userAuth.uid)
@@ -75,13 +91,13 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     return userDocRef
 }
 
-export const createAuthUserWithEmailAndPassword = async ( email, password ) => {
+export const createAuthUserWithEmailAndPassword = async ( email: string, password: string ) => {
     if(!email || !password) return
     
     return await createUserWithEmailAndPassword(auth, email, password);
 }
 
-export const signInAuthUserWithEmailAndPassword = async ( email, password ) => {
+export const signInAuthUserWithEmailAndPassword = async ( email: string, password: string ) => {
     if(!email || !password) return
     
     return await signInWithEmailAndPassword(auth, email, password);
@@ -89,7 +105,7 @@ export const signInAuthUserWithEmailAndPassword = async ( email, password ) => {
 
 export const signOutUser = async () => await signOut(auth)
 
-export const onAuthStateChangedListener = (callback) => {
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => {
     if(!callback) return
     
     return onAuthStateChanged(auth, callback)
@@ -101,42 +117,43 @@ export const getVans = async () => {
         ...doc.data(),
         id: doc.id
     }))
-    return dataArr
+    
+    return dataArr as Van[]
 }
 
-export const getVan = async (id) => {
+export const getVan = async (id: string) => {
     const docRef = doc(db, "vans", id)
     const vanSnapshot = await getDoc(docRef)
     
     return {
         ...vanSnapshot.data(),
         id: vanSnapshot.id
-    }
+    } as Van
 }
 
-export async function getHostVans() {
+export const getHostVans = async() => {
     const q = query(vansCollectionRef, where("hostId", "==", "123"))
     const querySnapshot = await getDocs(q)
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id
     }))
-
+    
     return dataArr
 }
 
-export async function loginUser(creds) {
-    const res = await fetch("/api/login",
-        { method: "post", body: JSON.stringify(creds) }
-    )
-    const data = await res.json()
+// export async function loginUser(creds) {
+//     const res = await fetch("/api/login",
+//         { method: "post", body: JSON.stringify(creds) }
+//     )
+//     const data = await res.json()
 
-    if(!res.ok) {
-        throw {
-            message: data.message,
-            statusText: res.statusText,
-            status: res.status
-        }
-    }
-    return null
-}
+//     if(!res.ok) {
+//         throw {
+//             message: data.message,
+//             statusText: res.statusText,
+//             status: res.status
+//         }
+//     }
+//     return null
+// }
