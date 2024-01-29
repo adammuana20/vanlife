@@ -1,7 +1,6 @@
-import React from "react"
 import IncomeImg from "../../assets/images/income-graph.png"
 
-export default function Income() {
+const Income = () => {
     const transactionsData = [
         { amount: 720, date: "Jan 3, '23", id: "1" },
         { amount: 560, date: "Dec 12, '22", id: "2" },
@@ -36,3 +35,5 @@ export default function Income() {
         </section>
     )
 }
+
+export default Income

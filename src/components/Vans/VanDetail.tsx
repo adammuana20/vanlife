@@ -1,18 +1,18 @@
 import React from "react";
 import { Link, useLocation, useLoaderData, defer, Await, LoaderFunctionArgs, ParamParseKey } from "react-router-dom";
-import { getVan } from "../../utils/firebase"
+import { Van, getVan } from "../../utils/firebase"
 
 const VANS_ROUTE = '/vans/:id';
 
 export type TypedParams = Record<ParamParseKey<typeof VANS_ROUTE>, string>;
 
-export function loader({ params }: LoaderFunctionArgs) {
+export const loader = ({ params }: LoaderFunctionArgs) => {
     return defer({van: getVan((params as TypedParams).id) })
 }
 
-const VanPreview = () => {
+const VanDetail = () => {
     const location = useLocation()
-    const dataPromise = useLoaderData();
+    const { van } = useLoaderData() as { van: Van }
 
     const search = location.state?.search || "";
     const type = location.state?.type || "all";
@@ -26,7 +26,7 @@ const VanPreview = () => {
             >&larr; <span>Back to {type} vans</span>
             </Link>
             <React.Suspense fallback={<h2>Loading van...</h2>}>
-                <Await resolve={dataPromise?.van}>
+                <Await resolve={van}>
                     {(van) => {
                         return (
                             <div className="van-detail">
@@ -45,4 +45,4 @@ const VanPreview = () => {
     )
 }
 
-export default VanPreview
+export default VanDetail

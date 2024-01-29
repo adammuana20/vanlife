@@ -3,17 +3,16 @@ import { NavLink, Link, Outlet, useLoaderData, defer, Await, LoaderFunctionArgs 
 import { Van, getVan } from "../../utils/firebase";
 import { requireAuth } from "../../utils/loaders";
 import { User } from "firebase/auth";
-import { TypedParams } from "../Vans/VanPreview";
+import { TypedParams } from "../Vans/VanDetail";
 
 export const loader = (currentUser: User | null) => async({ request, params }: LoaderFunctionArgs) => {
-
     await requireAuth(request, currentUser)
     return defer({ hostVan: getVan((params as TypedParams).id) })
 }
 
 
-export default function VanDetail() {
-    const dataPromise = useLoaderData()
+const VanDetail = () => {
+    const { hostVan } = useLoaderData() as { hostVan: Van }
     
     const activeStyles = {
         fontWeight: "bold",
@@ -21,7 +20,7 @@ export default function VanDetail() {
         color: "#161616"
     }
     
-    function renderVanElement(currentVan: Van) {
+    const renderVanElement = (currentVan: Van) => {
         return(
             <div className="host-van-detail-layout-container">
                 <div className="host-van-detail">
@@ -39,15 +38,21 @@ export default function VanDetail() {
                         to="." 
                         end 
                         style={({ isActive }) => isActive ? activeStyles : undefined}
-                    >Details</NavLink>
+                    >
+                        Details
+                    </NavLink>
                     <NavLink 
                         to={"pricing"} 
                         style={({ isActive }) => isActive ? activeStyles : undefined}
-                    >Pricing</NavLink>
+                    >
+                        Pricing
+                    </NavLink>
                     <NavLink 
                         to={"photos"} 
                         style={({ isActive }) => isActive ? activeStyles : undefined}
-                    >Photos</NavLink>
+                    >
+                        Photos
+                    </NavLink>
                 </nav>
                 <Outlet context={{ currentVan }} />
             </div>
@@ -63,10 +68,12 @@ export default function VanDetail() {
             >&larr; <span>Back to all vans</span>
             </Link>
             <React.Suspense fallback={<h2>Loading van...</h2>}>
-                <Await resolve={dataPromise?.hostVan}>
+                <Await resolve={hostVan}>
                     {renderVanElement}
                 </Await>
             </React.Suspense>
         </section>
     )
 }
+
+export default VanDetail

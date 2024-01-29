@@ -11,12 +11,12 @@ import VansCategories from "../components/Vans/VansCategories";
 
 import { getVans, Van } from "../utils/firebase";
 
-export function loader() {
+export const loader = () => {
     return defer({ vans: getVans() })
 }
 
-export default function Vans() {
-    const dataPromise = useLoaderData()
+const Vans = () => {
+    const { vans } = useLoaderData() as { vans: Van }
     const [searchParams, setSearchParams] = useSearchParams();
     const typeFilter = searchParams.get("type");
 
@@ -35,7 +35,7 @@ export default function Vans() {
         <div className="van-list-container">
             <h1>Explore our van options</h1>
             <React.Suspense fallback={<h2>Loading vans...</h2>}>
-                <Await resolve={dataPromise?.vans}>
+                <Await resolve={vans}>
                     <VansCategories handleFilterChange={handleFilterChange} typeFilter={typeFilter} />
                     <VansPreview searchParams={searchParams} typeFilter={typeFilter} />
                 </Await>
@@ -43,3 +43,5 @@ export default function Vans() {
         </div>
     )
 }
+
+export default Vans

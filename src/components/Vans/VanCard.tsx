@@ -10,7 +10,7 @@ type VanCardProps = {
 
 const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter }) => {
     return (
-        <div key={van.id} className="van-tile">
+        <div className="van-tile">
             <Link 
                 to={van.id} 
                 state={{ 

@@ -6,7 +6,6 @@ import { UserContext } from '../contexts/User.context';
 import imageUrl from "../assets/images/avatar-icon.png";
 
 
-
 const MainHeader = () => {
     const { currentUser } = useContext(UserContext)    
 
