@@ -1,7 +1,7 @@
 import { BsStarFill } from "react-icons/bs"
 import ReviewImg from "../../assets/images/reviews-graph.png"
 
-export default function Reviews() {
+const Reviews = () => {
     const reviewsData = [
         {
             rating: 5,
@@ -51,3 +51,5 @@ export default function Reviews() {
         </section>
     )
 }
+
+export default Reviews

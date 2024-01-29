@@ -1,10 +1,12 @@
 import React from "react"
-import { Link, defer, Await, useLoaderData, LoaderFunctionArgs } from "react-router-dom"
+import { Link, defer, Await, useLoaderData } from "react-router-dom"
+import { BsStarFill } from "react-icons/bs"
 import { User } from "firebase/auth"
+
+import HostVansPreview from "./HostVansPreview"
 
 import { Van, getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils/loaders"
-import { BsStarFill } from "react-icons/bs"
 
 
 export const loader = (currentUser: User | null) => async({ request }: { request: Request }) => {
@@ -13,26 +15,7 @@ export const loader = (currentUser: User | null) => async({ request }: { request
 }
 
 const Dashboard = () => {
-    const loaderData = useLoaderData()
-
-    const renderVanElements = (vans: Van[]) => {
-        const hostVansEls = vans.map((van) => (
-            <div className="host-van-single" key={van.id}>
-                <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
-                <div className="host-van-info">
-                    <h3>{van.name}</h3>
-                    <p>${van.price}/day</p>
-                </div>
-                <Link to={`vans/${van.id}`}>View</Link>
-            </div>
-        ))
-
-        return (
-            <div className="host-vans-list">
-                <section>{hostVansEls}</section>
-            </div>
-        )
-    }
+    const { vans } = useLoaderData() as { vans: Van[] }
 
     return (
         <>
@@ -58,7 +41,9 @@ const Dashboard = () => {
                     <Link to="vans">View all</Link>
                 </div>
                 <React.Suspense fallback={<h3>Loading...</h3>}>
-                    <Await resolve={loaderData?.vans}>{renderVanElements}</Await>
+                    <Await resolve={vans}>
+                        <HostVansPreview />
+                    </Await>
                 </React.Suspense>
             </section>
         </>
