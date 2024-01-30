@@ -10,16 +10,17 @@ type VanCardProps = {
 
 const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter }) => {
     return (
-        <div className="van-tile">
+        <div>
             <Link 
                 to={van.id} 
                 state={{ 
                     search: `?${searchParams.toString()}`, 
-                    type: typeFilter 
+                    type: typeFilter
                 }}
+                className="text-semi-dark"
             >
-                <img src={van.imageUrl} />
-                <div className="van-info">
+                <img src={van.imageUrl} className="rounded" />
+                <div>
                     <h3>{van.name}</h3>
                     <p>${van.price}<span>/day</span></p>
                 </div>

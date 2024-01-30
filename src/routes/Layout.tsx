@@ -4,7 +4,7 @@ import MainHeader from "./MainHeader";
 
 const Layout = () => {
     return (
-        <div className="site-wrapper">
+        <div className="min-h-screen flex flex-col">
             <MainHeader />
             <main>
                 <Outlet />

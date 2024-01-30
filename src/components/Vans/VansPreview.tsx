@@ -17,7 +17,7 @@ const VansPreview: FC<VansPreviewProps> = ({ searchParams, typeFilter }) => {
         : vans
     
     return (
-        <div className="van-list">
+        <div className="grid grid-cols-4 justify-items-center mt-14 gap-8">
             { displayVans.map(van => <VanCard key={van.id} van={van} searchParams={searchParams} typeFilter={typeFilter} /> )}
         </div>
     )

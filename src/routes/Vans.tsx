@@ -32,9 +32,9 @@ const Vans = () => {
     }
 
     return (
-        <div className="van-list-container">
-            <h1>Explore our van options</h1>
-            <React.Suspense fallback={<h2>Loading vans...</h2>}>
+        <div className="px-6">
+            <h2>Explore our van options</h2>
+            <React.Suspense fallback={<h3>Loading vans...</h3>}>
                 <Await resolve={vans}>
                     <VansCategories handleFilterChange={handleFilterChange} typeFilter={typeFilter} />
                     <VansPreview searchParams={searchParams} typeFilter={typeFilter} />

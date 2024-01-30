@@ -11,10 +11,10 @@ const MainHeader = () => {
 
     return (
         <header>
-            <Link className="site-logo" to="/">#VanLife</Link>
+            <Link className="text-black mr-auto uppercase font-black text-2xl px-2 py-2.5 hover:underline" to="/">#VanLife</Link>
             <nav>
                 <NavLink 
-                    to="host" 
+                    to="host"
                     className={({isActive}) => isActive ? 'active-link' : undefined}
                 >
                     Host
@@ -33,10 +33,11 @@ const MainHeader = () => {
                 </NavLink>
                 {currentUser ? (
                     <>
-                        <img src={imageUrl} className="login-icon" />
-                        <Form method='post' action='logout'>
+                        <img src={imageUrl} className="h-5 w-5" />
+                        <Form method='post' action='logout' className='flex'>
                             <button
                                 type='submit'
+                                className='text-[#4d4d4d] font-semibold px-3 py-2.5 hover:text-[#161616] hover:underline hover:font-semibold'
                             >
                                 Logout
                             </button>
