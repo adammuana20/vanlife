@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
     return (
-        <div className="not-found-container">
+        <div className="px-6">
             <h1>Sorry, the page you were looking for was not found.</h1>
-            <Link to="/" className="link-button">Return to Home</Link>
+            <Link to="/" className="link-button w-full">Return to Home</Link>
         </div>
     )
 }

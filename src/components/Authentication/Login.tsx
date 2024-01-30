@@ -3,6 +3,7 @@ import {
     Form, 
     useActionData,
     useNavigation,
+    NavLink,
 } from "react-router-dom";
 
 import { 
@@ -51,14 +52,14 @@ export const Login = () => {
 
     
     return (
-        <div className="login-container">
+        <div className="auth-container">
             <h2>Already have an account?</h2>
             <span>Sign in to your account</span>
-            { message && <h3 className="red">{message}</h3> }
-            { errorMessage && <h3 className="red">{errorMessage}</h3> }
+            { message && <h3 className="text-dark-red">{message}</h3> }
+            { errorMessage && <h3 className="text-dark-red">{errorMessage}</h3> }
             <Form 
                 method="post" 
-                className="login-form"
+                className="auth-form"
                 replace
             >
                 <input 
@@ -73,12 +74,20 @@ export const Login = () => {
                     placeholder="Password"
                     required
                 />
-                <button disabled={navigation.state === "submitting"} type='submit'>
+                <button disabled={navigation.state === "submitting"} type='submit' className="btn">
                     {navigation.state === "submitting" 
                     ? "Logging in..." 
                     : "Log in"}
                 </button>
-                <button type='button' onClick={signInWithGooglePopup}>
+                <div className="text-center mt-8">
+                    Don't have an account? <NavLink to='/sign-up' className="text-dark-red hover:underline">Create an account.</NavLink>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                    <div className="flex-1 text-dark-gray h-px bg-light-gray"></div>
+                    <div className="px-4">or</div>
+                    <div className="flex-1 text-dark-gray h-px bg-light-gray"></div>
+                </div>
+                <button type='button' onClick={signInWithGooglePopup} className="btn mt-0">
                     Google Sign In
                 </button>
             </Form>

@@ -1,6 +1,6 @@
-import { Form, useNavigation, useActionData } from "react-router-dom"
+import { Form, useNavigation, useActionData, NavLink } from "react-router-dom"
 
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase"
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, signInWithGooglePopup } from "../../utils/firebase"
 
 import { noAuthRequire } from "../../utils/loaders"
 import { User } from "firebase/auth"
@@ -49,13 +49,13 @@ const SignUp = () => {
   const errorMessage: React.ReactNode = typeof actionMessage === 'string' ? actionMessage : null;
 
   return (
-    <div className="login-container">
+    <div className="auth-container">
       <h2>Don&apos;t have an account?</h2>
       <span>Sign Up with your email and password</span>
       {errorMessage && <h4 className="red">{errorMessage}</h4>}
       <Form
         method="post"
-        className="login-form"
+        className="auth-form"
       >
         <input 
           type="text"
@@ -84,11 +84,23 @@ const SignUp = () => {
         <button 
           disabled={navigation.state === "submitting"} 
           type="submit"
+          className="btn"
         >
           {navigation.state === "submitting"
             ? 'Signing Up...'
             : 'Sign Up'
           }
+        </button>
+        <div className="text-center mt-8">
+            Already have an account? <NavLink to='/login' className="text-dark-red hover:underline">Log in your account.</NavLink>
+        </div>
+        <div className="flex items-center justify-center my-2">
+            <div className="flex-1 text-dark-gray h-px bg-light-gray"></div>
+            <div className="px-4">or</div>
+            <div className="flex-1 text-dark-gray h-px bg-light-gray"></div>
+        </div>
+        <button type='button' onClick={signInWithGooglePopup} className="btn mt-0">
+            Google Sign In
         </button>
       </Form>
     </div>

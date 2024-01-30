@@ -1,4 +1,134 @@
-* {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-light-orange;
+    @apply font-inter;
+  }
+
+  header {
+    @apply h-28;
+    @apply flex;
+    @apply items-center;
+    @apply py-2.5;
+  }
+
+  p {
+    @apply my-4;
+  }
+
+  h1 {
+    @apply text-[2.25rem];
+    @apply font-bold;
+    @apply ms-0;
+    @apply me-0;
+    @apply mt-4;
+    @apply mb-4;
+  }
+
+  h2 {
+    @apply text-2xl;
+    @apply font-bold;
+    @apply ms-0;
+    @apply me-0;
+    @apply mt-4;
+    @apply mb-4;
+  }
+
+  h3 {
+    @apply text-xl;
+    @apply my-4;
+    @apply font-bold;
+  }
+
+  main {
+    @apply mb-[5.25rem]
+  }
+
+  input {
+    @apply border;
+    @apply border-solid;
+    @apply border-light-gray;
+    @apply h-10;
+    @apply indent-2.5;
+    @apply font-inter;
+    @apply font-normal;
+    @apply placeholder-gray-500;
+    @apply shadow-sm;
+    @apply text-sm;
+  }
+
+  input:first-of-type {
+    @apply rounded-tr-md;
+    @apply rounded-tl-md;
+  }
+
+  input:last-of-type {
+    @apply rounded-br-md;
+    @apply rounded-bl-md;
+  }
+
+  nav {
+    @apply flex;
+    @apply items-center;
+  }
+
+  header nav a {
+    @apply no-underline;
+    @apply text-dark-gray;
+    @apply font-semibold;
+    @apply px-2.5;
+    @apply py-2.5;
+  }
+
+  header nav a:hover {
+    @apply hover:text-semi-black;
+    @apply underline;
+    @apply font-semibold;
+  }
+
+  footer {
+    @apply bg-semi-black;
+    @apply text-grayish;
+    @apply flex;
+    @apply shrink-0;
+    @apply justify-center;
+    @apply items-center;
+    @apply mt-auto;
+    @apply font-medium;
+    @apply h-[4.7rem]
+  }
+}
+
+@layer components {
+  .link-button {
+    @apply bg-semi-black text-white inline-block text-center border-none px-6 py-2 font-bold rounded-lg cursor-pointer transition-transform duration-100 ease-in-out hover:translate-x-px hover:translate-y-px;
+  }
+
+  .active-link {
+    @apply font-bold underline text-semi-black;
+  }
+
+  .btn {
+    @apply inline-block text-center no-underline bg-primary-color border-none w-full mt-7 py-2 text-white font-bold rounded cursor-pointer transition-transform duration-100 ease-in-out hover:translate-x-px hover:translate-y-px;
+  }
+
+  .auth-container {
+    @apply flex flex-col items-center px-7;
+  }
+
+  .auth-form {
+    @apply flex flex-col w-full max-w-[31.2rem] mt-5;
+  }
+}
+
+.home-hero {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)), url("./assets/images/home-hero.png") no-repeat center center;
+}
+
+/* * {
   box-sizing: border-box;
 }
 
@@ -119,10 +249,10 @@ footer {
 
 .link-button:hover {
   transform: translate(1px, 1px);
-}
+} */
 
 /*** HOME PAGE ***/
-.home-container {
+/* .home-container {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)), url("./assets/images/home-hero.png") no-repeat center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -161,17 +291,17 @@ footer {
 
 .home-container a:hover {
   transform: translate(1px, 1px);
-}
+} */
 
 
 /*** ABOUT PAGE ***/
-.about-hero-image {
+/* .about-hero-image {
   max-width: 100%;
 }
 
 .about-page-content {
   padding-inline: 23px;
-  color: #161616;
+  color: black;
   margin-bottom: 55px;
 }
 
@@ -201,11 +331,11 @@ footer {
   background-color: #161616;
   color: white;
   border-radius: 10px;
-}
+} */
 
 
 /*** VAN PAGES ***/
-.van-list-container {
+/* .van-list-container {
   padding-inline: 23px
 }
 
@@ -302,13 +432,13 @@ i[class*='van-type-'] {
 .van-detail-container .back-button {
   color: black;
   text-decoration: none;
-}
+} */
 
 /* .van-detail-container .back-button:visited {
   
 } */
 
-.van-detail-container .back-button span {
+/* .van-detail-container .back-button span {
   text-decoration: underline;
 }
 
@@ -747,4 +877,4 @@ a.active-link {
   font-weight: bold;
   text-decoration: underline;
   color: #161616;
-}
+} */
