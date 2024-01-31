@@ -42,7 +42,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
 export const useUser = () => {
     const context = useContext(UserContext);
     if (!context) {
-      throw new Error('useToast must be used within ToastProvider');
+      throw new Error('useUser must be used within UserProvider');
     }
     return context;
 };
