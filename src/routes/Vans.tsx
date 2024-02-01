@@ -9,10 +9,10 @@ import {
 import VansPreview from "../components/Vans/VansPreview";
 import VansCategories from "../components/Vans/VansCategories";
 
-import { getVans, Van } from "../utils/firebase";
+import { getVansDocuments, Van } from "../utils/firebase";
 
 export const loader = () => {
-    return defer({ vans: getVans() })
+    return defer({ vans: getVansDocuments() })
 }
 
 const Vans = () => {

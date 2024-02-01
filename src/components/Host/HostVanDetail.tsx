@@ -3,7 +3,7 @@ import { NavLink, Link, Outlet, useLoaderData, defer, Await, LoaderFunctionArgs 
 import { Van, getVan } from "../../utils/firebase";
 import { requireAuth } from "../../utils/loaders";
 import { User } from "firebase/auth";
-import { TypedParams } from "../Vans/VanDetail";
+import { TypedParams } from "../Vans/VanPreview";
 
 export const loader = (currentUser: User | null) => async({ request, params }: LoaderFunctionArgs) => {
     await requireAuth(request, currentUser)

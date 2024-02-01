@@ -1,46 +1,25 @@
-import React from "react";
-import { Link, useLocation, useLoaderData, defer, Await, LoaderFunctionArgs, ParamParseKey } from "react-router-dom";
-import { Van, getVan } from "../../utils/firebase"
+import { useAsyncValue } from 'react-router-dom'
 
-const VANS_ROUTE = '/vans/:id';
+import { useCategories } from '../../contexts/Categories.context'
 
-export type TypedParams = Record<ParamParseKey<typeof VANS_ROUTE>, string>;
-
-export const loader = ({ params }: LoaderFunctionArgs) => {
-    return defer({van: getVan((params as TypedParams).id) })
-}
+import { Van } from '../../utils/firebase'
+import { getCategoryColor } from '../../utils/helpers'
 
 const VanDetail = () => {
-    const location = useLocation()
-    const { van } = useLoaderData() as { van: Van }
+    const van = useAsyncValue() as Van
 
-    const search = location.state?.search || "";
-    const type = location.state?.type || "all";
+    const { name, description, price, imageUrl, type } = van
 
+    const { categoriesColor } = useCategories()
+    
     return (
-        <div className="van-detail-container">
-            <Link
-                to={`..${search}`}
-                relative="path"
-                className="back-button"
-            >&larr; <span>Back to {type} vans</span>
-            </Link>
-            <React.Suspense fallback={<h2>Loading van...</h2>}>
-                <Await resolve={van}>
-                    {(van) => {
-                        return (
-                            <div className="van-detail">
-                                <img src={van.imageUrl} />
-                                <i className={`van-type ${van.type} selected`}>{van.type}</i>
-                                <h2>{van.name}</h2>
-                                <p className="van-price"><span>${van.price}</span>/day</p>
-                                <p>{van.description}</p>
-                                <button className="link-button">Rent this van</button>
-                            </div>
-                        )
-                    }}
-                </Await>
-            </React.Suspense>
+        <div className="flex flex-col mt-5">
+            <img src={imageUrl} />
+            <i className={`text-sm font-medium border-none rounded transition-all duration-200 ease-in-out mr-5 py-2 px-5 text-white self-start mt-10`} style={{ backgroundColor: `${getCategoryColor(categoriesColor, type)}` }}>{type}</i>
+            <h2>{name}</h2>
+            <p className="font-bold text-xl my-0"><span>${price}</span>/day</p>
+            <p>{description}</p>
+            <button className="link-button bg-primary-color">Rent this van</button>
         </div>
     )
 }

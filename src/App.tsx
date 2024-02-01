@@ -7,7 +7,7 @@ import {
 import Home from "./components/Home"
 import About from "./components/About"
 import Vans, { loader as vansLoader } from "./routes/Vans"
-import VanDetail, { loader as vanDetailLoader } from "./components/Vans/VanDetail"
+import VanPreview, { loader as vanDetailLoader } from "./components/Vans/VanPreview"
 import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboard"
 import Income from "./components/Host/Income"
 import Reviews from "./components/Host/Reviews"
@@ -55,7 +55,7 @@ const App = () => {
       />
       <Route 
         path="vans/:id" 
-        element={<VanDetail />} 
+        element={<VanPreview />} 
         errorElement={<Error />}
         loader={vanDetailLoader}
       />
