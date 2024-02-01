@@ -111,7 +111,7 @@ export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => {
     return onAuthStateChanged(auth, callback)
 }
 
-export const getVans = async () => {
+export const getVansDocuments = async () => {
     const querySnapshot = await getDocs(vansCollectionRef)  
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
