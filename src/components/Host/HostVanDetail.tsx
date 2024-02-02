@@ -12,7 +12,7 @@ const HostVanDetail = () => {
     const { imageUrl, type, name, price } = currentVan
 
     return(
-        <div className="bg-white p-6 my-8 mx-6">
+        <div className="bg-white p-6 my-8">
             <div className="flex items-center">
                 <img src={imageUrl} className='rounded mr-5 h-40' />
                 <div>

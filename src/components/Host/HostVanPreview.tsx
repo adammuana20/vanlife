@@ -13,14 +13,14 @@ export const loader = (currentUser: User | null) => async({ request, params }: L
 
 
 const HostVanPreview = () => {
-    const { hostVan } = useLoaderData() as { hostVan: Van }    
+    const { hostVan } = useLoaderData() as { hostVan: Van }
     
     return (
-        <section>
+        <section className="mx-6">
             <Link
                 to=".."
                 relative="path"
-                className="text-black"
+                className="text-black hover:underline"
             >&larr; <span>Back to all vans</span>
             </Link>
             <React.Suspense fallback={<h3>Loading van...</h3>}>

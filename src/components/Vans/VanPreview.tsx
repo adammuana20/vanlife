@@ -15,32 +15,16 @@ export const loader = ({ params }: LoaderFunctionArgs) => {
 const VanPreview = () => {
     const location = useLocation()
     const { van } = useLoaderData() as { van: Van }
-    const [isHovered, setisHovered] = useState(false)
-
+    
     const search = location.state?.search || "";
     const type = location.state?.type || "all";
-
-    const toggleHover = () => {
-        setisHovered(!isHovered)
-    }
-
-    const linkStyle = () => {
-        if(isHovered) {
-            return 'underline'
-        } else {
-            return 'none'
-        }
-    }
 
     return (
         <div className="px-7">
             <Link
                 to={`..${search}`}
                 relative="path"
-                className="text-black"
-                style={{ textDecoration:  linkStyle() }}
-                onMouseEnter={toggleHover}
-                onMouseLeave={toggleHover}
+                className="text-black hover:underline"
             >
                 &larr; <span>Back to {type} vans</span>
             </Link>
