@@ -80,7 +80,7 @@ export const Login = () => {
                     : "Log in"}
                 </button>
                 <div className="text-center mt-8">
-                    Don't have an account? <NavLink to='/sign-up' className="text-dark-red hover:underline">Create an account.</NavLink>
+                    Don't have an account? <NavLink to='/sign-up' className="text-dark-red hover:underline hover:text-dark-red">Create an account.</NavLink>
                 </div>
                 <div className="flex items-center justify-center my-2">
                     <div className="flex-1 text-dark-gray h-px bg-light-gray"></div>

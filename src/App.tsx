@@ -12,7 +12,7 @@ import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboar
 import Income from "./components/Host/Income"
 import Reviews from "./components/Host/Reviews"
 import HostVans, { loader as hostVansLoader} from "./routes/HostVans"
-import HostVanDetail, { loader as hostVanDetailLoader } from "./components/Host/HostVanDetail"
+import HostVanPreview, { loader as hostVanDetailLoader } from "./components/Host/HostVanPreview"
 import HostVanInfo from "./components/Host/HostVanInfo"
 import HostVanPricing from "./components/Host/HostVanPricing"
 import HostVanPhotos from "./components/Host/HostVanPhotos"
@@ -84,7 +84,7 @@ const App = () => {
         />
         <Route
           path="vans/:id"
-          element={<HostVanDetail />}
+          element={<HostVanPreview />}
           errorElement={<Error />}
           loader={hostVanDetailLoader(currentUser)}
         >

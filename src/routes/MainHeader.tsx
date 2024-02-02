@@ -11,7 +11,7 @@ const MainHeader = () => {
 
     return (
         <header>
-            <Link className="text-black mr-auto uppercase font-black text-2xl px-2 py-2.5 hover:underline" to="/">#VanLife</Link>
+            <Link className="text-black mr-auto uppercase font-black text-2xl px-2 py-2.5 hover:underline hover:font-black" to="/">#VanLife</Link>
             <nav>
                 <NavLink 
                     to="host"

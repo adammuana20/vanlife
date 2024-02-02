@@ -16,9 +16,9 @@ const HostVans = () => {
     const { hostVans } = useLoaderData() as { hostVans: Van }
 
     return (
-        <section>
-            <h1 className="host-vans-title">Your listed vans</h1>
-            <React.Suspense fallback={<h2>Loading vans...</h2>}>
+        <section className="px-7">
+            <h2>Your listed vans</h2>
+            <React.Suspense fallback={<h3>Loading vans...</h3>}>
                 <Await resolve={hostVans}>
                     <HostVansPreview />
                 </Await>

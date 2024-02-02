@@ -8,14 +8,18 @@ type HostVanCardProps = {
 }
 
 const HostVanCard: FC<HostVanCardProps> = ({ van }) => {
+  const { id, imageUrl, name, price } = van
+
   return (
-    <div className="host-van-single" key={van.id}>
-        <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
+    <div className="flex items-center justify-between bg-white mb-4 py-3 px-6" key={id}>
+      <div className='flex items-center'>
+        <img src={imageUrl} alt={`Photo of ${name}`} className='h-[4.4rem] rounded mr-4' />
         <div className="host-van-info">
-            <h3>{van.name}</h3>
-            <p>${van.price}/day</p>
+            <h3 className='font-semibold my-3'>{name}</h3>
+            <p className='my-3'>${price}/day</p>
         </div>
-        <Link to={`/host/vans/${van.id}`}>View</Link>
+      </div>
+      <Link to={`/host/vans/${id}`}>View</Link>
     </div>
   )
 }

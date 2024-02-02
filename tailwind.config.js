@@ -17,6 +17,8 @@ export default {
         'grayish': '#aaa',
         'light-orange': '#FFF7ED',
         'light-gray': 'rgba(209, 213, 219)',
+        'semi-light-orange': '#ffead0',
+        'semi-orange': '#ffddb2',
       },
     },
   },
