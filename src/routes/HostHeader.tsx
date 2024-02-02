@@ -1,35 +1,29 @@
 import { NavLink } from 'react-router-dom'
 
 const HostHeader = () => {
-    const activeStyle = {
-        fontWeight: "bold",
-        textDecoration: "underline",
-        color: "#161616"
-    }
-
     return (
-        <nav className="host-nav">
+        <nav className="flex mb-8">
             <NavLink to="." 
                 end 
-                style={({isActive}) => isActive ? activeStyle : undefined}
+                className={({isActive}) => isActive ? 'active-link' : undefined}
             >
                 Dashboard
             </NavLink>
             <NavLink 
                 to="income" 
-                style={({isActive}) => isActive ? activeStyle : undefined}
+                className={({isActive}) => isActive ? 'active-link' : undefined}
             >
                 Income
             </NavLink>
             <NavLink 
                 to="vans" 
-                style={({isActive}) => isActive ? activeStyle : undefined}
+                className={({isActive}) => isActive ? 'active-link' : undefined}
             >
                 Vans
             </NavLink>
             <NavLink 
                 to="reviews" 
-                style={({isActive}) => isActive ? activeStyle : undefined}
+                className={({isActive}) => isActive ? 'active-link' : undefined}
             >
                 Reviews
             </NavLink>

@@ -20,7 +20,7 @@
   }
 
   h1 {
-    @apply text-[2.25rem];
+    @apply text-[2.5rem];
     @apply font-bold;
     @apply ms-0;
     @apply me-0;
@@ -29,7 +29,7 @@
   }
 
   h2 {
-    @apply text-2xl;
+    @apply text-3xl;
     @apply font-bold;
     @apply ms-0;
     @apply me-0;
@@ -38,8 +38,13 @@
   }
 
   h3 {
-    @apply text-xl;
+    @apply text-2xl;
     @apply my-4;
+    @apply font-bold;
+  }
+
+  h4 {
+    @apply text-lg;
     @apply font-bold;
   }
 
@@ -75,7 +80,7 @@
     @apply items-center;
   }
 
-  header nav a {
+  nav a {
     @apply no-underline;
     @apply text-dark-gray;
     @apply font-semibold;
@@ -83,7 +88,7 @@
     @apply py-2.5;
   }
 
-  header nav a:hover {
+  nav a:hover {
     @apply hover:text-semi-black;
     @apply underline;
     @apply font-semibold;

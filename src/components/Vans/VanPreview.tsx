@@ -44,7 +44,7 @@ const VanPreview = () => {
             >
                 &larr; <span>Back to {type} vans</span>
             </Link>
-            <React.Suspense fallback={<h2>Loading van...</h2>}>
+            <React.Suspense fallback={<h3>Loading van...</h3>}>
                 <Await resolve={van}>
                     <VanDetail />
                 </Await>

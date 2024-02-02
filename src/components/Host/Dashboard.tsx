@@ -19,24 +19,24 @@ const Dashboard = () => {
 
     return (
         <>
-            <section className="host-dashboard-earnings">
-                <div className="info">
-                    <h1>Welcome!</h1>
-                    <p>Income last <span>30 days</span></p>
-                    <h2>$2,260</h2>
+            <section className="bg-semi-light-orange flex justify-between items-center py-9 px-6">
+                <div>
+                    <h1 className="text-semi-black m-0">Welcome!</h1>
+                    <p className="text-dark-gray">Income last <span className="font-bold underline">30 days</span></p>
+                    <h2 className="m-0 font-black text-semi-black">$2,260</h2>
                 </div>
                 <Link to="income">Details</Link>
             </section>
-            <section className="host-dashboard-reviews">
-                <h2>Review score</h2>
-                <BsStarFill className="star" />
-                <p>
-                    <span>5.0</span>/5
+            <section className="bg-semi-orange py-6 px-7 flex items-center">
+                <h2 className="m-0">Review score</h2>
+                <BsStarFill className="text-primary-color ml-4 text-2xl" />
+                <p className="ml-1 text-xl text-dark-gray mr-auto">
+                    <span className="font-bold text-semi-black">5.0</span>/5
                 </p>
                 <Link to="reviews">Details</Link>
             </section>
-            <section className="host-dashboard-vans">
-                <div className="top">
+            <section className="px-6 py-5">
+                <div className="flex justify-between items-center">
                     <h2>Your listed vans</h2>
                     <Link to="vans">View all</Link>
                 </div>
