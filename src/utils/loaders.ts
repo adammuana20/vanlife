@@ -13,7 +13,7 @@ export const requireAuth = async(request: Request, currentUser: User| null) => {
     return null
 }
 
-export const noAuthRequire = async(request: Request, currentUser: User| null) => {
+export const noAuthRequire = async(request: Request, currentUser: User | null) => {
     const pathname = new URL(request.url).searchParams.get("redirectTo") || "/host"
 
     if(currentUser) {
@@ -21,4 +21,11 @@ export const noAuthRequire = async(request: Request, currentUser: User| null) =>
     }
 
     return null
+}
+
+export const createRequestFromLocation = (location: Location): Request => {
+    const url = location.href;
+    const request = new Request(url);
+
+    return request;
 }
