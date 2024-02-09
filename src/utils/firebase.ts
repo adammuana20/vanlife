@@ -22,6 +22,10 @@ import {
     query,
     where,
     setDoc,
+    Timestamp,
+    updateDoc,
+    collectionGroup,
+    addDoc,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -50,9 +54,6 @@ export const auth = getAuth()
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
-// Refactoring the fetching functions
-const vansCollectionRef = collection(db, "vans")
-
 export type AdditionalInformation = {
     displayName?: string;
 }
@@ -65,6 +66,14 @@ export type Van = {
     hostId: string;
     description: string;
     imageUrl: string;
+}
+
+export type Reservation = {
+    startDate: Timestamp;
+    endDate: Timestamp;
+    totalPrice: number;
+    vanId: string;
+    createdAt: Timestamp;
 }
 
 export const createUserDocumentFromAuth = async (userAuth: User, additionalInformation?: AdditionalInformation) => {
@@ -111,12 +120,71 @@ export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => {
     return onAuthStateChanged(auth, callback)
 }
 
+export const createReservationDocumentOfUser = async ( startDate: Date, endDate: Date, vanId: string, totalPrice: number ) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const reservationDocRef = doc(db, 'reservations', userID)
+    const collectionVal = collection(reservationDocRef, 'lists')
+    const reservationSnapshot = await getDoc(reservationDocRef)
+    const createdAt = new Date()
+
+    if(!reservationSnapshot.exists()) {
+        const reservations = await getReservationsDocuments(vanId)
+
+        const startTimestamp = Timestamp.fromDate(startDate);
+        const endTimestamp = Timestamp.fromDate(endDate);
+        
+        const existingReservationDate = reservations.find((reservation) => 
+            (reservation.startDate <= startTimestamp && reservation.endDate >= startTimestamp 
+            || reservation.startDate <= endTimestamp && reservation.endDate >= endTimestamp
+            || startTimestamp <= reservation.startDate && endTimestamp >= reservation.endDate))
+        
+        if(existingReservationDate) {
+            alert('Some Dates are already Taken!')
+        } else {
+            try {
+                await addDoc(collectionVal, {
+                    startDate,
+                    endDate,
+                    vanId,
+                    totalPrice,
+                    createdAt,
+                })
+                alert('Van Reserved!')
+            } catch(err) {
+                console.log('Error creating reservation.', err);
+            }
+        }
+    }
+}
+
+export const getReservationsDocuments = async(id: string) => {
+    const reservationsRef = collectionGroup(db, 'lists')
+    
+    const q = query(reservationsRef, where('vanId', '==', id));
+
+    try {
+        const querySnapshot = await getDocs(q);
+
+        const dataArr = querySnapshot.docs.map((doc) => ({
+            ...doc.data()
+        }))
+        
+        return dataArr
+    } catch (error) {
+        console.error('Error getting reservations:', error);
+        return [];
+    }
+}
+
 export const getVansDocuments = async () => {
-    const querySnapshot = await getDocs(vansCollectionRef)  
+    const querySnapshot = await getDocs(collection(db, "vans"))  
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id
-    }))
+    }))    
     
     return dataArr as Van[]
 }
@@ -132,7 +200,7 @@ export const getVan = async (id: string) => {
 }
 
 export const getHostVans = async() => {
-    const q = query(vansCollectionRef, where("hostId", "==", "123"))
+    const q = query(collection(db, "vans"), where("hostId", "==", "123"))
     const querySnapshot = await getDocs(q)
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
@@ -141,19 +209,3 @@ export const getHostVans = async() => {
     
     return dataArr
 }
-
-// export async function loginUser(creds) {
-//     const res = await fetch("/api/login",
-//         { method: "post", body: JSON.stringify(creds) }
-//     )
-//     const data = await res.json()
-
-//     if(!res.ok) {
-//         throw {
-//             message: data.message,
-//             statusText: res.statusText,
-//             status: res.status
-//         }
-//     }
-//     return null
-// }
