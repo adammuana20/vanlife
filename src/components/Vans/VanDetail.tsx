@@ -20,6 +20,7 @@ const defaultDateRange = {
 const VanDetail = () => {
     const data = useAsyncValue()
 
+    const [isLoading, setIsLoading] = useState(false)
     const [van, reservations] = data as [Van, Reservation[]]    
     const navigate = useNavigate()
     
@@ -66,10 +67,18 @@ const VanDetail = () => {
     const onCreateReservation = async() => {
         if(!currentUser) {
             return navigate('/login')
-        }    
+        }
+        
         if(dateRange.startDate && dateRange.endDate) {
-            await createReservationDocumentOfUser(dateRange.startDate, dateRange.endDate, id, totalPrice)
-            setDateRange(defaultDateRange)
+            try {
+                setIsLoading(true)
+                await createReservationDocumentOfUser(dateRange.startDate, dateRange.endDate, id, totalPrice)
+                setDateRange(defaultDateRange);
+            } catch(err) {
+                console.error('Error Creating Reservation:', err)
+            } finally {
+                setIsLoading(false)
+            }
         }
     }
     
@@ -80,12 +89,11 @@ const VanDetail = () => {
                 imageSrc={imageUrl}
                 id={id}
             />
-            <div className='flex gap-8'>
-                <div className='col-span-4 flex flex-col gap-8'>
-                    <i className={`text-sm font-medium border-none rounded transition-all duration-200 ease-in-out mr-5 py-2 px-5 text-white self-start mt-10`} style={{ backgroundColor: `${getCategoryColor(categoriesColor, type)}` }}>{type}</i>
-                    <h2>{name}</h2>
-                    <p className="font-bold text-xl my-0"><span>${price}</span>/day</p>
-                    <p>{description}</p>
+            <div className='flex gap-8 mt-8'>
+                <div className='col-span-4 flex flex-col'>
+                    <i className={`text-sm font-medium border-none rounded transition-all duration-200 ease-in-out mr-5 py-2 px-5 text-white self-start mb-8`} style={{ backgroundColor: `${getCategoryColor(categoriesColor, type)}` }}>{type}</i>
+                    <h2 className='mt-0'>{name}</h2>
+                    <p className='m-0'>{description}</p>
                 </div>
                 <div className='order-first mb-10 md:order-last md:col-span-3'>
                     <VanReservation
@@ -95,6 +103,7 @@ const VanDetail = () => {
                         dateRange={dateRange}
                         onSubmit={onCreateReservation}
                         disabledDates={disabledDates}
+                        isLoading={isLoading}
                     />
                 </div>
             </div>
