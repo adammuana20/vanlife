@@ -87,7 +87,7 @@ export const Login = () => {
                     <div className="px-4">or</div>
                     <div className="flex-1 text-dark-gray h-px bg-light-gray"></div>
                 </div>
-                <button type='button' onClick={signInWithGooglePopup} className="btn mt-0">
+                <button type='button' onClick={signInWithGooglePopup} className="btn mt-0" disabled={navigation.state === 'submitting'}>
                     Google Sign In
                 </button>
             </Form>

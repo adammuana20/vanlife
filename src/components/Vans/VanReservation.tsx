@@ -8,6 +8,7 @@ type VanReservationProps = {
     dateRange: Range;
     onSubmit: () => void;
     disabledDates: Date[];
+    isLoading: boolean;
 }
 
 const VanReservation: React.FC<VanReservationProps> = ({
@@ -17,17 +18,28 @@ const VanReservation: React.FC<VanReservationProps> = ({
     dateRange,
     onSubmit,
     disabledDates,
+    isLoading,
 }) => {
     return (
-        <div>
-            <p>${price}/day</p>
+        <div className="border-neutral-200 border-[1px] rounded-xl bg-white">
+            <div className="pl-4 py-3 border-neutral-200 border-b-[1px]">
+                <p className="m-0">${price}/day</p>
+            </div>
             <Calendar 
                 dateRange={dateRange}
                 onChangeDate={(value) => onChangeDate(value.selection)}
                 disabledDates={disabledDates}
             />
-            <p>Total: ${totalPrice}</p>
-            <button className="link-button bg-primary-color" onClick={onSubmit}>Rent this van</button>
+            <div className="px-4 py-3 border-neutral-200 border-y-[1px]">
+                <button className="link-button bg-primary-color w-full" onClick={onSubmit} type="submit" disabled={isLoading}>
+                    { isLoading 
+                    ? 'Renting this van...' 
+                    : 'Rent this van'}
+                </button>
+            </div>
+            <div className="flex justify-between px-4 py-3">
+                <span>Total</span><span>${totalPrice}</span>
+            </div>
         </div>
     )
 }

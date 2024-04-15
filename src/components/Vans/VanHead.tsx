@@ -13,7 +13,7 @@ const VanHead: React.FC<VanHeadProps> = ({
     id,
 }) => {
   return (
-    <img src={imageSrc} alt={name} className='object-cover w-full rounded' />
+    <img src={imageSrc} alt={name} className='object-cover w-1/2 rounded mx-auto' />
   )
 }
 
