@@ -76,6 +76,15 @@ export type Reservation = {
     createdAt: Timestamp;
 }
 
+export type Trip = {
+    startDate: Timestamp;
+    endDate: Timestamp;
+    totalPrice: number;
+    vanId: string;
+    createdAt: Timestamp;
+    van: Van;
+}
+
 export const createUserDocumentFromAuth = async (userAuth: User, additionalInformation?: AdditionalInformation) => {
     if(!userAuth) return
 
@@ -120,7 +129,7 @@ export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => {
     return onAuthStateChanged(auth, callback)
 }
 
-export const createReservationDocumentOfUser = async ( startDate: Date, endDate: Date, vanId: string, totalPrice: number ) => {
+export const createReservationDocumentOfUser = async ( startDate: Date, endDate: Date, van: Van, totalPrice: number ) => {
     const userID = auth.currentUser?.uid;
 
     if(!userID) return
@@ -129,9 +138,10 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
     const collectionVal = collection(reservationDocRef, 'lists')
     const reservationSnapshot = await getDoc(reservationDocRef)
     const createdAt = new Date()
+    const { name, price, imageUrl, id, type } = van
 
     if(!reservationSnapshot.exists()) {
-        const reservations = await getReservationsDocuments(vanId)
+        const reservations = await getVanReservationsDocuments(van.id)
 
         const startTimestamp = Timestamp.fromDate(startDate);
         const endTimestamp = Timestamp.fromDate(endDate);
@@ -148,9 +158,16 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
                 await addDoc(collectionVal, {
                     startDate,
                     endDate,
-                    vanId,
                     totalPrice,
                     createdAt,
+                    vanId: id,
+                    van: {
+                        id,
+                        name,
+                        price,
+                        imageUrl,
+                        type
+                    }
                 })
                 alert('Van Reserved!')
             } catch(err) {
@@ -160,7 +177,8 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
     }
 }
 
-export const getReservationsDocuments = async(id: string) => {
+
+export const getVanReservationsDocuments = async(id: string) => {
     const reservationsRef = collectionGroup(db, 'lists')
     
     const q = query(reservationsRef, where('vanId', '==', id));
@@ -177,6 +195,21 @@ export const getReservationsDocuments = async(id: string) => {
         console.error('Error getting reservations:', error);
         return [];
     }
+}
+
+export const getUserReservationTripsDocuments = async () => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return []
+    
+    const reservationDocRef = collection(db, `reservations/${userID}/lists`)
+    const reservationSnapshot = await getDocs(reservationDocRef)
+
+    const tripsArr = reservationSnapshot.docs.map(doc => ({
+        ...doc.data(),
+    }))
+    
+    return tripsArr as Reservation[]
 }
 
 export const getVansDocuments = async () => {
@@ -207,5 +240,5 @@ export const getHostVans = async() => {
         id: doc.id
     }))
     
-    return dataArr
+    return dataArr as Van[]
 }

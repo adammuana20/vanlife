@@ -3,14 +3,14 @@ import { Link, useLocation, useLoaderData, defer, Await, LoaderFunctionArgs, Par
 
 import VanDetail from "./VanDetail";
 
-import { Reservation, Van, getReservationsDocuments, getVan } from "../../utils/firebase"
+import { Reservation, Van, getVanReservationsDocuments, getVan } from "../../utils/firebase"
 
 const VANS_ROUTE = '/vans/:id';
 
 export type TypedParams = Record<ParamParseKey<typeof VANS_ROUTE>, string>;
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-    return defer({ van: getVan((params as TypedParams).id), reservations: getReservationsDocuments((params as TypedParams).id) })
+    return defer({ van: getVan((params as TypedParams).id), reservations: getVanReservationsDocuments((params as TypedParams).id) })
 }
 
 const VanPreview = () => {

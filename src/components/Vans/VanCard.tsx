@@ -20,7 +20,7 @@ const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter }) => {
     return (
         <div>
             <Link 
-                to={id} 
+                to={`/vans/${id}`} 
                 state={{ 
                     search: `?${searchParams.toString()}`, 
                     type: typeFilter
