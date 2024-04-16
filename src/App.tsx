@@ -24,6 +24,7 @@ import SignUp, { action as signupAction, loader as signupLoader } from "./compon
 import Error from "./components/Error"
 import { requireAuth } from "./utils/loaders"
 import { action as logoutAction } from "./components/Authentication/Logout"
+import Trips, { loader as tripsLoader } from "./routes/Trips"
 
 import { useUser } from "./contexts/User.context"
 import Logout from "./components/Authentication/Logout"
@@ -59,7 +60,12 @@ const App = () => {
         errorElement={<Error />}
         loader={vanPreviewLoader}
       />
-  
+      <Route 
+        path="trips" 
+        element={<Trips />}
+        errorElement={<Error />}
+        loader={tripsLoader}
+      />
       <Route path="host" element={<HostLayout />}>
         <Route
           index

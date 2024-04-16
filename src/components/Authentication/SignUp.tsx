@@ -15,7 +15,7 @@ export const action = async ({ request }: { request: Request }) => {
   try {
 
     if(password !== confirmPassword) {
-      throw new Error('Password Did Not Match')
+      return 'Password Did Not Match'
     }
 
     const auth = await createAuthUserWithEmailAndPassword(email, password)
@@ -28,14 +28,14 @@ export const action = async ({ request }: { request: Request }) => {
     return "Account Created Successfully"
   } catch(err) {
     const firebaseError = err as { code: string }
-      switch(firebaseError.code) {
-        case 'email-already-in-use':
-          return "Email already exist!";
-        case 'auth/weak-password':
-          return "Password should be at least 6 characters!";
-        default:
-          return err
-      }
+    switch(firebaseError.code) {
+      case 'auth/email-already-in-use':
+        return "Email already exist!";
+      case 'auth/weak-password':
+        return "Password should be at least 6 characters!";
+      default:
+        return err
+    }
   }
 }
 
@@ -46,13 +46,14 @@ export const loader = (currentUser: User | null) => async ({ request }: { reques
 const SignUp = () => {
   const navigation = useNavigation();
   const actionMessage = useActionData();
+  
   const errorMessage: React.ReactNode = typeof actionMessage === 'string' ? actionMessage : null;
 
   return (
     <div className="auth-container">
       <h2>Don&apos;t have an account?</h2>
       <span>Sign Up with your email and password</span>
-      {errorMessage && <h4 className="red">{errorMessage}</h4>}
+      {errorMessage && <h4 className="text-dark-red">{errorMessage}</h4>}
       <Form
         method="post"
         className="auth-form"

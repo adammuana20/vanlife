@@ -21,9 +21,7 @@ export const action = async ({ request }: { request: Request }) => {
     const password = formData.get("password") as string
     
     try {
-        await signInAuthUserWithEmailAndPassword(email, password);
-
-        return null
+        return await signInAuthUserWithEmailAndPassword(email, password);
     } catch (err) {
         const firebaseError = err as { code: string }
         switch(firebaseError.code) {

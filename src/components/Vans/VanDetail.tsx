@@ -72,7 +72,7 @@ const VanDetail = () => {
         if(dateRange.startDate && dateRange.endDate) {
             try {
                 setIsLoading(true)
-                await createReservationDocumentOfUser(dateRange.startDate, dateRange.endDate, id, totalPrice)
+                await createReservationDocumentOfUser(dateRange.startDate, dateRange.endDate, van, totalPrice)
                 setDateRange(defaultDateRange);
             } catch(err) {
                 console.error('Error Creating Reservation:', err)
