@@ -33,13 +33,19 @@ const MainHeader = () => {
                 </NavLink>
                 {currentUser ? (
                     <>
-                        <img src={imageUrl} className="h-5 w-5" />
                         <NavLink
                             to="trips"
                             className={({isActive}) => isActive ? 'active-link' : undefined}
                         >
                             My Trips
                         </NavLink>
+                        <NavLink
+                            to="favorites"
+                            className={({isActive}) => isActive ? 'active-link' : undefined}
+                        >
+                            My Favorites
+                        </NavLink>
+                        <img src={imageUrl} className="h-5 w-5" />
                         <Form method='post' action='logout' className='flex'>
                             <button
                                 type='submit'
