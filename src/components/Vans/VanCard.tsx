@@ -5,6 +5,7 @@ import { Van } from "../../utils/firebase"
 
 import { useCategories } from "../../contexts/Categories.context";
 import { getCategoryColor } from "../../utils/helpers";
+import FavoritesButton from "../Favorites/FavoritesButton";
 
 type VanCardProps = {
     van: Van;
@@ -18,7 +19,10 @@ const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter }) => {
     const { name, price, imageUrl, id, type } = van
     
     return (
-        <div>
+        <div className="relative">
+            <div className="absolute top-3 right-3">
+                <FavoritesButton van={van}/>
+            </div>
             <Link 
                 to={`/vans/${id}`} 
                 state={{ 
@@ -27,7 +31,9 @@ const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter }) => {
                 }}
                 className="text-semi-dark group"
             >
-                <img src={imageUrl} className="rounded" />
+                <div className="aspect-square w-full relative overflow-hidden rounded-xl">
+                    <img src={imageUrl} className="rounded transition group-hover:scale-110" />
+                </div>
                 <div>
                     <h3>{name}</h3>
                     <p>${price}<span>/day</span></p>

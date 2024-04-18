@@ -5,6 +5,7 @@ import App from './App';
 
 import { UserProvider } from './contexts/User.context';
 import { CategoriesProvider } from './contexts/Categories.context';
+import { FavoritesProvider } from './contexts/Favorites.context';
 
 import "./index.css"
 
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <UserProvider>
       <CategoriesProvider>
-        <App />
+        <FavoritesProvider>
+          <App />
+        </FavoritesProvider>
       </CategoriesProvider>
     </UserProvider>
   </React.StrictMode>

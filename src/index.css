@@ -132,10 +132,6 @@
   .auth-form {
     @apply flex flex-col w-full max-w-[31.2rem] mt-5;
   }
-
-  .group:hover img{
-    opacity: .7;
-  }
 }
 
 .home-hero {

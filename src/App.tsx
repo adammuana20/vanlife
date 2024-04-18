@@ -4,33 +4,52 @@ import {
     createRoutesFromElements,
     Route
 } from "react-router-dom"
+
 import Home from "./components/Home"
 import About from "./components/About"
-import Vans, { loader as vansLoader } from "./routes/Vans"
 import VanPreview, { loader as vanPreviewLoader } from "./components/Vans/VanPreview"
 import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboard"
 import Income from "./components/Host/Income"
 import Reviews from "./components/Host/Reviews"
-import HostVans, { loader as hostVansLoader} from "./routes/HostVans"
 import HostVanPreview, { loader as hostVanDetailLoader } from "./components/Host/HostVanPreview"
 import HostVanInfo from "./components/Host/HostVanInfo"
 import HostVanPricing from "./components/Host/HostVanPricing"
 import HostVanPhotos from "./components/Host/HostVanPhotos"
 import NotFound from "./components/404"
 import Login, { loader as loginLoader, action as loginAction } from "./components/Authentication/Login"
-import Layout from "./routes/Layout"
-import HostLayout from "./routes/HostLayout"
 import SignUp, { action as signupAction, loader as signupLoader } from "./components/Authentication/SignUp"
 import Error from "./components/Error"
-import { requireAuth } from "./utils/loaders"
 import { action as logoutAction } from "./components/Authentication/Logout"
+import Logout from "./components/Authentication/Logout"
+
+import Vans, { loader as vansLoader } from "./routes/Vans"
+import HostVans, { loader as hostVansLoader} from "./routes/HostVans"
+import Layout from "./routes/Layout"
+import HostLayout from "./routes/HostLayout"
 import Trips, { loader as tripsLoader } from "./routes/Trips"
+import Favorites from "./routes/Favorites"
 
 import { useUser } from "./contexts/User.context"
-import Logout from "./components/Authentication/Logout"
+
+import { requireAuth } from "./utils/loaders"
+import { useEffect } from "react"
+import { useFavorites } from "./contexts/Favorites.context"
+import { getFavorites } from "./utils/firebase"
 
 const App = () => {
   const { currentUser } = useUser()
+  const { setMyFavorites } = useFavorites()
+
+  useEffect(() => {
+    if(currentUser) {
+      const fetchFavs = async() => {
+        const favsArr = await getFavorites()
+
+        setMyFavorites(favsArr)
+      }
+      fetchFavs()
+    }
+  }, [currentUser])
 
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -65,6 +84,12 @@ const App = () => {
         element={<Trips />}
         errorElement={<Error />}
         loader={tripsLoader}
+      />
+      <Route 
+        path="favorites" 
+        element={<Favorites />}
+        errorElement={<Error />}
+        // loader={tripsLoader}
       />
       <Route path="host" element={<HostLayout />}>
         <Route

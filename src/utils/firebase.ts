@@ -26,6 +26,7 @@ import {
     updateDoc,
     collectionGroup,
     addDoc,
+    deleteDoc,
 } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -66,6 +67,19 @@ export type Van = {
     hostId: string;
     description: string;
     imageUrl: string;
+    createdAt: Timestamp;
+}
+
+export type Favorite = {
+    id: string;
+    name: string;
+    price: number;
+    type: string;
+    hostId: string;
+    description: string;
+    imageUrl: string;
+    createdAt: Timestamp;
+    vanId: string;
 }
 
 export type Reservation = {
@@ -241,4 +255,88 @@ export const getHostVans = async() => {
     }))
     
     return dataArr as Van[]
+}
+
+export const createUserVanFavorites = async (van: Van) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const favoritesDocRef = doc(db, 'favorites', userID)
+    const favoritesSnapshot = await getDoc(favoritesDocRef)
+    const collectionVal = collection(favoritesDocRef, 'lists')
+
+    const { name, price, imageUrl, id, type, hostId } = van
+    
+    const createdAt = new Date()
+
+    if(!favoritesSnapshot.exists()) {
+        try {
+            await addDoc(collectionVal, {
+                name,
+                price,
+                imageUrl,
+                vanId: id,
+                type,
+                hostId,
+                createdAt,
+            })
+            console.log('Van Added to Favorites!')
+            return true
+        } catch(err) {
+            throw new Error('Error adding to favorites. Please try again!', err as Error)
+        }
+    } else {
+        try {
+            const { id } = van
+            const querySnapshot = await getDocs(collectionVal)
+            const favArr = querySnapshot.docs.map(doc => ({...doc.data()}))
+            const existingVan = favArr.find((fav) => fav.vanId === id)
+            
+            if(existingVan) {
+                alert('Product already in wishlist!')
+            }
+        } catch(err) {
+            throw new Error('Product already in wishlist!', err as Error)
+        }
+    }
+}
+
+export const removeUserVanFavorites = async (van: Van) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const favoritesDocRef = collection(db, `favorites/${userID}/lists`)
+    const { id } = van
+    try {
+        // Create a query to filter documents based on the van ID
+        const querySnapshot = await getDocs(query(favoritesDocRef, where("vanId", "==", id)));
+
+        // Iterate through the documents and delete each one
+        querySnapshot.forEach(async (doc) => {
+            await deleteDoc(doc.ref);
+        });
+    } catch (error) {
+        console.error("Error removing user van favorites:", error);
+        throw new Error("Error removing user van favorites");
+    }
+
+
+}
+
+export const getFavorites = async() => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return []
+
+    const favDocRef = collection(db, `favorites/${userID}/lists`)
+    const favSnapshot = await getDocs(favDocRef)
+
+    const favArr = favSnapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+    }))    
+    
+    return favArr as Favorite[]
 }
