@@ -7,7 +7,7 @@ import { useCategories } from '../../contexts/Categories.context'
 import VanHead from './VanHead'
 import VanReservation from './VanReservation'
 
-import { Reservation, Van, createReservationDocumentOfUser } from '../../utils/firebase'
+import { Favorite, Reservation, Van, createReservationDocumentOfUser } from '../../utils/firebase'
 import { getCategoryColor } from '../../utils/helpers'
 import { useUser } from '../../contexts/User.context'
 
@@ -19,9 +19,9 @@ const defaultDateRange = {
 
 const VanDetail = () => {
     const data = useAsyncValue()
+    const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]
 
     const [isLoading, setIsLoading] = useState(false)
-    const [van, reservations] = data as [Van, Reservation[]]    
     const navigate = useNavigate()
     
     const { currentUser } = useUser()
@@ -88,6 +88,8 @@ const VanDetail = () => {
                 name={name}
                 imageSrc={imageUrl}
                 id={id}
+                favorite={favorite}
+                van={van}
             />
             <div className='flex gap-8 mt-8'>
                 <div className='col-span-4 flex flex-col'>
