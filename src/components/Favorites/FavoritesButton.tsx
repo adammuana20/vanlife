@@ -19,7 +19,7 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van, favorites }) => {
 
     const { id } = van
 
-    const hasFavorited = myFavorites?.some((van) => van.vanId === id)
+    const hasFavorited = myFavorites?.some((van) => van.id === id)
 
     const toggleFavorite = async () => {
         try {

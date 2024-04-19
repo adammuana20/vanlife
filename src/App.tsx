@@ -27,7 +27,7 @@ import HostVans, { loader as hostVansLoader} from "./routes/HostVans"
 import Layout from "./routes/Layout"
 import HostLayout from "./routes/HostLayout"
 import Trips, { loader as tripsLoader } from "./routes/Trips"
-import Favorites from "./routes/Favorites"
+import Favorites, { loader as favsLoader } from "./routes/Favorites"
 
 import { useUser } from "./contexts/User.context"
 
@@ -74,7 +74,7 @@ const App = () => {
         path="favorites" 
         element={<Favorites />}
         errorElement={<Error />}
-        // loader={tripsLoader}
+        loader={favsLoader}
       />
       <Route path="host" element={<HostLayout />}>
         <Route

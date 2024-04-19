@@ -75,10 +75,10 @@ export type Favorite = {
     name: string;
     price: number;
     type: string;
+    hostId: string;
     description: string;
     imageUrl: string;
     createdAt: Timestamp;
-    vanId: string;
 }
 
 export type Reservation = {
@@ -151,7 +151,7 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
     const collectionVal = collection(reservationDocRef, 'lists')
     const reservationSnapshot = await getDoc(reservationDocRef)
     const createdAt = new Date()
-    const { name, price, imageUrl, id, type } = van
+    const { name, price, imageUrl, id, type, hostId } = van
 
     if(!reservationSnapshot.exists()) {
         const reservations = await getVanReservationsDocuments(van.id)
@@ -179,7 +179,8 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
                         name,
                         price,
                         imageUrl,
-                        type
+                        type,
+                        hostId,
                     }
                 })
                 alert('Van Reserved!')
@@ -275,8 +276,9 @@ export const createUserVanFavorites = async (van: Van) => {
                 name,
                 price,
                 imageUrl,
-                vanId: id,
+                id,
                 type,
+                hostId,
                 createdAt,
             })
         } catch(err) {
@@ -307,7 +309,7 @@ export const removeUserVanFavorites = async (van: Van) => {
     const { id } = van
     try {
         // Create a query to filter documents based on the van ID
-        const querySnapshot = await getDocs(query(favoritesDocRef, where("vanId", "==", id)));
+        const querySnapshot = await getDocs(query(favoritesDocRef, where("id", "==", id)));
 
         // Iterate through the documents and delete each one
         return querySnapshot.forEach(async (doc) => {
@@ -332,7 +334,6 @@ export const getFavorites = async() => {
 
     const favArr = favSnapshot.docs.map(doc => ({
         ...doc.data(),
-        id: doc.id,
     }))    
     
     return favArr as Favorite[]
