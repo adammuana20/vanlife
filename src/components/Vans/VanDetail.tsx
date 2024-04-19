@@ -78,6 +78,7 @@ const VanDetail = () => {
                 console.error('Error Creating Reservation:', err)
             } finally {
                 setIsLoading(false)
+                navigate('/trips')
             }
         }
     }
