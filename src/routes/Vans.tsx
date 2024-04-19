@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { 
     useSearchParams, 
     useLoaderData, 
@@ -9,16 +9,22 @@ import {
 import VansPreview from "../components/Vans/VansPreview";
 import VansCategories from "../components/Vans/VansCategories";
 
-import { getVansDocuments, Van } from "../utils/firebase";
+import { Favorite, getFavorites, getVansDocuments, Van } from "../utils/firebase";
 
-export const loader = () => {
-    return defer({ vans: getVansDocuments() })
+export const loader = () => {    
+    return defer({ vans: getVansDocuments(), favorites: getFavorites() })
 }
 
 const Vans = () => {
-    const { vans } = useLoaderData() as { vans: Van }
+    const { vans, favorites } = useLoaderData() as { vans: Van[], favorites: Favorite[] }
     const [searchParams, setSearchParams] = useSearchParams();
     const typeFilter = searchParams.get("type");
+
+    useEffect(() => {
+        
+    },[])
+
+    const allPromise = useMemo(() => Promise.all([vans, favorites]),[vans, favorites])
 
     const handleFilterChange = (key: string, value: string) => {
         setSearchParams(prevParams => {
@@ -35,7 +41,7 @@ const Vans = () => {
         <div className="px-6">
             <h2>Explore our van options</h2>
             <React.Suspense fallback={<h3>Loading vans...</h3>}>
-                <Await resolve={vans}>
+                <Await resolve={allPromise}>
                     <VansCategories handleFilterChange={handleFilterChange} typeFilter={typeFilter} />
                     <VansPreview searchParams={searchParams} typeFilter={typeFilter} />
                 </Await>

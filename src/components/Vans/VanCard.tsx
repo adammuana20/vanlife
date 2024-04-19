@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom"
 
-import { Van } from "../../utils/firebase"
+import { Favorite, Van } from "../../utils/firebase"
 
 import { useCategories } from "../../contexts/Categories.context";
 import { getCategoryColor } from "../../utils/helpers";
@@ -11,9 +11,10 @@ type VanCardProps = {
     van: Van;
     searchParams: URLSearchParams;
     typeFilter: string | null;
+    favorites: Favorite[];
 }
 
-const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter }) => {
+const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter, favorites }) => {
     const { categoriesColor } = useCategories()
 
     const { name, price, imageUrl, id, type } = van
@@ -21,7 +22,7 @@ const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter }) => {
     return (
         <div className="relative">
             <div className="absolute top-3 right-3">
-                <FavoritesButton van={van}/>
+                <FavoritesButton van={van} favorites={favorites}/>
             </div>
             <Link 
                 to={`/vans/${id}`} 

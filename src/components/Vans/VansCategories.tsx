@@ -11,7 +11,9 @@ type VansCategoriesProps = {
 }
 
 const VansCategories: FC<VansCategoriesProps> = ({ handleFilterChange, typeFilter }) => {
-    const vans = useAsyncValue() as Van[]
+    const data = useAsyncValue() as [Van[]]
+
+    const [vans] = data
     const [hoveredButton, setHoveredButton] = useState<number | null>(null)
     const { categoriesColor } = useCategories()
     
