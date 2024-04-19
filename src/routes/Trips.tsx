@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { 
   useSearchParams, 
   useLoaderData, 
@@ -8,20 +8,22 @@ import {
 
 import TripsPreview from "../components/Trips/TripsPreview";
 
-import { Reservation, Trip, getUserReservationTripsDocuments, getVan } from "../utils/firebase"
+import { Favorite, Reservation, getFavorites, getUserReservationTripsDocuments } from "../utils/firebase"
 
 export const loader = () => {
-  return defer({ trips: getUserReservationTripsDocuments() })
+  return defer({ trips: getUserReservationTripsDocuments(), favorites: getFavorites() })
 }
 
 const Trips = () => {
-  const { trips } = useLoaderData() as { trips: Reservation[] }
+  const { trips, favorites } = useLoaderData() as { trips: Reservation[], favorites: Favorite[] }
+
+  const allPromise = useMemo(() => Promise.all([trips, favorites]),[trips, favorites])
 
   return (
     <div className="px-6">
       <h2>Trips</h2>
       <Suspense fallback={<h3>Loading trips...</h3>}>
-        <Await resolve={trips}>
+        <Await resolve={allPromise}>
           <TripsPreview />
         </Await>
       </Suspense>

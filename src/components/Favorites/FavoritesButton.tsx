@@ -1,16 +1,20 @@
 import { FC, useState } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
-import { Favorite, createUserVanFavorites, getFavorites, removeUserVanFavorites } from "../../utils/firebase";
+import { Favorite, Van, createUserVanFavorites, getFavorites, removeUserVanFavorites } from "../../utils/firebase";
 
 import { useFavorites } from "../../contexts/Favorites.context";
+import { Form, useNavigation, useRevalidator } from "react-router-dom";
 
 export type FavoritesButtonProps = {
-    van: Favorite;
+    van: Van;
+    favorites: Favorite[];
 }
 
-const FavoritesButton: FC<FavoritesButtonProps> = ({ van }) => {
-    const { myFavorites, setMyFavorites } = useFavorites()
+const FavoritesButton: FC<FavoritesButtonProps> = ({ van, favorites }) => {
+    const revalidator = useRevalidator()
+    const myFavorites = favorites
+    
     const [isLoading, setIsLoading] = useState(false)
 
     const { id } = van
@@ -25,14 +29,14 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van }) => {
                 await createUserVanFavorites(van)
             } else {
                 await removeUserVanFavorites(van)
+                
             }
         } catch(err) {
             setIsLoading(false)
             throw new Error('Error adding to favorites. Please try again!', err as Error)
         } finally {
-            const favsArr = await getFavorites()
-            setMyFavorites(favsArr)
             setIsLoading(false)
+            revalidator.revalidate()
         }
     };
     
@@ -41,6 +45,7 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van }) => {
         onClick={toggleFavorite}
         className="relative hover: opacity-80 tansition cursor-pointer z-10"
         disabled={isLoading}
+        style={{backgroundColor: 'transparent'}}
     >
         <AiOutlineHeart size={28} className="fill-white absolute -top-[2px] -right-[2px]"/>
         <AiFillHeart size={24} className={hasFavorited ? 'fill-rose-500' : 'fill-neutral-500/70'}/>

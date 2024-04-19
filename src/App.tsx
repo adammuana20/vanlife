@@ -32,24 +32,9 @@ import Favorites from "./routes/Favorites"
 import { useUser } from "./contexts/User.context"
 
 import { requireAuth } from "./utils/loaders"
-import { useEffect } from "react"
-import { useFavorites } from "./contexts/Favorites.context"
-import { getFavorites } from "./utils/firebase"
 
 const App = () => {
   const { currentUser } = useUser()
-  const { setMyFavorites } = useFavorites()
-
-  useEffect(() => {
-    if(currentUser) {
-      const fetchFavs = async() => {
-        const favsArr = await getFavorites()
-
-        setMyFavorites(favsArr)
-      }
-      fetchFavs()
-    }
-  }, [currentUser])
 
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>

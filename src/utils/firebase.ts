@@ -75,7 +75,6 @@ export type Favorite = {
     name: string;
     price: number;
     type: string;
-    hostId: string;
     description: string;
     imageUrl: string;
     createdAt: Timestamp;
@@ -272,17 +271,14 @@ export const createUserVanFavorites = async (van: Van) => {
 
     if(!favoritesSnapshot.exists()) {
         try {
-            await addDoc(collectionVal, {
+            return await addDoc(collectionVal, {
                 name,
                 price,
                 imageUrl,
                 vanId: id,
                 type,
-                hostId,
                 createdAt,
             })
-            console.log('Van Added to Favorites!')
-            return true
         } catch(err) {
             throw new Error('Error adding to favorites. Please try again!', err as Error)
         }
@@ -294,10 +290,10 @@ export const createUserVanFavorites = async (van: Van) => {
             const existingVan = favArr.find((fav) => fav.vanId === id)
             
             if(existingVan) {
-                alert('Product already in wishlist!')
+                alert('Van already in Favorites!')
             }
         } catch(err) {
-            throw new Error('Product already in wishlist!', err as Error)
+            throw new Error('Van already in Favorites!', err as Error)
         }
     }
 }
@@ -314,9 +310,10 @@ export const removeUserVanFavorites = async (van: Van) => {
         const querySnapshot = await getDocs(query(favoritesDocRef, where("vanId", "==", id)));
 
         // Iterate through the documents and delete each one
-        querySnapshot.forEach(async (doc) => {
+        return querySnapshot.forEach(async (doc) => {
             await deleteDoc(doc.ref);
         });
+        
     } catch (error) {
         console.error("Error removing user van favorites:", error);
         throw new Error("Error removing user van favorites");
