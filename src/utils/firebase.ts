@@ -82,6 +82,7 @@ export type Favorite = {
 }
 
 export type Reservation = {
+    id: string;
     startDate: Timestamp;
     endDate: Timestamp;
     totalPrice: number;
@@ -90,6 +91,7 @@ export type Reservation = {
 }
 
 export type Trip = {
+    id: string;
     startDate: Timestamp;
     endDate: Timestamp;
     totalPrice: number;
@@ -191,6 +193,27 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
     }
 }
 
+export const cancelUserTripReservation = async(tripId: string) => {
+    const userID = auth.currentUser?.uid
+
+    if(!userID) return
+
+    const tripsDocRef = doc(collection(doc(db, 'reservations', userID), 'lists'), tripId)
+    const tripsSnapshot = await getDoc(tripsDocRef)
+    
+    if(tripsSnapshot.exists()) {
+        try {
+            await deleteDoc(tripsDocRef)
+            alert('Reservation Cancelled');
+            
+        } catch(err) {
+            console.log('Error cancelling reservation, Please try again!', err);
+            
+        }
+        
+    }
+}
+
 
 export const getVanReservationsDocuments = async(id: string) => {
     const reservationsRef = collectionGroup(db, 'lists')
@@ -221,6 +244,7 @@ export const getUserReservationTripsDocuments = async () => {
 
     const tripsArr = reservationSnapshot.docs.map(doc => ({
         ...doc.data(),
+        id: doc.id,
     }))
     
     return tripsArr as Reservation[]

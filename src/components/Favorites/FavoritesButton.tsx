@@ -3,8 +3,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 import { Favorite, Van, createUserVanFavorites, getFavorites, removeUserVanFavorites } from "../../utils/firebase";
 
-import { useFavorites } from "../../contexts/Favorites.context";
-import { Form, useNavigation, useRevalidator } from "react-router-dom";
+import { useRevalidator } from "react-router-dom";
 
 export type FavoritesButtonProps = {
     van: Van;
