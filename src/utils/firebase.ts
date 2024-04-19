@@ -262,17 +262,18 @@ export const createUserVanFavorites = async (van: Van) => {
 
     if(!userID) return
 
-    const favoritesDocRef = doc(db, 'favorites', userID)
-    const favoritesSnapshot = await getDoc(favoritesDocRef)
-    const collectionVal = collection(favoritesDocRef, 'lists')
-
     const { name, price, imageUrl, id, type, hostId } = van
+
+    const favoritesDocRef = doc(db, 'favorites', userID)
+    const collectionData = collection(favoritesDocRef, 'lists')
+    const favoriteDocRef = doc(collectionData, id)
+    const favoriteSnapshot = await getDoc(favoriteDocRef)
     
     const createdAt = new Date()
 
-    if(!favoritesSnapshot.exists()) {
+    if(!favoriteSnapshot.exists()) {
         try {
-            return await addDoc(collectionVal, {
+            return await setDoc(favoriteDocRef, {
                 name,
                 price,
                 imageUrl,
@@ -284,20 +285,21 @@ export const createUserVanFavorites = async (van: Van) => {
         } catch(err) {
             throw new Error('Error adding to favorites. Please try again!', err as Error)
         }
-    } else {
-        try {
-            const { id } = van
-            const querySnapshot = await getDocs(collectionVal)
-            const favArr = querySnapshot.docs.map(doc => ({...doc.data()}))
-            const existingVan = favArr.find((fav) => fav.vanId === id)
+    } 
+    // else {
+    //     try {
+    //         const { id } = van
+    //         const querySnapshot = await getDocs(collectionVal)
+    //         const favArr = querySnapshot.docs.map(doc => ({...doc.data()}))
+    //         const existingVan = favArr.find((fav) => fav.vanId === id)
             
-            if(existingVan) {
-                alert('Van already in Favorites!')
-            }
-        } catch(err) {
-            throw new Error('Van already in Favorites!', err as Error)
-        }
-    }
+    //         if(existingVan) {
+    //             alert('Van already in Favorites!')
+    //         }
+    //     } catch(err) {
+    //         throw new Error('Van already in Favorites!', err as Error)
+    //     }
+    // }
 }
 
 export const removeUserVanFavorites = async (van: Van) => {
@@ -305,16 +307,25 @@ export const removeUserVanFavorites = async (van: Van) => {
 
     if(!userID) return
 
-    const favoritesDocRef = collection(db, `favorites/${userID}/lists`)
+    // const favoritesDocRef = collection(db, `favorites/${userID}/lists`)
     const { id } = van
-    try {
-        // Create a query to filter documents based on the van ID
-        const querySnapshot = await getDocs(query(favoritesDocRef, where("id", "==", id)));
 
-        // Iterate through the documents and delete each one
-        return querySnapshot.forEach(async (doc) => {
-            await deleteDoc(doc.ref);
-        });
+    const favoritesDocRef = doc(db, 'favorites', userID)
+    const collectionData = collection(favoritesDocRef, 'lists')
+    const favoriteDocRef = doc(collectionData, id)
+    const favoriteSnapshot = await getDoc(favoriteDocRef)
+
+    try {
+        if(favoriteSnapshot.exists()) {
+            return await deleteDoc(favoriteDocRef)
+        }
+        // // Create a query to filter documents based on the van ID
+        // const querySnapshot = await getDocs(query(favoritesDocRef, where("id", "==", id)));
+
+        // // Iterate through the documents and delete each one
+        // return querySnapshot.forEach(async (doc) => {
+        //     await deleteDoc(doc.ref);
+        // });
         
     } catch (error) {
         console.error("Error removing user van favorites:", error);
@@ -335,6 +346,20 @@ export const getFavorites = async() => {
     const favArr = favSnapshot.docs.map(doc => ({
         ...doc.data(),
     }))    
-    
     return favArr as Favorite[]
+}
+
+export const getFavorite = async(id: string) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return []
+    
+    const favoritesDocRef = doc(db, 'favorites', userID)
+    const collectionData = collection(favoritesDocRef, 'lists')
+    const favoriteDocRef = doc(collectionData, id)
+    const favoriteSnapshot = await getDoc(favoriteDocRef)
+    
+    return {
+        ...favoriteSnapshot.data()
+    }
 }

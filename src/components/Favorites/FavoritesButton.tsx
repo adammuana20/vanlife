@@ -17,7 +17,7 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van, favorites }) => {
     
     const [isLoading, setIsLoading] = useState(false)
 
-    const { id } = van
+    const { id } = van    
 
     const hasFavorited = myFavorites?.some((van) => van.id === id)
 
@@ -29,7 +29,6 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van, favorites }) => {
                 await createUserVanFavorites(van)
             } else {
                 await removeUserVanFavorites(van)
-                
             }
         } catch(err) {
             setIsLoading(false)

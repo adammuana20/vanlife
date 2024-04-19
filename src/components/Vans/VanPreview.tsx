@@ -3,24 +3,24 @@ import { Link, useLocation, useLoaderData, defer, Await, LoaderFunctionArgs, Par
 
 import VanDetail from "./VanDetail";
 
-import { Reservation, Van, getVanReservationsDocuments, getVan } from "../../utils/firebase"
+import { Reservation, Van, getVanReservationsDocuments, getVan, getFavorite, Favorite } from "../../utils/firebase"
 
 const VANS_ROUTE = '/vans/:id';
 
 export type TypedParams = Record<ParamParseKey<typeof VANS_ROUTE>, string>;
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-    return defer({ van: getVan((params as TypedParams).id), reservations: getVanReservationsDocuments((params as TypedParams).id) })
+    return defer({ van: getVan((params as TypedParams).id), reservations: getVanReservationsDocuments((params as TypedParams).id), favorites: getFavorite((params as TypedParams).id) })
 }
 
 const VanPreview = () => {
     const location = useLocation()
-    const { van, reservations } = useLoaderData() as { van: Van, reservations: Reservation[] }
+    const { van, reservations, favorites } = useLoaderData() as { van: Van, reservations: Reservation[], favorites: Favorite }
     
     const search = location.state?.search || "";
     const type = location.state?.type || "all";
 
-    const allPromise = useMemo(() => Promise.all([van, reservations]),[van, reservations])
+    const allPromise = useMemo(() => Promise.all([van, reservations, favorites]),[van, reservations, favorites])
 
     return (
         <div className="px-7">
