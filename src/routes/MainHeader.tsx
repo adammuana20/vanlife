@@ -1,13 +1,28 @@
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { NavLink, Link, useNavigate, Form, useActionData } from "react-router-dom";
 
 import { UserContext } from '../contexts/User.context';
 
 import imageUrl from "../assets/images/avatar-icon.png";
+import useRegisterModal from '../hooks/useRegisterModal';
+import RegisterModal from '../components/Modals/RegisterModal';
+import useRentModal from '../hooks/useRentModal';
+import RentModal from '../components/Modals/RentModal';
 
 
 const MainHeader = () => {
-    const { currentUser } = useContext(UserContext)    
+    const { currentUser } = useContext(UserContext)
+    const navigate = useNavigate()
+    const registerModal = useRegisterModal()
+    const rentModal = useRentModal()
+
+    const onRent = useCallback(() => {
+        if(!currentUser) {
+            return navigate('/login')
+        }
+
+        rentModal.onOpen()
+    }, [currentUser, rentModal])
 
     return (
         <header>
@@ -31,6 +46,8 @@ const MainHeader = () => {
                 >
                     Vans
                 </NavLink>
+                <button onClick={onRent}>Register your Van</button>
+                <RentModal />
                 {currentUser ? (
                     <>
                         <NavLink
