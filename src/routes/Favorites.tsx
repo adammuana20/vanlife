@@ -15,7 +15,6 @@ const Favorites = () => {
 
   return (
     <div className="px-6">
-      <h2>Favorites</h2>
       <Suspense fallback={<h3>Loading favorites...</h3>}>
         <Await resolve={favorites}>
           <FavoritesPreview />

@@ -7,6 +7,7 @@ type ButtonProps = {
     outline?: boolean;
     small?: boolean;
     icon?: IconType;
+    disabledLabel?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,7 +17,8 @@ const Button: React.FC<ButtonProps> = ({
     outline,
     small,
     icon: Icon,
-}) => {
+    disabledLabel = '',
+}) => {        
   return (
     <button
         onClick={onClick}
@@ -29,8 +31,8 @@ const Button: React.FC<ButtonProps> = ({
             hover:opacity-80
             transition
             w-full
-            ${outline ? 'bg-white' : 'bg-rose-500'}
-            ${outline ? 'border-black' : 'border-rose-500'}
+            ${outline ? 'bg-white' : 'bg-primary-color'}
+            ${outline ? 'border-black' : 'bg-primary-color'}
             ${outline ? 'text-black' : 'text-white'}
             ${small ? 'py-1' : 'py-3'}
             ${small ? 'text-sm' : 'text-md'}
@@ -48,7 +50,12 @@ const Button: React.FC<ButtonProps> = ({
                 "
             />
         )}
-        {label}
+        { disabled 
+            ? disabledLabel !== '' 
+                ? disabledLabel
+                : label
+            : label
+        }
     </button>
   )
 }
