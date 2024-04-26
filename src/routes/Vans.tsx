@@ -20,10 +20,6 @@ const Vans = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const typeFilter = searchParams.get("type");
 
-    useEffect(() => {
-        
-    },[])
-
     const allPromise = useMemo(() => Promise.all([vans, favorites]),[vans, favorites])
 
     const handleFilterChange = (key: string, value: string) => {

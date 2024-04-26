@@ -32,11 +32,6 @@ const VanReservation: React.FC<VanReservationProps> = ({
                 disabledDates={disabledDates}
             />
             <div className="px-4 py-3 border-neutral-200 border-y-[1px]">
-                {/* <button className="link-button bg-primary-color w-full" onClick={onSubmit} type="submit" disabled={isLoading}>
-                    { isLoading 
-                    ? 'Renting this van...' 
-                    : 'Rent this van'}
-                </button> */}
                 <Button 
                     label="Rent this van"
                     onClick={onSubmit}

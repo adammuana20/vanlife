@@ -3,6 +3,7 @@ import { useAsyncValue } from "react-router-dom"
 import VanCard from "./VanCard"
 
 import { Favorite, Van } from "../../utils/firebase";
+import NoVan from "../NoVan";
 
 type VansPreviewProps = {
     searchParams: URLSearchParams;
@@ -19,9 +20,13 @@ const VansPreview: FC<VansPreviewProps> = ({ searchParams, typeFilter }) => {
         : vans
     
     return (
-        <div className="grid grid-cols-4 justify-items-center mt-14 gap-8">
-            { displayVans.map(van => <VanCard key={van.id} van={van} favorites={favorites} searchParams={searchParams} typeFilter={typeFilter} /> )}
-        </div>
+        vans.length ? ( 
+            <div className="grid grid-cols-4 justify-items-center mt-14 gap-8">
+                { displayVans.map(van => <VanCard key={van.id} van={van} favorites={favorites} searchParams={searchParams} typeFilter={typeFilter} /> )}
+            </div>
+        ) : (
+            <NoVan showReset /> 
+        )
     )
 }
 

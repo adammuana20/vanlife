@@ -4,10 +4,10 @@ import HostHeader from "./HostHeader";
 
 const HostLayout = () => {
     return (
-        <>
+        <div className="px-10">
             <HostHeader />
             <Outlet />
-        </>
+        </div>
     )
 }
 

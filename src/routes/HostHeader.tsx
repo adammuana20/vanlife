@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 
 const HostHeader = () => {
     return (
-        <nav className="flex mb-8">
+        <nav className="flex mb-8 items-center gap-3">
             <NavLink to="." 
                 end 
                 className={({isActive}) => isActive ? 'active-link' : undefined}

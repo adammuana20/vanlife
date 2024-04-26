@@ -27,6 +27,7 @@ import {
     collectionGroup,
     addDoc,
     deleteDoc,
+    orderBy,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { FieldValues } from "react-hook-form";
@@ -311,7 +312,7 @@ export const createVanDocument = async (data: FieldValues) => {
 }
 
 export const getVansDocuments = async () => {
-    const querySnapshot = await getDocs(collection(db, "vans"))  
+    const querySnapshot = await getDocs(query(collection(db, "vans"), orderBy("createdAt", "desc")));
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id

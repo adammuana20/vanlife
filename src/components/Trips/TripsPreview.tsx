@@ -52,11 +52,6 @@ const TripsPreview = () => {
                             <div key={trip.id} className="flex flex-col">
                                 <VanCard van={trip.van} favorites={favorites} searchParams={new URLSearchParams} typeFilter={'My Reservations'} />
                                 <p>{startDate} - {endDate}</p>
-                                {/* <button disabled={isLoadingMap[trip.id]} className="btn" onClick={cancelReservation(trip.id)}>
-                                    {isLoadingMap[trip.id]
-                                    ? "Cancelling..." 
-                                    : "Cancel Reservation"}
-                                </button> */}
                                 <Button 
                                     label="Cancel Reservation"
                                     onClick={cancelReservation(trip.id)}
