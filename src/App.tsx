@@ -24,7 +24,7 @@ import Logout from "./components/Authentication/Logout"
 
 import Vans, { loader as vansLoader } from "./routes/Vans"
 import HostVans, { loader as hostVansLoader} from "./routes/HostVans"
-import Layout from "./routes/Layout"
+import Layout from "./routes/Navbar/Layout"
 import HostLayout from "./routes/HostLayout"
 import Trips, { loader as tripsLoader } from "./routes/Trips"
 import Favorites, { loader as favsLoader } from "./routes/Favorites"

@@ -8,13 +8,6 @@
     @apply font-inter;
   }
 
-  header {
-    @apply h-28;
-    @apply flex;
-    @apply items-center;
-    @apply py-2.5;
-  }
-
   p {
     @apply my-4;
   }
@@ -80,17 +73,14 @@
     @apply items-center;
   }
 
-  nav a {
+  a {
     @apply no-underline;
     @apply text-dark-gray;
     @apply font-semibold;
-    @apply px-2.5;
-    @apply py-2.5;
   }
 
-  nav a:hover {
+  a:hover {
     @apply hover:text-semi-black;
-    @apply underline;
     @apply font-semibold;
   }
 
