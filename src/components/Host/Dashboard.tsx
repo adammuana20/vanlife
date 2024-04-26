@@ -3,10 +3,11 @@ import { Link, defer, Await, useLoaderData } from "react-router-dom"
 import { BsStarFill } from "react-icons/bs"
 import { User } from "firebase/auth"
 
-import HostVansPreview from "./HostVansPreview"
+import HostDashboardVansPreview from "./HostDashboardVansPreview"
 
 import { Van, getHostVans } from "../../utils/firebase"
 import { requireAuth } from "../../utils/loaders"
+
 
 
 export const loader = (currentUser: User | null) => async({ request }: { request: Request }) => {
@@ -36,13 +37,9 @@ const Dashboard = () => {
                 <Link to="reviews">Details</Link>
             </section>
             <section className="px-6 py-5">
-                <div className="flex justify-between items-center">
-                    <h2>Your listed vans</h2>
-                    <Link to="vans">View all</Link>
-                </div>
                 <React.Suspense fallback={<h3>Loading...</h3>}>
                     <Await resolve={vans}>
-                        <HostVansPreview />
+                        <HostDashboardVansPreview />
                     </Await>
                 </React.Suspense>
             </section>

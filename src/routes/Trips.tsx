@@ -21,7 +21,6 @@ const Trips = () => {
 
   return (
     <div className="px-6">
-      <h2>Trips</h2>
       <Suspense fallback={<h3>Loading trips...</h3>}>
         <Await resolve={allPromise}>
           <TripsPreview />

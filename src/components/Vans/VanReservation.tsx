@@ -1,5 +1,6 @@
 import { Range } from "react-date-range";
 import Calendar from "../Calendar"
+import Button from "../Button";
 
 type VanReservationProps = {
     price: number;
@@ -31,11 +32,17 @@ const VanReservation: React.FC<VanReservationProps> = ({
                 disabledDates={disabledDates}
             />
             <div className="px-4 py-3 border-neutral-200 border-y-[1px]">
-                <button className="link-button bg-primary-color w-full" onClick={onSubmit} type="submit" disabled={isLoading}>
+                {/* <button className="link-button bg-primary-color w-full" onClick={onSubmit} type="submit" disabled={isLoading}>
                     { isLoading 
                     ? 'Renting this van...' 
                     : 'Rent this van'}
-                </button>
+                </button> */}
+                <Button 
+                    label="Rent this van"
+                    onClick={onSubmit}
+                    disabled={isLoading}
+                    disabledLabel="Renting this van.."
+                />
             </div>
             <div className="flex justify-between px-4 py-3">
                 <span className="font-semibold">Total</span><span className="font-semibold">${totalPrice}</span>

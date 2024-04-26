@@ -79,18 +79,6 @@ export type Van = {
     displayName?: string;
 }
 
-export type VanTest = {
-    category: string,
-    location: null,
-    imageUrl: string,
-    bedCount: number,
-    capacityCount: number,
-    bathroomCount: number,
-    price: number,
-    title: string,
-    description: string,
-}
-
 export type Favorite = {
     id: string;
     name: string;
