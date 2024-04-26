@@ -3,13 +3,12 @@ import { useState, useEffect, useMemo } from 'react'
 import { Range } from 'react-date-range'
 import { useAsyncValue, useNavigate } from 'react-router-dom'
 
-import { useCategories } from '../../contexts/Categories.context'
 import VanHead from './VanHead'
 import VanReservation from './VanReservation'
 
 import { Favorite, Reservation, Van, createReservationDocumentOfUser } from '../../utils/firebase'
-import { getCategoryColor } from '../../utils/helpers'
 import { useUser } from '../../contexts/User.context'
+import VanInfo from './VanInfo'
 
 const defaultDateRange = {
     startDate: new Date(),
@@ -19,16 +18,12 @@ const defaultDateRange = {
 
 const VanDetail = () => {
     const data = useAsyncValue()
-    const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]
+    const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]    
 
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     
     const { currentUser } = useUser()
-
-    const { name, description, price, imageUrl, type, id } = van
-
-    const { categoriesColor } = useCategories()
 
     const [dateRange, setDateRange] = useState<Range>(defaultDateRange)
     const [totalPrice, setTotalPrice] = useState(0)
@@ -40,13 +35,13 @@ const VanDetail = () => {
                 dateRange.startDate,
             )
 
-            if(dayCount && price) {
-                setTotalPrice(dayCount * price)
+            if(dayCount && van.price) {
+                setTotalPrice(dayCount * van.price)
             } else {
-                setTotalPrice(price)
+                setTotalPrice(van.price)
             }
         }
-    }, [dateRange, price])
+    }, [dateRange, van.price])
 
     const disabledDates = useMemo(() => {
         let dates: Date[] = []    
@@ -84,23 +79,27 @@ const VanDetail = () => {
     }
     
     return (
-        <div className="flex flex-col mt-5">
+        <div className='max-w-screen-lg mx-auto'>
+        <div className="flex flex-col gap-6">
             <VanHead
-                name={name}
-                imageSrc={imageUrl}
-                id={id}
+                name={van.name}
+                imageUrl={van.imageUrl}
                 favorite={favorite}
                 van={van}
             />
-            <div className='flex gap-8 mt-8'>
-                <div className='col-span-4 flex flex-col'>
-                    <i className={`text-sm font-medium border-none rounded transition-all duration-200 ease-in-out mr-5 py-2 px-5 text-white self-start mb-8`} style={{ backgroundColor: `${getCategoryColor(categoriesColor, type)}` }}>{type}</i>
-                    <h2 className='mt-0'>{name}</h2>
-                    <p className='m-0'>{description}</p>
-                </div>
+            <div className='grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6'>
+                <VanInfo 
+                    user={van.displayName}
+                    type={van.type}
+                    description={van.description}
+                    capacityCount={van.capacityCount}
+                    bathroomCount={van.bathroomCount}
+                    bedroomCount={van.bedCount}
+                    locationValue={van.locationValue}
+                />
                 <div className='order-first mb-10 md:order-last md:col-span-3'>
                     <VanReservation
-                        price={price}
+                        price={van.price}
                         totalPrice={totalPrice}
                         onChangeDate={(value) => setDateRange(value)}
                         dateRange={dateRange}
@@ -110,6 +109,7 @@ const VanDetail = () => {
                     />
                 </div>
             </div>
+        </div>
         </div>
     )
 }

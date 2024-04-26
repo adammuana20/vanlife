@@ -28,6 +28,9 @@ import {
     addDoc,
     deleteDoc,
 } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+import { FieldValues } from "react-hook-form";
+import { v4 } from 'uuid'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -45,6 +48,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp)
+const storage = getStorage()
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
@@ -68,6 +72,23 @@ export type Van = {
     description: string;
     imageUrl: string;
     createdAt: Timestamp;
+    locationValue: string;
+    bathroomCount: number;
+    bedCount: number;
+    capacityCount: number;
+    displayName?: string;
+}
+
+export type VanTest = {
+    category: string,
+    location: null,
+    imageUrl: string,
+    bedCount: number,
+    capacityCount: number,
+    bathroomCount: number,
+    price: number,
+    title: string,
+    description: string,
 }
 
 export type Favorite = {
@@ -250,6 +271,57 @@ export const getUserReservationTripsDocuments = async () => {
     return tripsArr as Reservation[]
 }
 
+//ADD PRODUCT TO FIREBASE
+export const uploadImageToStorage = async (image: string) => {
+    const imgs = ref(storage, `images/${v4()}`)
+    
+    try {
+
+    const blob = new Blob([image], { type: 'image/jpeg' });
+    const uploadImage = await uploadBytesResumable(imgs, blob)
+    
+    const imageUrl = await getDownloadURL(uploadImage.ref)
+
+    return imageUrl
+    } catch(err) {
+        console.log('Error', err);
+    }
+}
+
+export const createVanDocument = async (data: FieldValues) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return []
+
+    const vanDocRef = collection(db, 'vans')
+    const { name, description, imageUrl, category, capacityCount, bedCount, bathroomCount, location, price } = data
+    const createdAt = new Date()
+
+    try{
+        const image = await uploadImageToStorage(imageUrl)
+        if(image){
+            await addDoc(vanDocRef, {
+                name,
+                description,
+                type: category,
+                bedCount,
+                bathroomCount,
+                capacityCount,
+                locationValue: location.value,
+                price,
+                hostId: userID,
+                imageUrl: image,
+                createdAt,
+            })
+        }
+    } catch(err) {
+        console.log('Failed Creating Van!', err);
+        
+    }
+
+    
+}
+
 export const getVansDocuments = async () => {
     const querySnapshot = await getDocs(collection(db, "vans"))  
     const dataArr = querySnapshot.docs.map(doc => ({
@@ -261,17 +333,37 @@ export const getVansDocuments = async () => {
 }
 
 export const getVan = async (id: string) => {
-    const docRef = doc(db, "vans", id)
-    const vanSnapshot = await getDoc(docRef)
+    const vanDocRef = doc(db, "vans", id)
+    const vanSnapshot = await getDoc(vanDocRef)
+
+    let displayName = ''
+
+    if(vanSnapshot.exists()) {
+        const vanData = vanSnapshot.data()
+
+        const { hostId } = vanData
+
+        const userDocRef = doc(db, "users", hostId)
+        const userSnapshot = await getDoc(userDocRef)
+
+        if(userSnapshot.exists()) {
+            displayName = userSnapshot.data().displayName
+        }
+    }
     
     return {
         ...vanSnapshot.data(),
-        id: vanSnapshot.id
-    } as Van
+        id: vanSnapshot.id,
+        displayName
+    }
 }
 
 export const getHostVans = async() => {
-    const q = query(collection(db, "vans"), where("hostId", "==", "123"))
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const q = query(collection(db, "vans"), where("hostId", "==", userID))
     const querySnapshot = await getDocs(q)
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),

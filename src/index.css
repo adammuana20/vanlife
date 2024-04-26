@@ -145,6 +145,15 @@
   z-index: 0 !important;
 }
 
+.rdrMonth {
+  width: 100% !important;
+}
+
+.rdrCalendarWrapper {
+  font-size: .8rem !important;
+  width: 100% !important;
+}
+
 /* * {
   box-sizing: border-box;
 }

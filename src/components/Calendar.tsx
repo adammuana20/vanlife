@@ -17,15 +17,13 @@ const Calendar: React.FC<CalendarProps> = ({
 }) => {
     
     return (
-        <div>
-            <DateRange
-                ranges={[dateRange]}
-                onChange={onChangeDate}
-                minDate={new Date()}
-                showDateDisplay={false}
-                disabledDates={disabledDates}
-            />
-        </div>
+        <DateRange
+            ranges={[dateRange]}
+            onChange={onChangeDate}
+            minDate={new Date()}
+            showDateDisplay={false}
+            disabledDates={disabledDates}
+        />
     )
 }
 
