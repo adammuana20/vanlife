@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Loadable from 'react-loadable-visibility/loadable-components'
 
 import Modal from './Modal'
@@ -10,6 +10,11 @@ import { useCategories } from '../../contexts/Categories.context'
 
 import CategoryInput from '../Inputs/CategoryInput'
 import CountrySelect from '../Inputs/CountrySelect'
+import Counter from '../Inputs/Counter'
+import ImageUpload from '../Inputs/ImageUpload'
+import Input from '../Inputs/Input'
+import { createVanDocument } from '../../utils/firebase'
+import { useNavigate } from 'react-router-dom'
 
 
 enum STEPS { 
@@ -17,15 +22,18 @@ enum STEPS {
   LOCATION = 1,
   INFO = 2,
   IMAGES = 3,
-  DESCRIPTION = 4,
-  PRICE = 5,
+  DETAILS = 4,
 }
 
 const RentModal = () => {
     const rentModal = useRentModal()
-    const { categoriesColor } = useCategories()    
+    const { categoriesColor } = useCategories()
+    const navigate = useNavigate()
 
     const [step, setStep] = useState(STEPS.CATEGORY);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('')
 
     const {
       register,
@@ -41,17 +49,31 @@ const RentModal = () => {
         category: '',
         location: null,
         imageUrl: '',
-        roomCount: 1,
         capacityCount: 1,
-        bathroomCount: 1,
-        price: 1,
-        title: '',
+        bedCount: 0,
+        bathroomCount: 0,
+        name: '',
         description: '',
+        price: 1,
       }
     })
 
     const category = watch('category')
     const location = watch('location')
+    const capacityCount = watch('capacityCount')
+    const bedCount = watch('bedCount')
+    const bathroomCount = watch('bathroomCount')
+    const imageUrl = watch('imageUrl')
+
+    if(imageUrl){
+      const reader = new FileReader();
+      reader.onloadend = () => {
+          setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(imageUrl);
+  };
+  
+    
 
     const Map = useMemo(() => Loadable(() => import('../Map'), {
       ssr: false
@@ -70,11 +92,38 @@ const RentModal = () => {
     }
 
     const onNext = () => {
+
+      if(step === STEPS.CATEGORY && !category || step === STEPS.LOCATION && !location || step === STEPS.IMAGES && !imageUrl) return
+
       setStep((value) => value + 1)
     }
 
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+
+      if(step !== STEPS.DETAILS) {
+        return onNext()
+      }
+      
+      setIsLoading(true)
+
+      createVanDocument(data)
+      .then(() => {
+        reset()
+        console.log('van successfuly created!');
+        setStep(STEPS.CATEGORY)
+        rentModal.onClose()
+        navigate(0)
+      })
+      .catch((err: Error) => {
+        console.log('Failed to add Van', err);
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+    }
+
     const actionLabel = useMemo(() => {
-      if(step === STEPS.PRICE) {
+      if(step === STEPS.DETAILS) {
         return 'Create'
       }
 
@@ -141,7 +190,82 @@ const RentModal = () => {
             title='Share some basics about your van'
             subtitle='What amenities do you have?'
           />
-          <Counter />
+          <Counter 
+            title="Capacity"
+            subtitle="How many capacity do you allow?"
+            value={capacityCount}
+            onChange={(value) => setCustomValue('capacityCount', value)}
+          />
+          <Counter 
+            title="Beds"
+            subtitle="How many bed available?"
+            value={bedCount}
+            onChange={(value) => setCustomValue('bedCount', value)}
+          />
+          <Counter 
+            title="Bathrooms"
+            subtitle="How many bathroom/toilet do you have?"
+            value={bathroomCount}
+            onChange={(value) => setCustomValue('bathroomCount', value)}
+          />
+        </div>
+      )
+    }
+
+    if(step === STEPS.IMAGES) {
+      bodyContent = (
+        <div className='flex flex-col gap-8'>
+          <Heading 
+            title="Add a photo of your van"
+            subtitle="Show guests what your van looks like!"
+          />
+          <ImageUpload 
+            value={selectedImage}
+            onChange={(value) => setCustomValue('imageUrl', value)}
+          />
+        </div>
+      )
+    }
+
+    if(step === STEPS.DETAILS) {
+      bodyContent = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="How would you describe your van?"
+            subtitle="Short and sweet works best!"
+          />
+          <Input
+            id="name"
+            label="Name"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+          <hr />
+          <Input
+            id="description"
+            label="Description"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+          <hr/>
+          <Heading 
+            title="Now, set your price"
+            subtitle='How much do you charge per day?'
+          />
+          <Input 
+            id="price"
+            label="Price"
+            formatPrice
+            type='number'
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
         </div>
       )
     }
@@ -150,7 +274,7 @@ const RentModal = () => {
     <Modal 
         isOpen={rentModal.isOpen}
         onClose={rentModal.onClose}
-        onSubmit={onNext}
+        onSubmit={handleSubmit(onSubmit)}
         actionLabel={actionLabel}
         secondaryActionLabel={secondaryActionLabel}
         secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}

@@ -23,7 +23,7 @@ const VanReservation: React.FC<VanReservationProps> = ({
     return (
         <div className="border-neutral-200 border-[1px] rounded-xl bg-white">
             <div className="pl-4 py-3 border-neutral-200 border-b-[1px]">
-                <p className="m-0">${price}/day</p>
+                <p className="m-0"><span className="font-semibold text-xl">${price}</span>/day</p>
             </div>
             <Calendar 
                 dateRange={dateRange}
@@ -38,7 +38,7 @@ const VanReservation: React.FC<VanReservationProps> = ({
                 </button>
             </div>
             <div className="flex justify-between px-4 py-3">
-                <span>Total</span><span>${totalPrice}</span>
+                <span className="font-semibold">Total</span><span className="font-semibold">${totalPrice}</span>
             </div>
         </div>
     )
