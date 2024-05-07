@@ -21,12 +21,12 @@ const HostHeader = () => {
             >
                 Vans
             </NavLink>
-            <NavLink 
+            {/* <NavLink 
                 to="reviews" 
                 className={({isActive}) => isActive ? 'active-link' : undefined}
             >
                 Reviews
-            </NavLink>
+            </NavLink> */}
         </nav>
     )
 }

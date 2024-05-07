@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { 
     useSearchParams, 
     useLoaderData, 
     defer,
-    Await
+    Await,
+    LoaderFunctionArgs
 } from "react-router-dom";
 
 import VansPreview from "../components/Vans/VansPreview";
@@ -11,7 +12,7 @@ import VansCategories from "../components/Vans/VansCategories";
 
 import { Favorite, getFavorites, getVansDocuments, Van } from "../utils/firebase";
 
-export const loader = () => {    
+export const loader = () => {
     return defer({ vans: getVansDocuments(), favorites: getFavorites() })
 }
 
@@ -19,6 +20,7 @@ const Vans = () => {
     const { vans, favorites } = useLoaderData() as { vans: Van[], favorites: Favorite[] }
     const [searchParams, setSearchParams] = useSearchParams();
     const typeFilter = searchParams.get("type");
+    
 
     const allPromise = useMemo(() => Promise.all([vans, favorites]),[vans, favorites])
 

@@ -28,7 +28,7 @@ const HostVanDetail = () => {
             </div>
         
 
-            <nav className="flex">
+            <nav className="flex gap-4 py-6">
                 <NavLink 
                     to="." 
                     end 
