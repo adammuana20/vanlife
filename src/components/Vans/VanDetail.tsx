@@ -18,7 +18,7 @@ const defaultDateRange = {
 
 const VanDetail = () => {
     const data = useAsyncValue()
-    const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]    
+    const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]
 
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -44,8 +44,7 @@ const VanDetail = () => {
     }, [dateRange, van.price])
 
     const disabledDates = useMemo(() => {
-        let dates: Date[] = []    
-        
+        let dates: Date[] = []
         
         reservations.forEach((reservation) => {           
             const range = eachDayOfInterval({
@@ -55,6 +54,7 @@ const VanDetail = () => {
             
             dates = [...dates, ...range]
         })
+
         return dates
     }, [reservations])
 

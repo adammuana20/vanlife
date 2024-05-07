@@ -9,9 +9,9 @@ const UserMenu = () => {
     const navigate = useNavigate()
     const rentModal = useRentModal()
 
-    const onRent = useCallback(() => {
+    const onRent = useCallback(async() => {
         if(!currentUser) {
-            return navigate('/login')
+            return navigate('/login?message=You must log in first.')
         }
 
         rentModal.onOpen()
@@ -26,7 +26,7 @@ const UserMenu = () => {
     <div className='relative'>
         <div className='flex flex-row items-center gap-3'>
             <div
-                onClick={() => {}}
+                onClick={onRent}
                 className='
                     hidden
                     md:block
@@ -35,13 +35,16 @@ const UserMenu = () => {
                     py-3
                     px-4
                     rounded-full
+                    bg-[#FFEAD1]
+                    text-black
                     hover:bg-primary-color
                     hover:text-white
+                    hover:border-primary-color
                     transition
                     cursor-pointer
                 '
             >
-                Airbnb your home
+                Host your Van
             </div>
             <NavLink 
                     to="host"
@@ -50,18 +53,17 @@ const UserMenu = () => {
                 Host
             </NavLink>
             <NavLink 
-                to="about" 
-                className={({isActive}) => isActive ? 'active-link' : undefined}
-            >
-                About
-            </NavLink>
-            <NavLink 
                 to="vans" 
                 className={({isActive}) => isActive ? 'active-link' : undefined}
             >
                 Vans
             </NavLink>
-            <button onClick={onRent} className='text-dark-gray font-semibold hover:text-semi-black'>Host your Van</button>
+            <NavLink 
+                to="about" 
+                className={({isActive}) => isActive ? 'active-link' : undefined}
+            >
+                About
+            </NavLink>
             <div 
                 onClick={toggleOpen}
                 className='

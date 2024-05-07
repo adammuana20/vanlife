@@ -28,6 +28,7 @@ import {
     addDoc,
     deleteDoc,
     orderBy,
+    DocumentData,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { FieldValues } from "react-hook-form";
@@ -78,6 +79,7 @@ export type Van = {
     bedCount: number;
     capacityCount: number;
     displayName?: string;
+    reservations: Reservation[]
 }
 
 export type Favorite = {
@@ -159,13 +161,14 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
 
     if(!userID) return
 
-    const reservationDocRef = doc(db, 'reservations', userID)
-    const collectionVal = collection(reservationDocRef, 'lists')
-    const reservationSnapshot = await getDoc(reservationDocRef)
-    const createdAt = new Date()
     const { name, price, imageUrl, id, type, hostId } = van
 
-    if(!reservationSnapshot.exists()) {
+    const vansDocRef = doc(db, 'vans', id)
+    const vansSnapshot = await getDoc(vansDocRef)
+    const createdAt = new Date()
+
+    if(vansSnapshot.exists()) {
+        
         const reservations = await getVanReservationsDocuments(van.id)
 
         const startTimestamp = Timestamp.fromDate(startDate);
@@ -180,6 +183,15 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
             alert('Some Dates are already Taken!')
         } else {
             try {
+                const vanData = vansSnapshot.data()
+
+                const newReservation = { startDate, endDate, totalPrice, createdAt, vanId: id, userID  }
+                vanData.reservations.push(newReservation)
+
+                const reservationDocRef = doc(db, 'reservations', userID)
+                const collectionVal = collection(reservationDocRef, 'resLists')
+        
+                await setDoc(vansDocRef, vanData)
                 await addDoc(collectionVal, {
                     startDate,
                     endDate,
@@ -208,7 +220,7 @@ export const cancelUserTripReservation = async(tripId: string) => {
 
     if(!userID) return
 
-    const tripsDocRef = doc(collection(doc(db, 'reservations', userID), 'lists'), tripId)
+    const tripsDocRef = doc(collection(doc(db, 'reservations', userID), 'resLists'), tripId)
     const tripsSnapshot = await getDoc(tripsDocRef)
     
     if(tripsSnapshot.exists()) {
@@ -226,7 +238,7 @@ export const cancelUserTripReservation = async(tripId: string) => {
 
 
 export const getVanReservationsDocuments = async(id: string) => {
-    const reservationsRef = collectionGroup(db, 'lists')
+    const reservationsRef = collectionGroup(db, 'resLists')
     
     const q = query(reservationsRef, where('vanId', '==', id));
 
@@ -236,6 +248,7 @@ export const getVanReservationsDocuments = async(id: string) => {
         const dataArr = querySnapshot.docs.map((doc) => ({
             ...doc.data()
         }))
+        
         
         return dataArr
     } catch (error) {
@@ -249,7 +262,7 @@ export const getUserReservationTripsDocuments = async () => {
 
     if(!userID) return []
     
-    const reservationDocRef = collection(db, `reservations/${userID}/lists`)
+    const reservationDocRef = collection(db, `reservations/${userID}/resLists`)
     const reservationSnapshot = await getDocs(reservationDocRef)
 
     const tripsArr = reservationSnapshot.docs.map(doc => ({
@@ -301,22 +314,25 @@ export const createVanDocument = async (data: FieldValues) => {
                 hostId: userID,
                 imageUrl: image,
                 createdAt,
+                reservations: [],
             })
         }
     } catch(err) {
         console.log('Failed Creating Van!', err);
         
     }
-
-    
 }
 
 export const getVansDocuments = async () => {
-    const querySnapshot = await getDocs(query(collection(db, "vans"), orderBy("createdAt", "desc")));
+
+    const vansCollectionRef = collection(db, 'vans');
+
+    const querySnapshot = await getDocs(vansCollectionRef)
+
     const dataArr = querySnapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id
-    }))    
+    }))
     
     return dataArr as Van[]
 }
@@ -370,7 +386,7 @@ export const createUserVanFavorites = async (van: Van) => {
     const { name, price, imageUrl, id, type, hostId } = van
 
     const favoritesDocRef = doc(db, 'favorites', userID)
-    const collectionData = collection(favoritesDocRef, 'lists')
+    const collectionData = collection(favoritesDocRef, 'favLists')
     const favoriteDocRef = doc(collectionData, id)
     const favoriteSnapshot = await getDoc(favoriteDocRef)
     
@@ -412,26 +428,17 @@ export const removeUserVanFavorites = async (van: Van) => {
 
     if(!userID) return
 
-    // const favoritesDocRef = collection(db, `favorites/${userID}/lists`)
     const { id } = van
 
     const favoritesDocRef = doc(db, 'favorites', userID)
-    const collectionData = collection(favoritesDocRef, 'lists')
+    const collectionData = collection(favoritesDocRef, 'favLists')
     const favoriteDocRef = doc(collectionData, id)
     const favoriteSnapshot = await getDoc(favoriteDocRef)
 
     try {
         if(favoriteSnapshot.exists()) {
             return await deleteDoc(favoriteDocRef)
-        }
-        // // Create a query to filter documents based on the van ID
-        // const querySnapshot = await getDocs(query(favoritesDocRef, where("id", "==", id)));
-
-        // // Iterate through the documents and delete each one
-        // return querySnapshot.forEach(async (doc) => {
-        //     await deleteDoc(doc.ref);
-        // });
-        
+        }        
     } catch (error) {
         console.error("Error removing user van favorites:", error);
         throw new Error("Error removing user van favorites");
@@ -445,7 +452,7 @@ export const getFavorites = async() => {
 
     if(!userID) return []
 
-    const favDocRef = collection(db, `favorites/${userID}/lists`)
+    const favDocRef = collection(db, `favorites/${userID}/favLists`)
     const favSnapshot = await getDocs(favDocRef)
 
     const favArr = favSnapshot.docs.map(doc => ({
@@ -460,7 +467,7 @@ export const getFavorite = async(id: string) => {
     if(!userID) return []
     
     const favoritesDocRef = doc(db, 'favorites', userID)
-    const collectionData = collection(favoritesDocRef, 'lists')
+    const collectionData = collection(favoritesDocRef, 'favLists')
     const favoriteDocRef = doc(collectionData, id)
     const favoriteSnapshot = await getDoc(favoriteDocRef)
     

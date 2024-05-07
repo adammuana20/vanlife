@@ -32,7 +32,6 @@ const RentModal = () => {
 
     const [step, setStep] = useState(STEPS.CATEGORY);
     const [isLoading, setIsLoading] = useState(false);
-    const [isDisabled, setIsDisabled] = useState(false);
     const [selectedImage, setSelectedImage] = useState('')
 
     const {

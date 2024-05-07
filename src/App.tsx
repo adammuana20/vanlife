@@ -8,8 +8,8 @@ import {
 import Home from "./components/Home"
 import About from "./components/About"
 import VanPreview, { loader as vanPreviewLoader } from "./components/Vans/VanPreview"
-import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboard"
-import Income from "./components/Host/Income"
+import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboard/Dashboard"
+import Income, { loader as incomeLoader } from "./components/Host/Income/Income"
 import Reviews from "./components/Host/Reviews"
 import HostVanPreview, { loader as hostVanDetailLoader } from "./components/Host/HostVanPreview"
 import HostVanInfo from "./components/Host/HostVanInfo"
@@ -68,13 +68,13 @@ const App = () => {
         path="trips" 
         element={<Trips />}
         errorElement={<Error />}
-        loader={tripsLoader}
+        loader={tripsLoader(currentUser)}
       />
       <Route 
         path="favorites" 
         element={<Favorites />}
         errorElement={<Error />}
-        loader={favsLoader}
+        loader={favsLoader(currentUser)}
       />
       <Route path="host" element={<HostLayout />}>
         <Route
@@ -85,7 +85,7 @@ const App = () => {
         <Route
           path="income"
           element={<Income />}
-          loader={async ({ request }: { request: Request }) => await requireAuth(request, currentUser)}
+          loader={incomeLoader(currentUser)}
         />
         <Route
           path="reviews"

@@ -67,7 +67,7 @@ const VansCategories: FC<VansCategoriesProps> = ({ handleFilterChange, typeFilte
                 <button 
                     onClick={() => handleFilterChange("type", '')}
                     className="text-sm hover:underline text-dark-gray"
-                >Clear Filter</button>
+                >Clear Category</button>
                 ) : null
             }
         </div>

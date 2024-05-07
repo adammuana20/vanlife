@@ -9,8 +9,11 @@ import {
 import TripsPreview from "../components/Trips/TripsPreview";
 
 import { Favorite, Reservation, getFavorites, getUserReservationTripsDocuments } from "../utils/firebase"
+import { User } from "firebase/auth";
+import { requireAuth } from "../utils/loaders";
 
-export const loader = () => {
+export const loader = (currentUser: User | null) => async ({ request }: { request: Request }) => {
+  await requireAuth(request, currentUser)
   return defer({ trips: getUserReservationTripsDocuments(), favorites: getFavorites() })
 }
 

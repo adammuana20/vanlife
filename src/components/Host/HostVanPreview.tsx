@@ -21,7 +21,7 @@ const HostVanPreview = () => {
                 to=".."
                 relative="path"
                 className="text-black hover:underline"
-            >&larr; <span>Back to all vans</span>
+            >&larr; <span>Back to hosted vans</span>
             </Link>
             <React.Suspense fallback={<h3>Loading van...</h3>}>
                 <Await resolve={hostVan}>

@@ -16,6 +16,7 @@
     "date-fns": "^3.3.1",
     "firebase": "^10.7.1",
     "leaflet": "^1.9.4",
+    "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-date-range": "^2.0.0-alpha.4",
     "react-dom": "^18.2.0",
