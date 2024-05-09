@@ -1,9 +1,12 @@
 import { Form, useAsyncValue, useRevalidator } from "react-router-dom"
-import VanCard from "../Vans/VanCard";
-import { Favorite, Trip, cancelUserTripReservation, getVan } from "../../utils/firebase";
 import { useState } from "react";
-import Heading from "../Heading";
+import { toast } from "react-toastify";
+
+import VanCard from "../Vans/VanCard";
 import Button from "../Button";
+import NoVan from "../NoVan";
+
+import { Favorite, Trip, cancelUserTripReservation, getVan } from "../../utils/firebase";
 
 const TripsPreview = () => { 
     const data = useAsyncValue() as [Trip[], Favorite[]]
@@ -21,16 +24,19 @@ const TripsPreview = () => {
         }))
     }
 
-    const cancelReservation = (tripId: string): React.MouseEventHandler<HTMLButtonElement> => async ()  => {
-        try {
+    const cancelReservation = (tripId: string): React.MouseEventHandler<HTMLButtonElement> => ()  => {
             toggleLoading(tripId)
-            await cancelUserTripReservation(tripId)
-        } catch(err) {
-            console.log('Error canceling reservation', err);
-        } finally {
-            toggleLoading(tripId)
-            revalidator.revalidate()
-        }
+            cancelUserTripReservation(tripId)
+            .then(() => {
+                toast.success('Reservation Cancelled!')
+            })
+            .catch((err) => {
+                toast.error('Error canceling reservation', err);
+            })
+            .finally(() => {
+                toggleLoading(tripId)
+                revalidator.revalidate()
+            })
     }
 
     return (
@@ -64,13 +70,10 @@ const TripsPreview = () => {
                 </div>
             </>
             ) : (
-            <div className="h-[60vh] flex justify-center items-center">
-                <Heading 
+                <NoVan 
                     title="No trip found"
                     subtitle="Looks like you haven't reserved any van."
-                    center
                 />
-            </div>
         )
     )
 }

@@ -3,10 +3,10 @@ import { useLoaderData, defer, Await, LoaderFunctionArgs } from "react-router-do
 import { User } from "firebase/auth"
 
 import HostVansPreview from "../components/Host/HostVansPreview"
+import Loading from "../components/Loading"
 
 import { Van, getHostVans } from "../utils/firebase"
 import { requireAuth } from "../utils/loaders"
-
 
 
 export const loader = (currentUser: User | null) => async({ request }: LoaderFunctionArgs) => {
@@ -19,7 +19,7 @@ const HostVans = () => {
 
     return (
         <section className="px-7">
-            <React.Suspense fallback={<h3>Loading vans...</h3>}>
+            <React.Suspense fallback={<Loading />}>
                 <Await resolve={hostVans}>
                     <HostVansPreview />
                 </Await>

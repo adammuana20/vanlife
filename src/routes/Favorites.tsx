@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { Await, defer, useLoaderData } from 'react-router-dom'
 
 import FavoritesPreview from '../components/Favorites/FavoritesPreview'
+import Loading from '../components/Loading'
 
 import { Favorite, getFavorites } from '../utils/firebase'
 import { User } from 'firebase/auth'
@@ -18,7 +19,7 @@ const Favorites = () => {
 
   return (
     <div className="px-6">
-      <Suspense fallback={<h3>Loading favorites...</h3>}>
+      <Suspense fallback={<Loading />}>
         <Await resolve={favorites}>
           <FavoritesPreview />
         </Await>

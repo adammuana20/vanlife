@@ -19,10 +19,13 @@ const HostDashboardVansPreview = () => {
                 {vans.map((van) => <HostVanCard van={van} key={van.id} />)}
             </>
         ) : (
-            <Heading 
-                title="No van listed"
-                subtitle="Looks like you haven't hosted any van."
-            />
+            <div className="mt-20">
+                <Heading 
+                    title="No van listed"
+                    subtitle="Looks like you haven't hosted any van."
+                    center
+                />
+            </div>
         )
     )
 }

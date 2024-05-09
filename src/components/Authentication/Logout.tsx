@@ -16,8 +16,6 @@ const Logout = () => {
     const logoutNav = useActionData()
 
     useEffect(() => {
-        
-    
         if(logoutNav) {
             navigate(logoutNav, { replace: true })
         }

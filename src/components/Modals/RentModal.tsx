@@ -15,6 +15,7 @@ import ImageUpload from '../Inputs/ImageUpload'
 import Input from '../Inputs/Input'
 import { createVanDocument } from '../../utils/firebase'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 enum STEPS { 
@@ -108,13 +109,13 @@ const RentModal = () => {
       createVanDocument(data)
       .then(() => {
         reset()
-        console.log('van successfuly created!');
+        toast.success('Van Hosted successfuly')
         setStep(STEPS.CATEGORY)
         rentModal.onClose()
         navigate(0)
       })
       .catch((err: Error) => {
-        console.log('Failed to add Van', err);
+        toast.error('Failed to host Van');
       })
       .finally(() => {
         setIsLoading(false)

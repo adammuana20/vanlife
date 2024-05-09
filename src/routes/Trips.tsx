@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import TripsPreview from "../components/Trips/TripsPreview";
+import Loading from "../components/Loading";
 
 import { Favorite, Reservation, getFavorites, getUserReservationTripsDocuments } from "../utils/firebase"
 import { User } from "firebase/auth";
@@ -24,7 +25,7 @@ const Trips = () => {
 
   return (
     <div className="px-6">
-      <Suspense fallback={<h3>Loading trips...</h3>}>
+      <Suspense fallback={<Loading />}>
         <Await resolve={allPromise}>
           <TripsPreview />
         </Await>
