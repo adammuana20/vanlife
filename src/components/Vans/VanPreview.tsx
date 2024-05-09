@@ -2,6 +2,7 @@ import React, { useMemo } from "react"
 import { Link, useLocation, useLoaderData, defer, Await, LoaderFunctionArgs, ParamParseKey } from "react-router-dom";
 
 import VanDetail from "./VanDetail";
+import Loading from "../Loading";
 
 import { Reservation, Van, getVanReservationsDocuments, getVan, getFavorite, Favorite } from "../../utils/firebase"
 
@@ -31,7 +32,7 @@ const VanPreview = () => {
             >
                 &larr; <span>Back to {type} vans</span>
             </Link>
-            <React.Suspense fallback={<h3>Loading van...</h3>}>
+            <React.Suspense fallback={<Loading />}>
                 <Await resolve={allPromise}>
                     <VanDetail />
                 </Await>
