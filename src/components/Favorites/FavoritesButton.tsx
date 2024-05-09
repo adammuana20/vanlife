@@ -4,6 +4,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { Favorite, Van, createUserVanFavorites, getFavorites, removeUserVanFavorites } from "../../utils/firebase";
 
 import { useRevalidator } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export type FavoritesButtonProps = {
     van: Van;
@@ -21,21 +22,33 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van, favorites }) => {
     const hasFavorited = myFavorites?.some((van) => van.id === id)
 
     const toggleFavorite = async () => {
-        try {
             setIsLoading(true)
 
             if(!hasFavorited) {
-                await createUserVanFavorites(van)
+                createUserVanFavorites(van)
+                .then(() => {
+                    toast.success('Van added to Favorites!')
+                })
+                .catch((err) => {
+                    toast.error('Failed adding to Favorites!')
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                    revalidator.revalidate()
+                })
             } else {
-                await removeUserVanFavorites(van)
+                removeUserVanFavorites(van)
+                .then(() => {
+                    toast.success('Van removed from Favorites!')
+                })
+                .catch((err) => {
+                    toast.error('Failed removing from Favorites!')
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                    revalidator.revalidate()
+                })
             }
-        } catch(err) {
-            setIsLoading(false)
-            throw new Error('Error adding to favorites. Please try again!', err as Error)
-        } finally {
-            setIsLoading(false)
-            revalidator.revalidate()
-        }
     };
     
   return (

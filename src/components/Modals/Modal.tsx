@@ -132,7 +132,6 @@ const Modal: React.FC<ModalProps> = ({
                                 className='
                                     p-1
                                     border-0
-                                    hover:opacity-0
                                     transition
                                     absolute
                                     left-9

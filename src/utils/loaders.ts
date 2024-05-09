@@ -6,7 +6,7 @@ export const requireAuth = async(request: Request, currentUser: User| null) => {
     
     if(!currentUser) {
         const res = redirect(
-            `/login?message=You must log in first.&redirectTo=${pathname}`
+            `/login?message=You must log in first!&redirectTo=${pathname}`
         )
         throw res
     }

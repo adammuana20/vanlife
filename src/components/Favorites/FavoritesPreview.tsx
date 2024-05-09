@@ -1,8 +1,9 @@
-import React from 'react'
 import { useAsyncValue } from 'react-router-dom'
-import { Favorite } from '../../utils/firebase'
+
 import VanCard from '../Vans/VanCard'
-import Heading from '../Heading'
+import NoVan from '../NoVan'
+
+import { Favorite } from '../../utils/firebase'
 
 const FavoritesPreview = () => {
     const favorites = useAsyncValue() as Favorite[]
@@ -18,13 +19,10 @@ const FavoritesPreview = () => {
       </div>
     </>
     ) : (
-      <div className="h-[60vh] flex justify-center items-center">
-        <Heading 
+        <NoVan 
             title="No favorites found"
             subtitle="Looks like you have no favorite van."
-            center
         />
-    </div>
     )
   )
 }

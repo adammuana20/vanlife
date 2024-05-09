@@ -5,6 +5,7 @@ import {
     signInWithRedirect,
     getAuth,
     GoogleAuthProvider,
+    GithubAuthProvider,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
@@ -57,8 +58,14 @@ googleProvider.setCustomParameters({
     prompt: "select_account"
 });
 
+const githubProvider = new GithubAuthProvider();
+githubProvider.setCustomParameters({
+    prompt: 'select_account'
+})
+
 export const auth = getAuth()
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGithubPopup = () => signInWithPopup(auth, githubProvider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 export type AdditionalInformation = {
@@ -91,6 +98,11 @@ export type Favorite = {
     description: string;
     imageUrl: string;
     createdAt: Timestamp;
+    locationValue: string;
+    bathroomCount: number;
+    bedCount: number;
+    capacityCount: number;
+    reservations: Reservation[]
 }
 
 export type Reservation = {
@@ -180,7 +192,7 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
             || startTimestamp <= reservation.startDate && endTimestamp >= reservation.endDate))
         
         if(existingReservationDate) {
-            alert('Some Dates are already Taken!')
+            throw new Error('Some Dates are already Taken!')
         } else {
             try {
                 const vanData = vansSnapshot.data()
@@ -207,7 +219,6 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
                         hostId,
                     }
                 })
-                alert('Van Reserved!')
             } catch(err) {
                 console.log('Error creating reservation.', err);
             }
@@ -225,9 +236,7 @@ export const cancelUserTripReservation = async(tripId: string) => {
     
     if(tripsSnapshot.exists()) {
         try {
-            await deleteDoc(tripsDocRef)
-            alert('Reservation Cancelled');
-            
+            await deleteDoc(tripsDocRef)            
         } catch(err) {
             console.log('Error cancelling reservation, Please try again!', err);
             
@@ -383,7 +392,7 @@ export const createUserVanFavorites = async (van: Van) => {
 
     if(!userID) return
 
-    const { name, price, imageUrl, id, type, hostId } = van
+    const { name, price, imageUrl, id, type, hostId, } = van
 
     const favoritesDocRef = doc(db, 'favorites', userID)
     const collectionData = collection(favoritesDocRef, 'favLists')
@@ -407,20 +416,20 @@ export const createUserVanFavorites = async (van: Van) => {
             throw new Error('Error adding to favorites. Please try again!', err as Error)
         }
     } 
-    // else {
-    //     try {
-    //         const { id } = van
-    //         const querySnapshot = await getDocs(collectionVal)
-    //         const favArr = querySnapshot.docs.map(doc => ({...doc.data()}))
-    //         const existingVan = favArr.find((fav) => fav.vanId === id)
+    else {
+        try {
+            const { id } = van
+            const querySnapshot = await getDocs(collectionData)
+            const favArr = querySnapshot.docs.map(doc => ({...doc.data()}))
+            const existingVan = favArr.find((fav) => fav.vanId === id)
             
-    //         if(existingVan) {
-    //             alert('Van already in Favorites!')
-    //         }
-    //     } catch(err) {
-    //         throw new Error('Van already in Favorites!', err as Error)
-    //     }
-    // }
+            if(existingVan) {
+                alert('Van already in Favorites!')
+            }
+        } catch(err) {
+            throw new Error('Van already in Favorites!', err as Error)
+        }
+    }
 }
 
 export const removeUserVanFavorites = async (van: Van) => {

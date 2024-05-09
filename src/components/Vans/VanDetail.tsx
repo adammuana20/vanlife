@@ -9,6 +9,9 @@ import VanReservation from './VanReservation'
 import { Favorite, Reservation, Van, createReservationDocumentOfUser } from '../../utils/firebase'
 import { useUser } from '../../contexts/User.context'
 import VanInfo from './VanInfo'
+import { toast } from 'react-toastify'
+import NoVan from '../NoVan'
+import Heading from '../Heading'
 
 const defaultDateRange = {
     startDate: new Date(),
@@ -19,6 +22,9 @@ const defaultDateRange = {
 const VanDetail = () => {
     const data = useAsyncValue()
     const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]
+    
+    console.log(van);
+    
 
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -59,26 +65,30 @@ const VanDetail = () => {
     }, [reservations])
 
 
-    const onCreateReservation = async() => {
+    const onCreateReservation = () => {
         if(!currentUser) {
             return navigate('/login')
         }
         
         if(dateRange.startDate && dateRange.endDate) {
-            try {
                 setIsLoading(true)
-                await createReservationDocumentOfUser(dateRange.startDate, dateRange.endDate, van, totalPrice)
-                setDateRange(defaultDateRange);
-            } catch(err) {
-                console.error('Error Creating Reservation:', err)
-            } finally {
-                setIsLoading(false)
-                navigate('/trips')
-            }
+                createReservationDocumentOfUser(dateRange.startDate, dateRange.endDate, van, totalPrice)
+                .then(() => {
+                    setDateRange(defaultDateRange);
+                    toast.success('Van Reserved!')
+                })
+                .catch((err) => {
+                    toast.error('Some Dates are already Taken!')
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                    navigate('/trips')
+                })
         }
     }
     
     return (
+        van.displayName ?
         <div className='max-w-screen-lg mx-auto'>
         <div className="flex flex-col gap-6">
             <VanHead
@@ -110,6 +120,14 @@ const VanDetail = () => {
                 </div>
             </div>
         </div>
+        </div>
+        :             
+        <div className="h-[60vh] flex justify-center items-center">
+            <Heading 
+                title="Something went wrong!"
+                subtitle="No Van found!"
+                center
+            />
         </div>
     )
 }

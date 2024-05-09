@@ -2,12 +2,13 @@ import { IconType } from "react-icons";
 
 type ButtonProps = {
     label: string;
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     disabled?: boolean;
     outline?: boolean;
     small?: boolean;
     icon?: IconType;
     disabledLabel?: string;
+    type?: 'submit' | 'reset' | 'button' | undefined,
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,9 +19,11 @@ const Button: React.FC<ButtonProps> = ({
     small,
     icon: Icon,
     disabledLabel = '',
+    type = 'button',
 }) => {        
   return (
     <button
+        type={type}
         onClick={onClick}
         disabled={disabled}
         className={`

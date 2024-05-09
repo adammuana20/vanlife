@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect, ReactNode, FC, Dispatch, SetStateAction, useContext } from 'react'
 
-import { onAuthStateChangedListener, createUserDocumentFromAuth } from '../utils/firebase'
+import { onAuthStateChangedListener, createUserDocumentFromAuth, signOutUser } from '../utils/firebase'
 import { User } from 'firebase/auth'
+import { redirect } from 'react-router-dom';
 
 type UserContextType = {
     currentUser: User | null;
@@ -21,9 +22,33 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null)
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChangedListener((user) => {
+        const unsubscribe = onAuthStateChangedListener( async (user) => {
             if(user) {
                 createUserDocumentFromAuth(user)
+                // const tokenExpiration = (await user.getIdTokenResult()).expirationTime
+                // const tokenExpirationInTime = new Date(tokenExpiration).getTime()
+                // const currentTime = new Date().getTime();
+                // const twoMinutesBeforeExpiration = tokenExpirationInTime - (3500 * 1000); // 2 minutes before expiration
+                
+                // if (tokenExpirationInTime < currentTime) {
+                //     try {
+                //         await signOutUser();
+                //         console.log('Session Timeout');
+                //         redirect('/login');
+                //     } catch (error) {
+                //         console.error('Error refreshing token:', error);
+                //     }
+                // } else if (twoMinutesBeforeExpiration && twoMinutesBeforeExpiration < currentTime) {
+                //     const confirmed = window.confirm('Your session will expire soon. Do you want to refresh your session?');
+                //     if (confirmed) {
+                //         try {
+                //             await user.getIdToken(true);
+                //             console.log('Session Refreshed');
+                //         } catch (error) {
+                //             console.error('Error refreshing token:', error);
+                //         }
+                //     }
+                // }
             }
             setCurrentUser(user)
         })
