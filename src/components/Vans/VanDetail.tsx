@@ -10,7 +10,7 @@ import { Favorite, Reservation, Van, createReservationDocumentOfUser } from '../
 import { useUser } from '../../contexts/User.context'
 import VanInfo from './VanInfo'
 import { toast } from 'react-toastify'
-import NoVan from '../NoVan'
+import NoState from '../NoState'
 import Heading from '../Heading'
 
 const defaultDateRange = {

@@ -12,6 +12,7 @@ import Counter from '../Inputs/Counter'
 import Calendar from '../Calendar'
 
 import useSearchModal from '../../hooks/useSearchModal'
+import { toast } from 'react-toastify'
 
 enum STEPS {
     LOCATION = 0,
@@ -44,8 +45,13 @@ const SearchModal = () => {
     }, [])
 
     const onNext = useCallback(() => {
+        if(step === STEPS.LOCATION && !location) {
+            toast.warning('Select a Location!')
+            return
+        }
+
         setStep((value) => value + 1)
-    }, [])
+    }, [location])
 
     const onSubmit = useCallback(async () => {
         if(step !== STEPS.INFO) {

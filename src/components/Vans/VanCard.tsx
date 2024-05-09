@@ -37,7 +37,7 @@ const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter, favorites })
                 </div>
                 <div>
                     <h3>{name}</h3>
-                    <p>${price}<span>/day</span></p>
+                    <p className="font-light">${price}<span>/day</span></p>
                 </div>
                 <i 
                     className={`text-sm font-medium border-none rounded transition-all duration-200 ease-in-out mr-5 py-2 px-5 text-white`} 

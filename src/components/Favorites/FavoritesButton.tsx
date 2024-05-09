@@ -39,7 +39,7 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van, favorites }) => {
             } else {
                 removeUserVanFavorites(van)
                 .then(() => {
-                    toast.success('Van removed from Favorites!')
+                    toast.error('Van removed from Favorites!')
                 })
                 .catch((err) => {
                     toast.error('Failed removing from Favorites!')

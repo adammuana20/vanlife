@@ -93,7 +93,20 @@ const RentModal = () => {
 
     const onNext = () => {
 
-      if(step === STEPS.CATEGORY && !category || step === STEPS.LOCATION && !location || step === STEPS.IMAGES && !imageUrl) return
+      if(step === STEPS.CATEGORY && !category) {
+        toast.warning('Select a Category!')
+        return
+      }
+
+      if(step === STEPS.LOCATION && !location) {
+        toast.warning('Select a Location!')
+        return
+      }
+
+      if(step === STEPS.IMAGES && !imageUrl) {
+        toast.warning('Select an Image')
+        return
+      }
 
       setStep((value) => value + 1)
     }
