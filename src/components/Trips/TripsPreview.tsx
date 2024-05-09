@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import VanCard from "../Vans/VanCard";
 import Button from "../Button";
-import NoVan from "../NoVan";
+import NoState from "../NoState";
 
 import { Favorite, Trip, cancelUserTripReservation, getVan } from "../../utils/firebase";
 
@@ -28,7 +28,7 @@ const TripsPreview = () => {
             toggleLoading(tripId)
             cancelUserTripReservation(tripId)
             .then(() => {
-                toast.success('Reservation Cancelled!')
+                toast.error('Reservation Cancelled!')
             })
             .catch((err) => {
                 toast.error('Error canceling reservation', err);
@@ -43,7 +43,17 @@ const TripsPreview = () => {
         trips.length ? (
             <>
                 <h2>Trips</h2>
-                <div className="grid grid-cols-4 justify-items-center mt-14 gap-8">
+                <div 
+                    className="
+                        grid 
+                        grid-cols-1 
+                        sm:grid-cols-1 
+                        md:grid-cols-2 
+                        lg:grid-cols-3
+                        xl:grid-cols-4
+                        2xl:grid-cols-5
+                        justify-items-center mt-14 gap-8"
+                >
                     { trips.map((trip) => {
                         const jsStartDate = trip.startDate.toDate()
                         const jsEndDate = trip.endDate.toDate()
@@ -70,7 +80,7 @@ const TripsPreview = () => {
                 </div>
             </>
             ) : (
-                <NoVan 
+                <NoState 
                     title="No trip found"
                     subtitle="Looks like you haven't reserved any van."
                 />

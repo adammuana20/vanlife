@@ -1,7 +1,7 @@
 import { useAsyncValue } from 'react-router-dom'
 
 import HostVanCard from './HostVanCard'
-import NoVan from '../NoVan'
+import NoState from '../NoState'
 
 import { Van } from '../../utils/firebase'
 
@@ -14,7 +14,7 @@ const HostVansPreview = () => {
             {vans.map((van) => <HostVanCard van={van} key={van.id} />)}
         </>
     ) : (
-        <NoVan 
+        <NoState 
             title="No van listed"
             subtitle="Looks like you haven't hosted any van."
         />

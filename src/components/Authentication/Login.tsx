@@ -11,13 +11,14 @@ import {
     signInWithGithubPopup,
     signInWithGooglePopup,
 } from "../../utils/firebase"
-
-import Button from "../Button";
-
-import { noAuthRequire } from "../../utils/loaders";
 import { User } from "firebase/auth";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from 'react-icons/fc'
+
+import Loading from "../Loading";
+import Button from "../Button";
+
+import { noAuthRequire } from "../../utils/loaders";
 
 
 export const action = async ({ request }: { request: Request }) => {
@@ -27,6 +28,7 @@ export const action = async ({ request }: { request: Request }) => {
     
         return signInAuthUserWithEmailAndPassword(email, password)
             .then(() => {
+                <Loading />
                 return toast.success('Login Successful!')
             })
             .catch((err) => {
@@ -52,6 +54,7 @@ export const Login = () => {
     const message: React.ReactNode = typeof loaderMessage === 'string' ? loaderMessage : null;
     
     const navigation = useNavigation();
+    
 
     return (
         <div className="auth-container">

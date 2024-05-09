@@ -4,7 +4,7 @@ import HostHeader from "./HostHeader";
 
 const HostLayout = () => {
     return (
-        <div className="px-10">
+        <div className="px-10 max-w-screen-2xl mx-auto">
             <HostHeader />
             <Outlet />
         </div>

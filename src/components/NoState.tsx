@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Heading from './Heading';
 import Button from './Button';
 
-type NoVanProps = {
+type NoStateProps = {
     title?: string;
     subtitle?: string;
     showReset?: boolean;
 }
 
-const NoVan: React.FC<NoVanProps> = ({
+const NoState: React.FC<NoStateProps> = ({
     title = "No exact matches",
     subtitle = "Try changing or removing some of your filters",
     showReset
@@ -45,4 +45,4 @@ const NoVan: React.FC<NoVanProps> = ({
   )
 }
 
-export default NoVan
+export default NoState

@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 import Footer from "../../components/Footer";
 import MainHeader from "./MainHeader";
 import RentModal from "../../components/Modals/RentModal";
 import SearchModal from "../../components/Modals/SearchModal";
-import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = () => {
     return (

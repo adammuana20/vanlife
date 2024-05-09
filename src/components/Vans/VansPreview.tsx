@@ -1,9 +1,10 @@
 import { FC, useEffect } from "react";
 import { useAsyncValue } from "react-router-dom"
+
 import VanCard from "./VanCard"
+import NoState from "../NoState";
 
 import { Favorite, Van } from "../../utils/firebase";
-import NoVan from "../NoVan";
 import { Timestamp } from "@firebase/firestore";
 
 type VansPreviewProps = {
@@ -57,11 +58,11 @@ const VansPreview: FC<VansPreviewProps> = ({ searchParams, typeFilter }) => {
     
     return (
         displayVans.length ? ( 
-            <div className="grid grid-cols-4 justify-items-center mt-14 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-items-center mt-14 gap-8">
                 { displayVans.map(van => <VanCard key={van.id} van={van} favorites={favorites} searchParams={searchParams} typeFilter={typeFilter} /> )}
             </div>
         ) : (
-            <NoVan showReset /> 
+            <NoState showReset /> 
         )
     )
 }
