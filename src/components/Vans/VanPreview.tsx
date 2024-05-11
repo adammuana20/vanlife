@@ -1,18 +1,10 @@
 import React, { useMemo } from "react"
-import { Link, useLocation, useLoaderData, defer, Await, LoaderFunctionArgs, ParamParseKey } from "react-router-dom";
+import { Link, useLocation, useLoaderData, Await } from "react-router-dom";
 
 import VanDetail from "./VanDetail";
 import Loading from "../Loading";
 
-import { Reservation, Van, getVanReservationsDocuments, getVan, getFavorite, Favorite } from "../../utils/firebase"
-
-const VANS_ROUTE = '/vans/:id';
-
-export type TypedParams = Record<ParamParseKey<typeof VANS_ROUTE>, string>;
-
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-    return defer({ van: getVan((params as TypedParams).id), reservations: getVanReservationsDocuments((params as TypedParams).id), favorites: getFavorite((params as TypedParams).id) })
-}
+import { Reservation, Van, Favorite } from "../../utils/firebase"
 
 const VanPreview = () => {
     const location = useLocation()

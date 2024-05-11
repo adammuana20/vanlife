@@ -1,22 +1,13 @@
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo } from "react";
 import { 
-  useSearchParams, 
   useLoaderData, 
-  defer,
   Await
 } from "react-router-dom";
 
 import TripsPreview from "../components/Trips/TripsPreview";
 import Loading from "../components/Loading";
 
-import { Favorite, Reservation, getFavorites, getUserReservationTripsDocuments } from "../utils/firebase"
-import { User } from "firebase/auth";
-import { requireAuth } from "../utils/loaders";
-
-export const loader = (currentUser: User | null) => async ({ request }: { request: Request }) => {
-  await requireAuth(request, currentUser)
-  return defer({ trips: getUserReservationTripsDocuments(), favorites: getFavorites() })
-}
+import { Favorite, Reservation } from "../utils/firebase"
 
 const Trips = () => {
   const { trips, favorites } = useLoaderData() as { trips: Reservation[], favorites: Favorite[] }

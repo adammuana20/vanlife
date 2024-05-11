@@ -4,52 +4,17 @@ import {
     useNavigation,
     NavLink,
 } from "react-router-dom";
-import { toast } from "react-toastify";
 
 import { 
-    signInAuthUserWithEmailAndPassword,
     signInWithGithubPopup,
     signInWithGooglePopup,
 } from "../../utils/firebase"
-import { User } from "firebase/auth";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from 'react-icons/fc'
 
-import Loading from "../Loading";
 import Button from "../Button";
 
-import { noAuthRequire } from "../../utils/loaders";
-
-
-export const action = async ({ request }: { request: Request }) => {
-    const formData = await request.formData()
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
-    
-        return signInAuthUserWithEmailAndPassword(email, password)
-            .then(() => {
-                <Loading />
-                return toast.success('Login Successful!')
-            })
-            .catch((err) => {
-                const firebaseError = err as { code: string }
-                switch(firebaseError.code) {
-                    case 'auth/invalid-credential': 
-                        return toast.error('Incorrect Email or Password!')
-                    case 'auth/user-not-found':
-                        return toast.error('User not found!')
-                    default:
-                        return err
-                }
-            })
-}
-
-export const loader = (currentUser: User | null) => async ({ request }: { request: Request }) => {
-    await noAuthRequire(request, currentUser)
-    return new URL(request.url).searchParams.get("message")
-}
-
-export const Login = () => {
+const Login = () => {
     const loaderMessage = useLoaderData();
     const message: React.ReactNode = typeof loaderMessage === 'string' ? loaderMessage : null;
     
