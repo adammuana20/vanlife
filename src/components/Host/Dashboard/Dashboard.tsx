@@ -1,19 +1,11 @@
 import React from "react"
-import { defer, Await, useLoaderData } from "react-router-dom"
-import { User } from "firebase/auth"
+import { Await, useLoaderData } from "react-router-dom"
 
 import Welcome from "./Welcome"
 import HostDashboardVansPreview from "../HostDashboardVansPreview"
 import Loading from "../../Loading"
 
-import { Van, getHostVans } from "../../../utils/firebase"
-import { requireAuth } from "../../../utils/loaders"
-
-
-export const loader = (currentUser: User | null) => async({ request }: { request: Request }) => {
-    await requireAuth(request, currentUser)
-    return defer({ vans: getHostVans() })
-}
+import { Van } from "../../../utils/firebase"
 
 const Dashboard = () => {
     const { vans } = useLoaderData() as { vans: Van[] }

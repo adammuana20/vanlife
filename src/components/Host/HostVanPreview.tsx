@@ -1,16 +1,8 @@
 import React from "react";
-import { NavLink, Link, Outlet, useLoaderData, defer, Await, LoaderFunctionArgs } from "react-router-dom";
-import { Van, getVan } from "../../utils/firebase";
-import { requireAuth } from "../../utils/loaders";
-import { User } from "firebase/auth";
-import { TypedParams } from "../Vans/VanPreview";
+import { Link, useLoaderData, defer, Await, LoaderFunctionArgs } from "react-router-dom";
 import HostVanDetail from "./HostVanDetail";
 
-export const loader = (currentUser: User | null) => async({ request, params }: LoaderFunctionArgs) => {
-    await requireAuth(request, currentUser)
-    return defer({ hostVan: getVan((params as TypedParams).id) })
-}
-
+import { Van } from "../../utils/firebase";
 
 const HostVanPreview = () => {
     const { hostVan } = useLoaderData() as { hostVan: Van }

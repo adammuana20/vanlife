@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react"
 import {
     RouterProvider,
     createBrowserRouter,
@@ -5,33 +6,34 @@ import {
     Route
 } from "react-router-dom"
 
-import Home from "./components/Home"
-import About from "./components/About"
-import VanPreview, { loader as vanPreviewLoader } from "./components/Vans/VanPreview"
-import Dashboard, { loader as dashboardLoader } from "./components/Host/Dashboard/Dashboard"
-import Income, { loader as incomeLoader } from "./components/Host/Income/Income"
-import Reviews from "./components/Host/Reviews"
-import HostVanPreview, { loader as hostVanDetailLoader } from "./components/Host/HostVanPreview"
-import HostVanInfo from "./components/Host/HostVanInfo"
-import HostVanPricing from "./components/Host/HostVanPricing"
-import HostVanPhotos from "./components/Host/HostVanPhotos"
-import NotFound from "./components/404"
-import Login, { loader as loginLoader, action as loginAction } from "./components/Authentication/Login"
-import SignUp, { action as signupAction, loader as signupLoader } from "./components/Authentication/SignUp"
-import Error from "./components/Error"
-import { action as logoutAction } from "./components/Authentication/Logout"
-import Logout from "./components/Authentication/Logout"
-
-import Vans, { loader as vansLoader } from "./routes/Vans"
-import HostVans, { loader as hostVansLoader} from "./routes/HostVans"
-import Layout from "./routes/Navbar/Layout"
-import HostLayout from "./routes/HostLayout"
-import Trips, { loader as tripsLoader } from "./routes/Trips"
-import Favorites, { loader as favsLoader } from "./routes/Favorites"
+import Loading from "./components/Loading"
 
 import { useUser } from "./contexts/User.context"
 
-import { requireAuth } from "./utils/loaders"
+import { requireAuth } from "./utils/authentication"
+
+const Home = lazy(() => import("./components/Home"))
+const About = lazy(() => import("./components/About"))
+const HostLayout = lazy(() => import("./routes/HostLayout"))
+const HostVanInfo = lazy(() => import("./components/Host/HostVanInfo"))
+const HostVanPricing = lazy(() => import("./components/Host/HostVanPricing"))
+const HostVanPhotos = lazy(() => import("./components/Host/HostVanPhotos"))
+const Layout = lazy(() => import("./routes/Navbar/Layout"))
+const VanPreview = lazy(() => import("./components/Vans/VanPreview"))
+const Dashboard = lazy(() => import("./components/Host/Dashboard/Dashboard"))
+const Income = lazy(() => import("./components/Host/Income/Income"))
+const HostVanPreview = lazy(() => import("./components/Host/HostVanPreview"))
+const Login = lazy(() => import("./components/Authentication/Login"))
+const SignUp = lazy(() => import("./components/Authentication/SignUp"))
+const Logout = lazy(() => import("./components/Authentication/Logout"))
+const Vans = lazy(() => import("./routes/Vans"))
+const HostVans = lazy(() => import("./routes/HostVans"))
+const Trips = lazy(() => import("./routes/Trips"))
+const Favorites = lazy(() => import("./routes/Favorites"))
+
+const NotFound = lazy(() => import("./components/404"))
+const Error = lazy(() => import("./components/Error"))
+
 
 const App = () => {
   const { currentUser } = useUser()
@@ -39,70 +41,115 @@ const App = () => {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
-      <Route path="about" element={<About />} />
+      <Route path="about" element={<About />}  />
       <Route
         path="login"
         element={<Login />}
-        loader={loginLoader(currentUser)}
-        action={loginAction}
+        lazy={async () => {
+          const { loader: loginLoader, action: loginAction } = await import("./loaders/loginLoader");            
+          return { 
+            loader: loginLoader(currentUser),
+            action: loginAction,
+          };
+        }}
       />
       <Route
         path="sign-up"
         element={<SignUp />}
-        loader={signupLoader(currentUser)}
-        action={signupAction}
+        lazy={async () => {
+          const { loader: signupLoader, action: signupAction } = await import("./loaders/signupLoader");            
+          return { 
+            loader: signupLoader(currentUser),
+            action: signupAction,
+          };
+        }}
       />
       <Route
         path="vans"
         element={<Vans />}
         errorElement={<Error />}
-        loader={vansLoader}
+        lazy={async () => {
+          const { loader: vansLoader, } = await import("./loaders/vansLoader");            
+          return { 
+            loader:  vansLoader
+          };
+        }}
       />
       <Route 
         path="vans/:id" 
         element={<VanPreview />} 
         errorElement={<Error />}
-        loader={vanPreviewLoader}
+        lazy={async () => {
+          const { loader: vanPreviewLoader, } = await import("./loaders/vanPreviewLoader");            
+          return { 
+            loader:  vanPreviewLoader
+          };
+        }}
       />
       <Route 
         path="trips" 
         element={<Trips />}
         errorElement={<Error />}
-        loader={tripsLoader(currentUser)}
+        lazy={async () => {
+          const { loader: tripsLoader, } = await import("./loaders/tripsLoader");            
+          return { 
+            loader:  tripsLoader(currentUser)
+          };
+        }}
       />
       <Route 
         path="favorites" 
         element={<Favorites />}
         errorElement={<Error />}
-        loader={favsLoader(currentUser)}
+        lazy={async () => {
+          const { loader: favsLoader, } = await import("./loaders/favsLoader");            
+          return { 
+            loader:  favsLoader(currentUser)
+          };
+        }}
       />
       <Route path="host" element={<HostLayout />}>
         <Route
           index
           element={<Dashboard />}
-          loader={dashboardLoader(currentUser)}
+          lazy={async () => {
+            const { loader: dashboardLoader, } = await import("./loaders/dashboardLoader");            
+            return { 
+              loader:  dashboardLoader(currentUser)
+            };
+          }}
         />
         <Route
           path="income"
           element={<Income />}
-          loader={incomeLoader(currentUser)}
-        />
-        <Route
-          path="reviews"
-          element={<Reviews />}
-          loader={async ({ request }: { request: Request }) => await requireAuth(request, currentUser)}
+          lazy={async () => {
+            const { loader: incomeLoader, } = await import("./loaders/incomeLoader");            
+            return { 
+              loader:  incomeLoader(currentUser)
+            };
+          }}
         />
         <Route
           path="vans"
           element={<HostVans />}
           errorElement={<Error />}
-          loader={hostVansLoader(currentUser)}
+          lazy={async () => {
+            const { loader: hostVansLoader, } = await import("./loaders/hostVansLoader");            
+            return { 
+              loader:  hostVansLoader(currentUser)
+            };
+          }}
         />
         <Route
           path="vans/:id"
           element={<HostVanPreview />}
           errorElement={<Error />}
-          loader={hostVanDetailLoader(currentUser)}
+          lazy={async () => {
+            const { loader: hostVanDetailLoader, } = await import("./loaders/hostVanDetailLoader");            
+            return { 
+              loader:  hostVanDetailLoader(currentUser)
+            };
+          }}
         >
           <Route
             index
@@ -121,13 +168,24 @@ const App = () => {
           />
         </Route>
       </Route>
-      <Route path="logout" action={logoutAction} element={<Logout />} />
+      <Route
+        path="logout"
+        element={<Logout />} 
+        lazy={async () => {
+          const { action: logoutAction, } = await import("./components/Authentication/Logout");            
+          return { 
+            action:  logoutAction
+          };
+        }}
+      />
       <Route path="*" element={<NotFound />} />
     </Route>
   ))
 
   return (
-    <RouterProvider router={router} />
+    <Suspense fallback={<Loading />}>
+      <RouterProvider router={router} />
+    </Suspense>
   )
 }
 

@@ -48,29 +48,32 @@ const VansCategories: FC<VansCategoriesProps> = ({ handleFilterChange, typeFilte
     }
 
     return (
-        <div className="flex flex-wrap justify-center">
-            { vanType.map((type: string, idx: number) => {
-                return (
+        <>
+            <h2>Explore our van options</h2>
+            <div className="flex flex-wrap justify-center">
+                { vanType.map((type: string, idx: number) => {
+                    return (
+                        <button 
+                            key={idx}
+                            onClick={() => handleFilterChange("type", type)}
+                            className={`text-sm not-italic font-medium border-none rounded transition-all duration-200 ease-in-out mr-5 py-2 px-5 hover:text-white`}
+                            onMouseEnter={() => mouseHover(idx)}
+                            onMouseLeave={mouseLeave}
+                            style={calcHSLColor(type, idx)}
+                        >
+                            {capitalizeEachWord(type)}
+                        </button>
+                    )
+                })}
+                { typeFilter ? (
                     <button 
-                        key={idx}
-                        onClick={() => handleFilterChange("type", type)}
-                        className={`text-sm not-italic font-medium border-none rounded transition-all duration-200 ease-in-out mr-5 py-2 px-5 hover:text-white`}
-                        onMouseEnter={() => mouseHover(idx)}
-                        onMouseLeave={mouseLeave}
-                        style={calcHSLColor(type, idx)}
-                    >
-                        {capitalizeEachWord(type)}
-                    </button>
-                )
-            })}
-            { typeFilter ? (
-                <button 
-                    onClick={() => handleFilterChange("type", '')}
-                    className="text-sm hover:underline text-dark-gray"
-                >Clear Category</button>
-                ) : null
-            }
-        </div>
+                        onClick={() => handleFilterChange("type", '')}
+                        className="text-sm hover:underline text-dark-gray"
+                    >Clear Category</button>
+                    ) : null
+                }
+            </div>
+        </>
     )
 }
 

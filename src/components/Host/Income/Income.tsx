@@ -1,20 +1,11 @@
-import { User } from "firebase/auth"
-import { Await, defer, useLoaderData } from "react-router-dom"
+import { Await, useLoaderData } from "react-router-dom"
 import React from "react"
 
 import Transactions from "./Transactions"
 import BarGraph from "./BarGraph"
 import Loading from "../../Loading"
 
-import { Van, getHostVans } from "../../../utils/firebase"
-import { requireAuth } from "../../../utils/loaders"
-
-
-
-export const loader = (currentUser: User | null) => async({ request }: { request: Request }) => {
-    await requireAuth(request, currentUser)
-    return defer({ vans: getHostVans() })
-}
+import { Van } from "../../../utils/firebase"
 
 const Income = () => {
     const { vans } = useLoaderData() as { vans: Van[]}
