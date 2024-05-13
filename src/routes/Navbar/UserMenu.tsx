@@ -58,12 +58,12 @@ const UserMenu = () => {
             >
                 Vans
             </NavLink>
-            <NavLink 
+            {/* <NavLink 
                 to="about" 
                 className={({isActive}) => isActive ? 'active-link' : undefined}
             >
                 About
-            </NavLink>
+            </NavLink> */}
             <div 
                 onClick={toggleOpen}
                 className='
