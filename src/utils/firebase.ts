@@ -60,7 +60,7 @@ googleProvider.setCustomParameters({
 
 const githubProvider = new GithubAuthProvider();
 githubProvider.setCustomParameters({
-    prompt: 'select_account'
+    'allow_signup': 'false'
 })
 
 export const auth = getAuth()
