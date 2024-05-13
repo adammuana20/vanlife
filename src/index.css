@@ -111,9 +111,9 @@
     @apply font-bold underline text-semi-black;
   }
 
-  .btn {
-    @apply inline-block text-center no-underline bg-primary-color border-none w-full mt-7 py-2 text-white font-bold rounded cursor-pointer transition-transform duration-100 ease-in-out hover:translate-x-px hover:translate-y-px;
-  }
+  /* .btn {
+    @apply inline-block text-center no-underline bg-primary-color border-none w-full mt-7 py-2 text-white font-bold rounded cursor-pointer transition-transform duration-100 ease-in-out;
+  } */
 
   .auth-container {
     @apply flex flex-col items-center px-7;
