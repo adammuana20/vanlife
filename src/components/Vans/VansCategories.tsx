@@ -49,7 +49,7 @@ const VansCategories: FC<VansCategoriesProps> = ({ handleFilterChange, typeFilte
 
     return (
         <>
-            <h2>Explore our van options</h2>
+            <h2 className='text-center md:text-start'>Explore our van options</h2>
             <div className="flex flex-wrap justify-center">
                 { vanType.map((type: string, idx: number) => {
                     return (

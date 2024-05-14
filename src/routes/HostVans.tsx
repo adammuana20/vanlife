@@ -10,7 +10,7 @@ const HostVans = () => {
     const { hostVans } = useLoaderData() as { hostVans: Van }
 
     return (
-        <section className="px-7">
+        <section className="px-0 md:px-7">
             <React.Suspense fallback={<Loading />}>
                 <Await resolve={hostVans}>
                     <HostVansPreview />
