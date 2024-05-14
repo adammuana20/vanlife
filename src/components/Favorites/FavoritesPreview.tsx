@@ -11,7 +11,7 @@ const FavoritesPreview = () => {
   return (
     favorites.length ? (
     <>
-      <h2>Favorites</h2>
+      <h2 className='text-center md:text-start'>Favorites</h2>
       <div 
         className="
           grid

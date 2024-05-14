@@ -42,7 +42,7 @@ const TripsPreview = () => {
     return (
         trips.length ? (
             <>
-                <h2>Trips</h2>
+                <h2 className="text-center md:text-start">Trips</h2>
                 <div 
                     className="
                         grid 
