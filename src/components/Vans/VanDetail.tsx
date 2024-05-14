@@ -21,10 +21,7 @@ const defaultDateRange = {
 
 const VanDetail = () => {
     const data = useAsyncValue()
-    const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]
-    
-    console.log(van);
-    
+    const [van, reservations, favorite] = data as [Van, Reservation[], Favorite]   
 
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()

@@ -10,6 +10,9 @@ import Loading from "./components/Loading"
 
 import { useUser } from "./contexts/User.context"
 
+import { loader as dashboardLoader } from "./loaders/dashboardLoader"
+import { action as logoutAction } from "./components/Authentication/Logout"
+
 import { requireAuth } from "./utils/authentication"
 
 const Home = lazy(() => import("./components/Home"))
@@ -36,7 +39,7 @@ const Error = lazy(() => import("./components/Error"))
 
 
 const App = () => {
-  const { currentUser } = useUser()
+  const { currentUser } = useUser() 
 
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -113,12 +116,7 @@ const App = () => {
         <Route
           index
           element={<Dashboard />}
-          lazy={async () => {
-            const { loader: dashboardLoader, } = await import("./loaders/dashboardLoader");            
-            return { 
-              loader:  dashboardLoader(currentUser)
-            };
-          }}
+          loader={dashboardLoader(currentUser)}
         />
         <Route
           path="income"
@@ -172,12 +170,7 @@ const App = () => {
       <Route
         path="logout"
         element={<Logout />} 
-        lazy={async () => {
-          const { action: logoutAction, } = await import("./components/Authentication/Logout");            
-          return { 
-            action:  logoutAction
-          };
-        }}
+        action={logoutAction}
       />
       <Route path="*" element={<NotFound />} />
     </Route>
