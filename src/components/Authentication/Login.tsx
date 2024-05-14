@@ -14,18 +14,13 @@ import { FcGoogle } from 'react-icons/fc'
 
 import Button from "../Button";
 
-const Login = () => {
-    const loaderMessage = useLoaderData();
-    const message: React.ReactNode = typeof loaderMessage === 'string' ? loaderMessage : null;
-    
+const Login = () => {    
     const navigation = useNavigation();
     
-
     return (
         <div className="auth-container">
             <h2 className="text-center md:text-start">Already have an account?</h2>
             <span>Sign in to your account</span>
-            { message && <h3 className="text-dark-red">{message}</h3> }
             <Form 
                 method="post" 
                 className="auth-form"
