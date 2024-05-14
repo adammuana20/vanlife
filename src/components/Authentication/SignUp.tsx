@@ -11,7 +11,7 @@ const SignUp = () => {
 
   return (
     <div className="auth-container">
-      <h2>Don&apos;t have an account?</h2>
+      <h2 className="text-center md:text-start">Don&apos;t have an account?</h2>
       <span>Sign Up with your email and password</span>
       <Form
         method="post"
