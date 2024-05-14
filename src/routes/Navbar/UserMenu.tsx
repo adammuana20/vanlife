@@ -152,6 +152,7 @@ const UserMenu = () => {
                                 >
                                     Vans
                                 </NavLink>
+                                <hr/>
                                 <NavLink
                                     to="login"
                                     className={({isActive}) => (isActive ? 'active-link' : undefined) + ' px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
