@@ -103,169 +103,67 @@ const UserMenu = () => {
                     <div className='flex flex-col cursor-pointer'>
                     {currentUser ? (
                         <>
-                            <div
-                                className='
-                                    px-4
-                                    py-3
-                                    hover:bg-neutral-100
-                                    font-semibold
-                                    block
-                                    md:hidden
-                                '
+                            <NavLink 
+                                to="host"
+                                className={({isActive}) => (isActive ? 'active-link' : undefined) + ' block md:hidden px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
                             >
-                                <NavLink 
-                                    to="host"
-                                    className={({isActive}) => isActive ? 'active-link' : undefined}
+                                Host
+                            </NavLink>
+                            <NavLink 
+                                to="vans" 
+                                className={({isActive}) => (isActive ? 'active-link' : undefined) + ' block md:hidden px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
+                            >
+                                Vans
+                            </NavLink>
+                            <NavLink
+                                to="trips"
+                                className={({isActive}) => (isActive ? 'active-link' : undefined) + ' px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
+                            >
+                                My Trips
+                            </NavLink>
+                            <NavLink
+                                to="favorites"
+                                className={({isActive}) => (isActive ? 'active-link' : undefined) + ' px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
+                            >
+                                My Favorites
+                            </NavLink>
+                            <button onClick={onRent} className='w-full text-start px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'>Host your Van</button>
+                            <hr/>
+                            <Form method='post' action='logout'>
+                                <button
+                                    type='submit'
+                                    className='w-full text-start px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'
                                 >
-                                    Host
-                                </NavLink>
-                            </div>
-                            <div
-                                className='
-                                    px-4
-                                    py-3
-                                    hover:bg-neutral-100
-                                    font-semibold
-                                    block
-                                    md:hidden
-                                '
-                            >
-                                <NavLink 
-                                    to="vans" 
-                                    className={({isActive}) => isActive ? 'active-link' : undefined}
-                                >
-                                    Vans
-                                </NavLink>
-                            </div>
-                            <div
-                                className='
-                                    px-4
-                                    py-3
-                                    hover:bg-neutral-100
-                                    font-semibold
-                                '
-                            >
-                                <NavLink
-                                    to="trips"
-                                    className={({isActive}) => isActive ? 'active-link' : undefined}
-                                >
-                                    My Trips
-                                </NavLink>
-                            </div>
-                            <div
-                                className='
-                                    px-4
-                                    py-3
-                                    hover:bg-neutral-100
-                                    font-semibold
-                                '
-                            >
-                                <NavLink
-                                    to="favorites"
-                                    className={({isActive}) => isActive ? 'active-link' : undefined}
-                                >
-                                    My Favorites
-                                </NavLink>
-                            </div>
-                            <div
-                                className='
-                                    px-4
-                                    py-3
-                                    hover:bg-neutral-100
-                                    font-semibold
-                                '
-                            >
-                                <button onClick={onRent} className='text-dark-gray hover:text-semi-black' >Host your Van</button>
-                            </div>
-                            <div
-                                className='
-                                    px-4
-                                    py-3
-                                    hover:bg-neutral-100
-                                    font-semibold
-                                    text-dark-gray 
-                                    hover:text-semi-black
-                                '
-                            >
-                                <Form method='post' action='logout' className='flex'>
-                                    <button
-                                        type='submit'
-                                    >
-                                        Logout
-                                    </button>
-                                </Form>
-                            </div>
+                                    Logout
+                                </button>
+                            </Form>
                         </>
                         ) : (
                             <>
-                                <div
-                                    className='
-                                        px-4
-                                        py-3
-                                        hover:bg-neutral-100
-                                        font-semibold
-                                        block
-                                        md:hidden
-                                    '
+                                <NavLink 
+                                    to="host"
+                                    className={({isActive}) => (isActive ? 'active-link' : undefined) + ' px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
                                 >
-                                    <NavLink 
-                                        to="host"
-                                        className={({isActive}) => isActive ? 'active-link' : undefined}
-                                    >
-                                        Host
-                                    </NavLink>
-                                </div>
-                                <div
-                                    className='
-                                        px-4
-                                        py-3
-                                        hover:bg-neutral-100
-                                        font-semibold
-                                        block
-                                        md:hidden
-                                    '
+                                    Host
+                                </NavLink>
+                                <NavLink 
+                                    to="vans" 
+                                    className={({isActive}) => (isActive ? 'active-link' : undefined) + ' px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
                                 >
-                                    <NavLink 
-                                        to="vans" 
-                                        className={({isActive}) => isActive ? 'active-link' : undefined}
-                                    >
-                                        Vans
-                                    </NavLink>
-                                </div>
-                                <div
-                                    className='
-                                        px-4
-                                        py-3
-                                        hover:bg-neutral-100
-                                        font-semibold
-                                        text-dark-gray 
-                                        hover:text-semi-black
-                                    '
+                                    Vans
+                                </NavLink>
+                                <NavLink
+                                    to="login"
+                                    className={({isActive}) => (isActive ? 'active-link' : undefined) + ' px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
                                 >
-                                    <NavLink
-                                        to="login"
-                                        className={({isActive}) => isActive ? 'active-link' : undefined}
-                                    >
-                                        Login
-                                    </NavLink>
-                                </div>
-                                <div
-                                    className='
-                                        px-4
-                                        py-3
-                                        hover:bg-neutral-100
-                                        font-semibold
-                                        text-dark-gray 
-                                        hover:text-semi-black
-                                    '
-                                    >
-                                    <NavLink
-                                        to="sign-up"
-                                        className={({isActive}) => isActive ? 'active-link' : undefined}
-                                    >
-                                        Sign Up
-                                    </NavLink>
-                                </div>
+                                    Login
+                                </NavLink>
+                                <NavLink
+                                    to="sign-up"
+                                    className={({isActive}) => (isActive ? 'active-link' : undefined) + ' px-4 py-3 hover:bg-neutral-100 font-semibold text-dark-gray hover:text-semi-black'}
+                                >
+                                    Sign Up
+                                </NavLink>
                             </>
                         )
                     }
