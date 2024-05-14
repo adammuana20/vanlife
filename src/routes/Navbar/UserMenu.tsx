@@ -103,7 +103,7 @@ const UserMenu = () => {
                     <div className='flex flex-col cursor-pointer'>
                     {currentUser ? (
                         <>
-                                                        <div
+                            <div
                                 className='
                                     px-4
                                     py-3
@@ -198,6 +198,40 @@ const UserMenu = () => {
                         </>
                         ) : (
                             <>
+                                <div
+                                    className='
+                                        px-4
+                                        py-3
+                                        hover:bg-neutral-100
+                                        font-semibold
+                                        block
+                                        md:hidden
+                                    '
+                                >
+                                    <NavLink 
+                                        to="host"
+                                        className={({isActive}) => isActive ? 'active-link' : undefined}
+                                    >
+                                        Host
+                                    </NavLink>
+                                </div>
+                                <div
+                                    className='
+                                        px-4
+                                        py-3
+                                        hover:bg-neutral-100
+                                        font-semibold
+                                        block
+                                        md:hidden
+                                    '
+                                >
+                                    <NavLink 
+                                        to="vans" 
+                                        className={({isActive}) => isActive ? 'active-link' : undefined}
+                                    >
+                                        Vans
+                                    </NavLink>
+                                </div>
                                 <div
                                     className='
                                         px-4
