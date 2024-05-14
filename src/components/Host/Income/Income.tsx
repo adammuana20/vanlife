@@ -11,7 +11,7 @@ const Income = () => {
     const { vans } = useLoaderData() as { vans: Van[]}
     
     return (
-        <section className="px-7 text-semi-black">
+        <section className="px-0 md:px-7 text-semi-black">
             <React.Suspense fallback={<Loading />}>
                 <Await resolve={vans}>
                     <BarGraph />

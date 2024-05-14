@@ -13,12 +13,12 @@ const Layout = () => {
             <div className="min-h-screen flex flex-col">
                 <RentModal />
                 <SearchModal />
-                <div className="fixed w-full z-20 shadow-sm bg-light-orange px-10">
+                <div className="fixed w-full z-20 shadow-sm bg-light-orange px-5 md:px-10">
                     <div className="py-4 border-b-[1px]">
                         <MainHeader />
                     </div>
                 </div>
-                <main className="pt-28 px-10">
+                <main className="pt-28 px-0 lg:px-10 md:px-0">
                     <Outlet />
                 </main>
                 <Footer />

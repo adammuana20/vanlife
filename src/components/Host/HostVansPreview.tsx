@@ -27,7 +27,7 @@ const HostVansPreview = () => {
                 ? null
                 : (
                     <div className='flex justify-center items-center'>
-                        <div className='w-1/6'>
+                        <div className='md:w-1/6 w-full'>
                             <Button
                                 label='Load More'
                                 onClick={loadMore}

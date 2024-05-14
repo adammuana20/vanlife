@@ -43,9 +43,9 @@ const Transactions = () => {
                     // Format the date using options
                     const createdAt = jsCreatedAt.toLocaleDateString('en-US', options);
                         return (
-                            <div key={idx} className="flex justify-between items-center bg-white mb-8 rounded-md px-7 py-5">
-                                <h3 className="font-semi-bold m-0">${transaction.totalPrice}</h3>
-                                <p className="text-dark-gray">{createdAt}</p>
+                            <div key={idx} className="flex justify-between items-center bg-white mb-8 rounded-md py-5">
+                                <h3 className="font-semi-bold m-0 px-5">${transaction.totalPrice}</h3>
+                                <p className="text-dark-gray px-5">{createdAt}</p>
                             </div>
                         )
                     })
@@ -54,7 +54,7 @@ const Transactions = () => {
                     null
                     : (
                         <div className='flex justify-center items-center'>
-                            <div className='w-1/6'>
+                            <div className='md:w-1/6 w-full'>
                                 <Button
                                     label='Load More'
                                     onClick={loadMore}
