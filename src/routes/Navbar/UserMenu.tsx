@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import Avatar from '../../components/Avatar'
 import { NavLink, Form, useNavigate } from 'react-router-dom'
 import { UserContext } from '../../contexts/User.context'
@@ -17,11 +17,29 @@ const UserMenu = () => {
         rentModal.onOpen()
     }, [currentUser, rentModal])
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpenMenuDropdown, setIsOpenMenuDropdown] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const toggleOpen = useCallback(() => {
-        setIsOpen((value) => !value)
+        setIsOpenMenuDropdown((value) => !value)
     }, [])
+
+    const handleClickOutSide = (e: MouseEvent) => {
+        const { target } = e;
+        if (target instanceof Node && dropdownRef.current?.contains(target)) {
+            return;
+        }
+        
+        setIsOpenMenuDropdown(false);
+    };
+
+    useEffect(() => {
+        if(isOpenMenuDropdown) {
+            window.addEventListener('click', handleClickOutSide);
+        }
+
+    }, [isOpenMenuDropdown]);
+
   return (
     <div className='relative'>
         <div className='flex flex-row items-center gap-3'>
@@ -82,10 +100,11 @@ const UserMenu = () => {
                     transition
                     flex-shrink-0
                 '
+                ref={dropdownRef}
             >
                 <Avatar />
             </div>
-            { isOpen && (
+            { isOpenMenuDropdown && (
                 <div
                     className='
                         absolute
