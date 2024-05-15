@@ -8,23 +8,20 @@ let HostVans: React.ComponentType<any>;
 export const loader = (currentUser: User | null) => async({ request }: LoaderFunctionArgs) => {
     await requireAuth(request, currentUser)
 
-    
-    let controller = new AbortController()
-
     import('../routes/HostVans').then(
         (componentModule) => {
-            if(!controller.signal.aborted) {
+            if(!request.signal.aborted) {
                 HostVans = componentModule.default
             }
         }
     ).catch((error) => {
         console.error("Error loading Host Vans component:", error);
-        controller.abort()
+        request.signal.aborted
     });
 
     try {
         return defer({ hostVans: getHostVans() })
     } finally {
-        controller.abort()
+        request.signal.aborted
     }
 }

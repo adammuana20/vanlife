@@ -8,22 +8,20 @@ let Favorites: React.ComponentType<any>;
 export const loader = (currentUser: User | null) => async ({ request }: { request: Request }) => {
     await requireAuth(request, currentUser)
 
-    let controller = new AbortController()
-
     import('../routes/Favorites').then(
         (componentModule) => {
-            if(!controller.signal.aborted) {
+            if(!request.signal.aborted) {
                 Favorites = componentModule.default
             }
         }
     ).catch((error) => {
         console.error("Error loading Favorites component:", error);
-        controller.abort()
+        request.signal.aborted
     });
 
     try {
         return defer({ favorites: getFavorites() })
     } finally {
-        controller.abort()
+        request.signal.aborted
     }
   }

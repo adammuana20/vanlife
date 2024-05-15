@@ -8,22 +8,20 @@ let Income: React.ComponentType<any>;
 export const loader = (currentUser: User | null) => async({ request }: { request: Request }) => {
     await requireAuth(request, currentUser)
 
-    let controller = new AbortController()
-
     import('../components/Host/Income/Income').then(
         (componentModule) => {
-            if(!controller.signal.aborted) {
+            if(!request.signal.aborted) {
                 Income = componentModule.default
             }
         }
     ).catch((error) => {
         console.error("Error loading Income component:", error);
-        controller.abort()
+        request.signal.aborted
     });
 
     try {
         return defer({ vans: getHostVans() })
     } finally {
-        controller.abort()
+        request.signal.aborted
     }
 }
