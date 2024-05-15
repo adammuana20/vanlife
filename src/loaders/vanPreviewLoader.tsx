@@ -7,18 +7,16 @@ let VanPreview: React.ComponentType<any>;
 
 export type TypedParams = Record<ParamParseKey<typeof VANS_ROUTE>, string>;
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-    let controller = new AbortController()
-
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     import("../components/Vans/VanPreview").then(
         (componentModule) => {
-            if(!controller.signal.aborted) {
+            if(!request.signal.aborted) {
                 VanPreview = componentModule.default
             }
         }
     ).catch((error) => {
         console.error("Error loading VanPreview component:", error);
-        controller.abort()
+        request.signal.aborted
     });
 
     try {
@@ -28,6 +26,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
             favorites: getFavorite((params as TypedParams).id) 
         })
     } finally {
-        controller.abort()
+        request.signal.aborted
     }
 }
