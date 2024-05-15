@@ -8,5 +8,20 @@ let Dashboard: React.ComponentType<any>;
 export const loader = (currentUser: User | null) => async({ request }: { request: Request }) => {
     await requireAuth(request, currentUser)
 
-    return defer({ vans: getHostVans() })
+    import('../components/Host/Dashboard/Dashboard').then(
+        (componentModule) => {
+            if(!request.signal.aborted) {
+                Dashboard = componentModule.default
+            }
+        }
+    ).catch((error) => {
+        console.error("Error loading Host component:", error);
+        request.signal.aborted
+    });
+
+    try {
+        return defer({ vans: getHostVans() })
+    } finally {
+        request.signal.aborted
+    }
 }
