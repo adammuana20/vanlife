@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { NavLink, Form, useNavigate } from 'react-router-dom'
-import { GiHamburgerMenu } from "react-icons/gi";
+import { IoMenuOutline } from "react-icons/io5";
 
 import Avatar from '../../components/Avatar'
 
@@ -107,7 +107,7 @@ const UserMenu = () => {
                         flex-shrink-0
                     '
                 >
-                    { currentUser ? <Avatar /> : <GiHamburgerMenu size={25} /> }
+                    { currentUser ? <Avatar /> : <IoMenuOutline size={25} /> }
                 </div>
                 { isOpenMenuDropdown && (
                     <div
