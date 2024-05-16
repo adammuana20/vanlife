@@ -54,7 +54,7 @@ const FavoritesButton: FC<FavoritesButtonProps> = ({ van, favorites }) => {
   return (
     <button 
         onClick={toggleFavorite}
-        className="relative hover: opacity-80 tansition cursor-pointer z-10"
+        className="relative hover:opacity-80 tansition cursor-pointer z-10"
         disabled={isLoading}
         style={{backgroundColor: 'transparent'}}
     >
