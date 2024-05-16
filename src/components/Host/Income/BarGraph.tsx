@@ -129,7 +129,7 @@ const BarGraph = () => {
 
   return (
     <>
-      <h2>My Income</h2>
+      <h2 className="text-center md:text-start">My Income</h2>
       <p className="text-dark-gray">
       Last <span className="underline font-bold">30 days</span>
       </p>

@@ -31,7 +31,7 @@ const VanHead: React.FC<VanHeadProps> = ({
         subtitle={`${location?.region}, ${location?.label}`}
       />
       <div className='w-full flex justify-center'>
-        <div className='overflow-hidden rounded-xl relative flex justify-center'>
+        <div className='overflow-hidden rounded-xl relative flex justify-center w-1/2'>
           <img src={imageUrl} alt={name} loading='lazy' />
           <div className='absolute top-5 right-5'>
             <FavoritesButton favorites={favoriteArr} van={van} />
