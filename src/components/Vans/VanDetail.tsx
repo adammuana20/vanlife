@@ -12,6 +12,7 @@ import VanInfo from './VanInfo'
 import { toast } from 'react-toastify'
 import NoState from '../NoState'
 import Heading from '../Heading'
+import LoadingOverlay from '../LoadingOverlay'
 
 const defaultDateRange = {
     startDate: new Date(),
@@ -69,13 +70,14 @@ const VanDetail = () => {
         
         if(dateRange.startDate && dateRange.endDate) {
                 setIsLoading(true)
+                
                 createReservationDocumentOfUser(dateRange.startDate, dateRange.endDate, van, totalPrice)
                 .then(() => {
                     setDateRange(defaultDateRange);
                     toast.success('Van Reserved!')
                 })
                 .catch((err) => {
-                    toast.error('Some Dates are already Taken!')
+                    toast.warning('Some Dates are already Taken!')
                 })
                 .finally(() => {
                     setIsLoading(false)
@@ -87,36 +89,37 @@ const VanDetail = () => {
     return (
         van.displayName ?
         <div className='max-w-screen-lg mx-auto'>
-        <div className="flex flex-col gap-6">
-            <VanHead
-                name={van.name}
-                imageUrl={van.imageUrl}
-                favorite={favorite}
-                van={van}
-            />
-            <div className='grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6'>
-                <VanInfo 
-                    user={van.displayName}
-                    type={van.type}
-                    description={van.description}
-                    capacityCount={van.capacityCount}
-                    bathroomCount={van.bathroomCount}
-                    bedroomCount={van.bedCount}
-                    locationValue={van.locationValue}
+            {isLoading && <LoadingOverlay/>}
+            <div className="flex flex-col gap-6">
+                <VanHead
+                    name={van.name}
+                    imageUrl={van.imageUrl}
+                    favorite={favorite}
+                    van={van}
                 />
-                <div className='order-first mb-10 md:order-last md:col-span-3'>
-                    <VanReservation
-                        price={van.price}
-                        totalPrice={totalPrice}
-                        onChangeDate={(value) => setDateRange(value)}
-                        dateRange={dateRange}
-                        onSubmit={onCreateReservation}
-                        disabledDates={disabledDates}
-                        isLoading={isLoading}
+                <div className='grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6'>
+                    <VanInfo 
+                        user={van.displayName}
+                        type={van.type}
+                        description={van.description}
+                        capacityCount={van.capacityCount}
+                        bathroomCount={van.bathroomCount}
+                        bedroomCount={van.bedCount}
+                        locationValue={van.locationValue}
                     />
+                    <div className='order-first mb-10 md:order-last md:col-span-3'>
+                        <VanReservation
+                            price={van.price}
+                            totalPrice={totalPrice}
+                            onChangeDate={(value) => setDateRange(value)}
+                            dateRange={dateRange}
+                            onSubmit={onCreateReservation}
+                            disabledDates={disabledDates}
+                            isLoading={isLoading}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         :             
         <div className="h-[60vh] flex justify-center items-center">
