@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -6,11 +6,15 @@ import Footer from "../../components/Footer";
 import MainHeader from "./MainHeader";
 import RentModal from "../../components/Modals/RentModal";
 import SearchModal from "../../components/Modals/SearchModal";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
 const Layout = () => {
+    const navigation = useNavigation()
+
     return (
         <>
-            <div className="min-h-screen flex flex-col">
+            <div className="min-h-screen flex flex-col relative">
+            {navigation.state === 'submitting' && <LoadingOverlay />}
                 <RentModal />
                 <SearchModal />
                 <div className="fixed w-full z-20 shadow-sm bg-light-orange px-5 md:px-10">
