@@ -19,7 +19,7 @@ const Login = () => {
     
     return (
         <div className="auth-container">
-            <h2 className="text-center md:text-start">Already have an account?</h2>
+            <h2 className="text-center">Already have an account?</h2>
             <span>Sign in to your account</span>
             <Form 
                 method="post" 
