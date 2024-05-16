@@ -30,7 +30,7 @@ const VanDetail = () => {
     const { currentUser } = useUser()
 
     const [dateRange, setDateRange] = useState<Range>(defaultDateRange)
-    const [totalPrice, setTotalPrice] = useState(0)
+    const [totalPrice, setTotalPrice] = useState<number>(0)
     
     useEffect(() => {
         if(dateRange.startDate && dateRange.endDate) {

@@ -254,9 +254,6 @@ export const cancelUserTripReservation = async(tripId: string, vanId: string) =>
             }
         
     }
-    
-    // if(tripsSnapshot.exists()) {
-    // }
 }
 
 
@@ -321,10 +318,13 @@ export const createVanDocument = async (data: FieldValues) => {
     const vanDocRef = collection(db, 'vans')
     const { name, description, imageUrl, category, capacityCount, bedCount, bathroomCount, location, price } = data
     const createdAt = new Date()
+    const priceInt = parseInt(price)
 
     try{
         const image = await uploadImageToStorage(imageUrl)
         if(image){
+            console.log('im here');
+            
             await addDoc(vanDocRef, {
                 name,
                 description,
@@ -333,7 +333,7 @@ export const createVanDocument = async (data: FieldValues) => {
                 bathroomCount,
                 capacityCount,
                 locationValue: location.value,
-                price,
+                price: priceInt,
                 hostId: userID,
                 imageUrl: image,
                 createdAt,

@@ -122,9 +122,9 @@ const RentModal = () => {
       createVanDocument(data)
       .then(() => {
         reset()
-        toast.success('Van Hosted successfuly')
         setStep(STEPS.CATEGORY)
         rentModal.onClose()
+        toast.success('Van Hosted successfuly')
         navigate(0)
       })
       .catch((err: Error) => {
