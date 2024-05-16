@@ -1,6 +1,9 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import Avatar from '../../components/Avatar'
 import { NavLink, Form, useNavigate } from 'react-router-dom'
+import { GiHamburgerMenu } from "react-icons/gi";
+
+import Avatar from '../../components/Avatar'
+
 import { UserContext } from '../../contexts/User.context'
 import useRentModal from '../../hooks/useRentModal'
 
@@ -104,7 +107,7 @@ const UserMenu = () => {
                         flex-shrink-0
                     '
                 >
-                    <Avatar />
+                    { currentUser ? <Avatar /> : <GiHamburgerMenu size={25} /> }
                 </div>
                 { isOpenMenuDropdown && (
                     <div

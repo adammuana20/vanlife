@@ -1,8 +1,8 @@
-import imageUrl from "../assets/images/avatar-icon.png";
+import { FaRegCircleUser } from "react-icons/fa6";
 
 const Avatar = () => {
   return (
-    <img className='rounded-full' height={30} width={30} alt='Avatar' src={imageUrl} />
+    <FaRegCircleUser size={30} />
   )
 }
 

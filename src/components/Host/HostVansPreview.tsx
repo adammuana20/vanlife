@@ -18,8 +18,8 @@ const HostVansPreview = () => {
   return (
     vans.length ? (
         <>
-            <h2>Your listed vans</h2>
-            {vans
+            <h2 className='text-center md:text-start'>Your listed vans</h2>
+            { vans
                 .filter((_, idx) => idx < limit)
                 .map((van) => <HostVanCard van={van} key={van.id} />)
             }
