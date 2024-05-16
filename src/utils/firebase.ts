@@ -30,6 +30,7 @@ import {
     deleteDoc,
     orderBy,
     DocumentData,
+    onSnapshot,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { FieldValues } from "react-hook-form";
@@ -197,14 +198,16 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
             try {
                 const vanData = vansSnapshot.data()
 
-                const newReservation = { startDate, endDate, totalPrice, createdAt, vanId: id, userID  }
+                const uniqueId = v4()
+
+                const newReservation = { startDate, endDate, totalPrice, createdAt, vanId: id, userID, id: uniqueId  }
                 vanData.reservations.push(newReservation)
 
                 const reservationDocRef = doc(db, 'reservations', userID)
-                const collectionVal = collection(reservationDocRef, 'resLists')
+                const collectionVal = doc(collection(reservationDocRef, 'resLists'), uniqueId)
         
                 await setDoc(vansDocRef, vanData)
-                await addDoc(collectionVal, {
+                await setDoc(collectionVal, {
                     startDate,
                     endDate,
                     totalPrice,
@@ -226,23 +229,34 @@ export const createReservationDocumentOfUser = async ( startDate: Date, endDate:
     }
 }
 
-export const cancelUserTripReservation = async(tripId: string) => {
+export const cancelUserTripReservation = async(tripId: string, vanId: string) => {
     const userID = auth.currentUser?.uid
 
     if(!userID) return
 
     const tripsDocRef = doc(collection(doc(db, 'reservations', userID), 'resLists'), tripId)
     const tripsSnapshot = await getDoc(tripsDocRef)
+
+    const vansReservationDocRef = doc(db, 'vans', vanId)
     
-    if(tripsSnapshot.exists()) {
-        try {
-            await deleteDoc(tripsDocRef)            
-        } catch(err) {
-            console.log('Error cancelling reservation, Please try again!', err);
-            
-        }
+    const querySnapshot = await getDoc(vansReservationDocRef)
+    
+    if(tripsSnapshot.exists() && querySnapshot.exists()){
+        const dataArr = querySnapshot.data()
+        
+        const updatedReservation = dataArr.reservations.filter((reservation: Reservation) => reservation.id !== tripId) 
+            try {
+                await updateDoc(vansReservationDocRef, { reservations: updatedReservation })        
+                await deleteDoc(tripsDocRef)
+            } catch(err) {
+                console.log('Error cancelling reservation, Please try again!', err);
+                
+            }
         
     }
+    
+    // if(tripsSnapshot.exists()) {
+    // }
 }
 
 
