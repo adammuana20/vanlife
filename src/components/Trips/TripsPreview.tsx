@@ -7,6 +7,7 @@ import Button from "../Button";
 import NoState from "../NoState";
 
 import { Favorite, Trip, cancelUserTripReservation, getVan } from "../../utils/firebase";
+import LoadingOverlay from "../LoadingOverlay";
 
 const TripsPreview = () => { 
     const data = useAsyncValue() as [Trip[], Favorite[]]
@@ -24,14 +25,14 @@ const TripsPreview = () => {
         }))
     }
 
-    const cancelReservation = (tripId: string): React.MouseEventHandler<HTMLButtonElement> => ()  => {
+    const cancelReservation = (tripId: string, vanId: string): React.MouseEventHandler<HTMLButtonElement> => ()  => {
             toggleLoading(tripId)
-            cancelUserTripReservation(tripId)
+            cancelUserTripReservation(tripId, vanId)
             .then(() => {
                 toast.error('Reservation Cancelled!')
             })
             .catch((err) => {
-                toast.error('Error canceling reservation', err);
+                toast.error('Error cancelling reservation', err);
             })
             .finally(() => {
                 toggleLoading(tripId)
@@ -70,7 +71,7 @@ const TripsPreview = () => {
                                 <p>{startDate} - {endDate}</p>
                                 <Button 
                                     label="Cancel Reservation"
-                                    onClick={cancelReservation(trip.id)}
+                                    onClick={cancelReservation(trip.id, trip.vanId)}
                                     disabled={isLoadingMap[trip.id]}
                                     disabledLabel="Cancelling..."
                                 />
