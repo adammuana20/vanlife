@@ -17,6 +17,10 @@ const Transactions = () => {
 
     const recentTransactions = vans.flatMap(van =>
         van.reservations.filter(reservation => isAfter(reservation.startDate.toDate(), cutoffDate))
+        .map(reservation => ({
+            ...reservation,
+            name: van.name
+        }))
       );
 
       recentTransactions.sort((a, b) => (b.createdAt.toDate() as any) - (a.createdAt.toDate() as any));
@@ -44,7 +48,10 @@ const Transactions = () => {
                     const createdAt = jsCreatedAt.toLocaleDateString('en-US', options);
                         return (
                             <div key={idx} className="flex justify-between items-center bg-white mb-8 rounded-md py-5">
-                                <h3 className="font-semi-bold m-0 px-5">${transaction.totalPrice}</h3>
+                                <div className='font-semi-bold m-0 px-5'>
+                                    <h3 className='mt-0'>{transaction.name}</h3>
+                                    <h4 className='mb-0'>Total: ${transaction.totalPrice}</h4>
+                                </div>
                                 <p className="text-dark-gray px-5">{createdAt}</p>
                             </div>
                         )
