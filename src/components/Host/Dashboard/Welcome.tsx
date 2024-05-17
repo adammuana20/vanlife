@@ -16,7 +16,7 @@ const Welcome = () => {
   return (
     <section className="bg-semi-light-orange flex justify-between items-center py-9 px-6">
         <div>
-            <h1 className="text-semi-black m-0">Welcome!</h1>
+            <h1 className="text-semi-black m-0 font-extrabold">Welcome!</h1>
             <p className="text-dark-gray">Income last <span className="font-bold underline">30 days</span></p>
             <h2 className="m-0 font-black text-semi-black">${totalPrice}</h2>
         </div>

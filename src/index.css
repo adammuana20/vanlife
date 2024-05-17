@@ -13,12 +13,9 @@
   }
 
   h1 {
-    @apply text-[2.5rem];
-    @apply font-bold;
+    @apply text-[3rem] md:text-[3.5rem];
     @apply ms-0;
     @apply me-0;
-    @apply mt-4;
-    @apply mb-4;
   }
 
   h2 {
@@ -37,7 +34,7 @@
   }
 
   h4 {
-    @apply text-lg;
+    @apply text-xl;
     @apply font-bold;
   }
 
@@ -122,6 +119,8 @@
 
 .home-hero {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)), url("./assets/images/home-hero.png") no-repeat center center;
+  background-size: cover;
+  height: 100vh;
 }
 
 .leaflet-bottom,

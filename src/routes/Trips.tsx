@@ -15,7 +15,7 @@ const Trips = () => {
   const allPromise = useMemo(() => Promise.all([trips, favorites]),[trips, favorites])
 
   return (
-    <div className="px-6">
+    <div className="px-6 max-w-screen-2xl mx-auto">
       <Suspense fallback={<Loading />}>
         <Await resolve={allPromise}>
           <TripsPreview />
