@@ -15,7 +15,7 @@ import { action as logoutAction } from "./components/Authentication/Logout"
 
 import { requireAuth } from "./utils/authentication"
 
-const Home = lazy(() => import("./components/Home"))
+const Home = lazy(() => import("./routes/Home"))
 const About = lazy(() => import("./components/About"))
 const HostLayout = lazy(() => import("./routes/HostLayout"))
 const HostVanInfo = lazy(() => import("./components/Host/HostVanInfo"))

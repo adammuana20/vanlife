@@ -10,7 +10,7 @@ const Favorites = () => {
   const { favorites } = useLoaderData() as { favorites: Favorite[] }
 
   return (
-    <div className="px-6">
+    <div className="px-6 max-w-screen-2xl mx-auto">
       <Suspense fallback={<Loading />}>
         <Await resolve={favorites}>
           <FavoritesPreview />

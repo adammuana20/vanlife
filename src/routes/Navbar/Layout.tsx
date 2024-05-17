@@ -1,4 +1,4 @@
-import { Outlet, useNavigation } from "react-router-dom";
+import { Outlet, useLocation, useNavigation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,6 +10,9 @@ import LoadingOverlay from "../../components/LoadingOverlay";
 
 const Layout = () => {
     const navigation = useNavigation()
+    const location = useLocation()
+
+    const isHomePage = location.pathname === '/'
 
     return (
         <>
@@ -17,12 +20,12 @@ const Layout = () => {
             {navigation.state === 'submitting' && <LoadingOverlay />}
                 <RentModal />
                 <SearchModal />
-                <div className="fixed w-full z-20 shadow-sm bg-light-orange px-5 md:px-10">
-                    <div className="py-4 border-b-[1px]">
+                <div className="fixed w-full z-20 shadow-sm bg-light-orange px-5 md:px-10 ">
+                    <div className="py-4 border-b-[1px] max-w-screen-2xl mx-auto">
                         <MainHeader />
                     </div>
                 </div>
-                <main className="pt-28 px-0 lg:px-10 md:px-0">
+                <main className={` px-0 ${isHomePage ? 'pt-0' : 'lg:px-10 pt-[5.3rem]'} md:px-0`}>
                     <Outlet />
                 </main>
                 <Footer />

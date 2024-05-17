@@ -30,7 +30,7 @@ const Vans = () => {
     }
 
     return (
-        <div className="px-6">
+        <div className="px-6 max-w-screen-2xl mx-auto">
             <React.Suspense fallback={<Loading />}>
                 <Await resolve={allPromise}>
                     <VansCategories handleFilterChange={handleFilterChange} typeFilter={typeFilter} />
