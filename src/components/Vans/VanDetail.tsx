@@ -88,7 +88,7 @@ const VanDetail = () => {
     
     return (
         van.displayName ?
-        <div className='max-w-screen-lg mx-auto'>
+        <div className='px-8'>
             {isLoading && <LoadingOverlay/>}
             <div className="flex flex-col gap-6">
                 <VanHead

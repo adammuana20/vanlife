@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 import { Favorite, Van } from "../../utils/firebase"
 
@@ -16,6 +16,7 @@ type VanCardProps = {
 
 const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter, favorites }) => {
     const { categoriesColor } = useCategories()
+    const location = useLocation()
 
     const { name, price, imageUrl, id, type } = van
     
@@ -27,8 +28,9 @@ const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter, favorites })
             <Link 
                 to={`/vans/${id}`} 
                 state={{ 
-                    search: `?${searchParams.toString()}`, 
-                    type: typeFilter
+                    search: `${searchParams.toString()}`, 
+                    type: typeFilter,
+                    prevLocation: location.pathname
                 }}
                 className="text-semi-dark group"
             >
