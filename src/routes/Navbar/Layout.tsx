@@ -25,7 +25,7 @@ const Layout = () => {
                         <MainHeader />
                     </div>
                 </div>
-                <main className={` px-0 ${isHomePage ? 'pt-0' : 'lg:px-10 pt-[5.3rem]'} md:px-0`}>
+                <main className={` px-0 ${isHomePage ? 'pt-0' : 'lg:px-10 pt-[6rem]'} md:px-0`}>
                     <Outlet />
                 </main>
                 <Footer />

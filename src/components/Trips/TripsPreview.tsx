@@ -67,7 +67,7 @@ const TripsPreview = () => {
 
                         return (
                             <div key={trip.id} className="flex flex-col">
-                                <VanCard van={trip.van} favorites={favorites} searchParams={new URLSearchParams} typeFilter={'My Reservations'} />
+                                <VanCard van={trip.van} favorites={favorites} searchParams={new URLSearchParams} typeFilter={'My Trips'} />
                                 <p>{startDate} - {endDate}</p>
                                 <Button 
                                     label="Cancel Reservation"
