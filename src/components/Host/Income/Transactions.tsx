@@ -27,7 +27,7 @@ const Transactions = () => {
          
   return (
     <>
-    <div className="info-header">
+    <div>
         <h3 className="font-bold mt-[3.75rem]">Your transactions ({recentTransactions.length})</h3>
         <p className="text-drak-gray">
             Last <span className="underline font-bold">30 days</span>

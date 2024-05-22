@@ -26,7 +26,7 @@ const HostVanDetail = () => {
                         {type}
                     </i>
                     <h3 className='mt-6 mb-1 font-bold'>{name}</h3>
-                    <h4 className='mb-0'>{price}</h4>
+                    <h4 className='mb-0'>${price}</h4>
                 </div>
             </div>
         

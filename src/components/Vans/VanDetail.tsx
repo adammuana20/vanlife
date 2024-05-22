@@ -2,17 +2,16 @@ import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns'
 import { useState, useEffect, useMemo } from 'react'
 import { Range } from 'react-date-range'
 import { useAsyncValue, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import VanHead from './VanHead'
 import VanReservation from './VanReservation'
+import VanInfo from './VanInfo'
+import Heading from '../Heading'
+import LoadingOverlay from '../LoadingOverlay'
 
 import { Favorite, Reservation, Van, createReservationDocumentOfUser } from '../../utils/firebase'
 import { useUser } from '../../contexts/User.context'
-import VanInfo from './VanInfo'
-import { toast } from 'react-toastify'
-import NoState from '../NoState'
-import Heading from '../Heading'
-import LoadingOverlay from '../LoadingOverlay'
 
 const defaultDateRange = {
     startDate: new Date(),

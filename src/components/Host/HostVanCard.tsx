@@ -14,7 +14,7 @@ const HostVanCard: FC<HostVanCardProps> = ({ van }) => {
     <div className="flex items-center justify-between bg-white mb-4 py-3 px-6" key={id}>
       <div className='flex items-center'>
         <img src={imageUrl} alt={`Photo of ${name}`} className='h-[4.4rem] rounded mr-4' />
-        <div className="host-van-info">
+        <div>
             <h3 className='font-semibold my-3'>{name}</h3>
             <p className='my-3'>${price}/day</p>
         </div>

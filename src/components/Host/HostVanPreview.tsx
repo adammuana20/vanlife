@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLoaderData, Await } from "react-router-dom";
 
 import HostVanDetail from "./HostVanDetail";
-import Loading from "../Loading";
+import SkeletonHostVanPreview from "../Skeletons/Host/SkeletonHostVanPreview";
 
 import { Van } from "../../utils/firebase";
 
@@ -17,7 +17,7 @@ const HostVanPreview = () => {
                 className="text-black hover:underline"
             >&larr; <span>Back to hosted vans</span>
             </Link>
-            <React.Suspense fallback={<Loading />}>
+            <React.Suspense fallback={<SkeletonHostVanPreview />}>
                 <Await resolve={hostVan}>
                     <HostVanDetail />
                 </Await>

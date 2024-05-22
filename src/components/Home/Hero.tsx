@@ -73,7 +73,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, ctaLabel, path }) => {
         </div>
         <div className="max-w-screen-lg mx-auto flex flex-col justify-center items-center h-full gap-5 px-[1rem] md:px-[5rem] z-10 relative">
             <h1 className="font-extrabold text-center">{title}</h1>
-            <p className="text-center">{subtitle}</p>
+            <p className="text-center text-xl">{subtitle}</p>
             <div className="flex">
                 <Link 
                     to={path}
