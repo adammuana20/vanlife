@@ -2,7 +2,6 @@ import { createContext, useState, useEffect, ReactNode, FC, Dispatch, SetStateAc
 
 import { onAuthStateChangedListener, createUserDocumentFromAuth, signOutUser } from '../utils/firebase'
 import { User } from 'firebase/auth'
-import { redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
 
 type UserContextType = {

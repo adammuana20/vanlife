@@ -7,7 +7,7 @@ import {
 
 import VansPreview from "../components/Vans/VansPreview";
 import VansCategories from "../components/Vans/VansCategories";
-import Loading from "../components/Loading";
+import SkeletonVans from "../components/Skeletons/SkeletonVans";
 
 import { Favorite, Van } from "../utils/firebase";
 
@@ -33,7 +33,7 @@ const Vans = () => {
 
     return (
         <div className="px-6 max-w-screen-2xl mx-auto">
-            <React.Suspense fallback={<Loading />}>
+            <React.Suspense fallback={<SkeletonVans />}>
                 <Await resolve={allPromise}>
                     <VansCategories handleFilterChange={handleFilterChange} typeFilter={typeFilter} />
                     <VansPreview searchParams={searchParams} typeFilter={typeFilter} />

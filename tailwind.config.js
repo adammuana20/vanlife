@@ -20,6 +20,19 @@ export default {
         'semi-light-orange': '#ffead0',
         'semi-orange': '#ffddb2',
       },
+      animation: {
+        loading: 'loading 2.5s infinite'
+      },
+      keyframes: {
+        loading: {
+          '0%': { transform: 'translateX(-150%)' },
+          '50%': { transform: 'translateX(-60%)' },
+          '100%': { transform: 'translateX(150%)' },
+        },
+        boxShadow: {
+          'light': '0 30px 30px rgba(255, 255, 255, 0.05)',
+        }
+      },
     },
     screens: {
       'sm': '640px',

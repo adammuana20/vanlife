@@ -6,6 +6,7 @@ import Loading from "../Loading";
 
 import { Reservation, Van, Favorite } from "../../utils/firebase"
 import { capitalizeEachWord } from "../../utils/helpers";
+import SkeletonVanDetail from "../Skeletons/Host/SkeletonVanDetail";
 
 const VanPreview = () => {
     const location = useLocation()
@@ -13,7 +14,7 @@ const VanPreview = () => {
     
     const search = location.state?.search || '';
     const type = location.state?.type || "all";
-    const prevLocation = location.state.prevLocation;
+    const { prevLocation } = location.state;
 
     const allPromise = useMemo(() => Promise.all([van, reservations, favorites]),[van, reservations, favorites])
 
@@ -26,7 +27,7 @@ const VanPreview = () => {
             >
                 &larr; <span>Back to {prevLocation === '/vans' ? capitalizeEachWord(type) + ' vans' : type}</span>
             </Link>
-            <React.Suspense fallback={<Loading />}>
+            <React.Suspense fallback={<SkeletonVanDetail />}>
                 <Await resolve={allPromise}>
                     <VanDetail />
                 </Await>

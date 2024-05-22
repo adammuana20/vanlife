@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 
 import TripsPreview from "../components/Trips/TripsPreview";
-import Loading from "../components/Loading";
+import SkeletonTripsFavs from "../components/Skeletons/SkeletonTripsFavs";
 
 import { Favorite, Reservation } from "../utils/firebase"
 
@@ -16,7 +16,7 @@ const Trips = () => {
 
   return (
     <div className="px-6 max-w-screen-2xl mx-auto">
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<SkeletonTripsFavs addBtn/>}>
         <Await resolve={allPromise}>
           <TripsPreview />
         </Await>

@@ -34,8 +34,8 @@ const VanCard: FC<VanCardProps> = ({ van, searchParams, typeFilter, favorites })
                 }}
                 className="text-semi-dark group"
             >
-                <div className="aspect-square w-full relative overflow-hidden rounded-xl">
-                    <img src={imageUrl} className="rounded transition group-hover:scale-110" />
+                <div className="w-full relative overflow-hidden rounded-xl">
+                    <img src={imageUrl} className="transition group-hover:scale-110" />
                 </div>
                 <div>
                     <h3>{name}</h3>

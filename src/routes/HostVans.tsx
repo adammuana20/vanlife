@@ -2,7 +2,7 @@ import React from "react"
 import { useLoaderData,  Await } from "react-router-dom"
 
 import HostVansPreview from "../components/Host/HostVansPreview"
-import Loading from "../components/Loading"
+import SkeletonHostVans from "../components/Skeletons/Host/SkeletonHostVans"
 
 import { Van } from "../utils/firebase"
 
@@ -11,7 +11,7 @@ const HostVans = () => {
 
     return (
         <section className="px-0 md:px-7">
-            <React.Suspense fallback={<Loading />}>
+            <React.Suspense fallback={<SkeletonHostVans />}>
                 <Await resolve={hostVans}>
                     <HostVansPreview />
                 </Await>
